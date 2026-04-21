@@ -1,0 +1,354 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================================
+// ENUMS
+// ============================================================
+
+enum UserRole {
+  STUDENT
+  PROFESSOR
+  ADMIN
+}
+
+enum CaseStatus {
+  NEW
+  TRIAGED
+  ASSIGNED
+  IN_PROGRESS
+  WAITING_USER
+  WAITING_SUPERVISION
+  RESOLVED
+  CLOSED
+  CANCELLED
+}
+
+enum CaseCategory {
+  ABERTURA_MEI
+  ENQUADRAMENTO
+  OCUPACOES_PERMITIDAS
+  DAS
+  DECLARACAO_ANUAL
+  CCMEI
+  CONSULTA_CNPJ
+  NOTA_FISCAL
+  DEBITOS_PARCELAMENTO
+  REGULARIZACAO
+  BENEFICIOS_PREVIDENCIARIOS
+  CONTRATACAO_EMPREGADO
+  GOV_BR
+  GOLPES_FRAUDES
+  OUTROS
+}
+
+enum AttendanceInteractionType {
+  SIMPLE_GUIDANCE // Orientação simples → 15 min
+  GUIDANCE_WITH_REFERRAL // Orientação + encaminhamento → 30 min
+  DETAILED_SUPPORT // Apoio detalhado → 45 min
+  ONGOING_CASE // Caso em andamento → 60 min
+}
+
+enum ValidationStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum ValidationTarget {
+  ATTENDANCE
+  EXTENSION_HOURS
+}
+
+enum AuditAction {
+  USER_CREATED
+  USER_LOGIN
+  REQUEST_SUBMITTED
+  CASE_CREATED
+  CASE_ASSIGNED
+  CASE_STATUS_CHANGED
+  ATTENDANCE_CREATED
+  VALIDATION_DECIDED
+  EXTENSION_HOURS_LOGGED
+  EXTENSION_REPORT_CREATED
+  EXTENSION_REPORT_SUBMITTED
+  EXTENSION_REPORT_CLAIMED
+  EXTENSION_REPORT_RETURNED
+  EXTENSION_REPORT_SIGNED
+  EXTENSION_REPORT_COMPLETED
+}
+
+enum ExtensionReportStatus {
+  DRAFT
+  SUBMITTED
+  UNDER_REVIEW
+  SIGNED
+  COMPLETED
+  RETURNED
+}
+
+// ============================================================
+// USERS & PROFILES
+// ============================================================
+
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  passwordHash String
+  fullName     String
+  role         UserRole
+  active       Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  studentProfile   StudentProfile?
+  professorProfile ProfessorProfile?
+
+  assignments      CaseAssignment[]  @relation("AssignmentStudent")
+  attendances      Attendance[]
+  validationsGiven Validation[]      @relation("ValidationReviewer")
+  extensionHours   ExtensionHours[]
+  auditLogs        AuditLog[]
+  reportsAuthored  ExtensionReport[] @relation("ReportStudent")
+  reportsReviewed  ExtensionReport[] @relation("ReportReviewer")
+}
+
+model StudentProfile {
+  id         String  @id @default(uuid())
+  userId     String  @unique
+  user       User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  enrollment String? @unique
+  cpf        String?
+  course     String?
+  semester   Int?
+}
+
+model ProfessorProfile {
+  id         String  @id @default(uuid())
+  userId     String  @unique
+  user       User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  department String?
+  title      String?
+}
+
+// ============================================================
+// PUBLIC REQUESTS (from the entrepreneur form)
+// ============================================================
+
+model EntrepreneurRequest {
+  id               String       @id @default(uuid())
+  fullName         String
+  email            String?
+  phone            String
+  cpf              String?
+  city             String?
+  state            String?
+  category         CaseCategory
+  description      String
+  preferredChannel String?
+  consentAccepted  Boolean      @default(true)
+  trackingToken    String       @unique @default(uuid())
+  createdAt        DateTime     @default(now())
+
+  case Case?
+}
+
+// ============================================================
+// CASES
+// ============================================================
+
+model Case {
+  id        String              @id @default(uuid())
+  code      String              @unique
+  requestId String              @unique
+  request   EntrepreneurRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+
+  category CaseCategory
+  status   CaseStatus   @default(NEW)
+  priority Int          @default(0)
+  summary  String
+  notes    String?
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  closedAt  DateTime?
+
+  assignments CaseAssignment[]
+  attendances Attendance[]
+  reportItems ExtensionReportItem[]
+
+  @@index([status])
+  @@index([category])
+  @@index([createdAt])
+}
+
+model CaseAssignment {
+  id           String    @id @default(uuid())
+  caseId       String
+  case         Case      @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  studentId    String
+  student      User      @relation("AssignmentStudent", fields: [studentId], references: [id])
+  assignedAt   DateTime  @default(now())
+  unassignedAt DateTime?
+  active       Boolean   @default(true)
+
+  @@index([caseId, active])
+  @@index([studentId, active])
+}
+
+// ============================================================
+// ATTENDANCES (interactions logged by students)
+// ============================================================
+
+model Attendance {
+  id        String @id @default(uuid())
+  caseId    String
+  case      Case   @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  studentId String
+  student   User   @relation(fields: [studentId], references: [id])
+
+  channel           String // PRESENCIAL | TELEFONE | WHATSAPP | EMAIL | OUTRO
+  interactionType   AttendanceInteractionType @default(SIMPLE_GUIDANCE)
+  demandDescription String                    @default("")
+  actionTaken       String                    @default("")
+  outcome           String                    @default("")
+  needsFollowUp     Boolean                   @default(false)
+  internalNotes     String?
+  durationMin       Int                       @default(15) // derivado do interactionType no backend
+  summary           String // legado: preenchido via demandDescription+actionTaken
+  nextStep          String? // legado: derivado de needsFollowUp+outcome
+  occurredAt        DateTime                  @default(now())
+  createdAt         DateTime                  @default(now())
+
+  validations Validation[]
+  reportItems ExtensionReportItem[]
+
+  @@index([caseId])
+  @@index([studentId])
+}
+
+// ============================================================
+// VALIDATIONS (professor approves/rejects)
+// ============================================================
+
+model Validation {
+  id               String           @id @default(uuid())
+  target           ValidationTarget
+  attendanceId     String?
+  attendance       Attendance?      @relation(fields: [attendanceId], references: [id], onDelete: Cascade)
+  extensionHoursId String?
+  extensionHours   ExtensionHours?  @relation(fields: [extensionHoursId], references: [id], onDelete: Cascade)
+
+  reviewerId String
+  reviewer   User   @relation("ValidationReviewer", fields: [reviewerId], references: [id])
+
+  status    ValidationStatus @default(PENDING)
+  comment   String?
+  decidedAt DateTime?
+  createdAt DateTime         @default(now())
+
+  @@index([status])
+  @@index([target])
+}
+
+// ============================================================
+// EXTENSION HOURS (computed/logged by students, validated by professor)
+// ============================================================
+
+model ExtensionHours {
+  id            String           @id @default(uuid())
+  studentId     String
+  student       User             @relation(fields: [studentId], references: [id])
+  referenceDate DateTime
+  hours         Float
+  activity      String
+  status        ValidationStatus @default(PENDING)
+  createdAt     DateTime         @default(now())
+
+  validations Validation[]
+
+  @@index([studentId])
+  @@index([status])
+}
+
+// ============================================================
+// AUDIT LOG
+// ============================================================
+
+model AuditLog {
+  id        String      @id @default(uuid())
+  action    AuditAction
+  actorId   String?
+  actor     User?       @relation(fields: [actorId], references: [id])
+  entity    String
+  entityId  String
+  metadata  Json?
+  createdAt DateTime    @default(now())
+
+  @@index([entity, entityId])
+  @@index([actorId])
+  @@index([createdAt])
+}
+
+// ============================================================
+// EXTENSION REPORTS (formal institutional document)
+// ============================================================
+
+model ExtensionReport {
+  id         String  @id @default(uuid())
+  code       String  @unique
+  studentId  String
+  student    User    @relation("ReportStudent", fields: [studentId], references: [id])
+  reviewerId String?
+  reviewer   User?   @relation("ReportReviewer", fields: [reviewerId], references: [id])
+
+  status      ExtensionReportStatus @default(DRAFT)
+  narrative   String                @db.Text
+  totalHours  Float                 @default(0)
+  periodStart DateTime?
+  periodEnd   DateTime?
+
+  generatedPdfKey String?
+  signedPdfKey    String?
+  signedPdfHash   String?
+  reviewerNote    String?
+
+  submittedAt DateTime?
+  reviewedAt  DateTime?
+  signedAt    DateTime?
+  completedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  items ExtensionReportItem[]
+
+  @@index([studentId, status])
+  @@index([status])
+}
+
+model ExtensionReportItem {
+  id           String          @id @default(uuid())
+  reportId     String
+  report       ExtensionReport @relation(fields: [reportId], references: [id], onDelete: Cascade)
+  caseId       String
+  case         Case            @relation(fields: [caseId], references: [id])
+  attendanceId String?
+  attendance   Attendance?     @relation(fields: [attendanceId], references: [id])
+
+  snapshotDate     DateTime
+  snapshotChannel  String
+  snapshotCategory CaseCategory
+  snapshotSummary  String
+  snapshotAction   String
+  snapshotOutcome  String
+  snapshotStatus   String
+  snapshotHours    Float
+
+  @@unique([reportId, caseId])
+  @@index([caseId])
+}
