@@ -14,10 +14,10 @@ export function PublicShell({ children }: { children: ReactNode }) {
   return (
     <div className="min-h-screen bg-background">
       <header className="sticky top-0 z-40 border-b border-brand-line/20 bg-background/88 backdrop-blur-[20px]">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-6 px-4 py-4 md:px-6">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-3 md:gap-6 md:px-6 md:py-4">
           <Link
             href="/"
-            className="shrink-0 text-xl font-bold tracking-[-0.04em] text-brand-ink md:text-[2rem]"
+            className="shrink-0 text-[0.85rem] font-bold leading-tight tracking-[-0.04em] text-brand-ink sm:text-base md:text-xl lg:text-[2rem]"
           >
             Espaco do Empreendedor
           </Link>
@@ -35,10 +35,10 @@ export function PublicShell({ children }: { children: ReactNode }) {
               </Link>
             ))}
           </nav>
-          <div className="flex items-center gap-2">
+          <div className="flex shrink-0 items-center gap-2">
             <Link
               href="/quero-ajuda"
-              className="inline-flex h-11 items-center justify-center rounded-full bg-gradient-to-r from-brand-orange-deep to-brand-orange px-6 text-[15px] font-semibold text-white shadow-soft transition hover:brightness-105"
+              className="inline-flex h-9 items-center justify-center rounded-full bg-gradient-to-r from-brand-orange-deep to-brand-orange px-4 text-[13px] font-semibold text-white shadow-soft transition hover:brightness-105 sm:h-10 sm:px-5 sm:text-sm md:h-11 md:px-6 md:text-[15px]"
             >
               Pedir ajuda
             </Link>

@@ -21,6 +21,23 @@ import { ReportStorageService } from './storage/report-storage.service';
 
 const MIN_NARRATIVE_CHARS = 200;
 const ELIGIBLE_CASE_STATUSES: CaseStatus[] = [CaseStatus.RESOLVED, CaseStatus.CLOSED];
+const ATTENDANCE_TYPE_LABELS = {
+  SIMPLE_GUIDANCE: 'Orientacao simples',
+  GUIDANCE_WITH_REFERRAL: 'Orientacao com encaminhamento',
+  DETAILED_SUPPORT: 'Apoio detalhado',
+  ONGOING_CASE: 'Acompanhamento do caso',
+} as const;
+const CASE_STATUS_LABELS = {
+  NEW: 'Novo',
+  TRIAGED: 'Triado',
+  ASSIGNED: 'Assumido',
+  IN_PROGRESS: 'Em andamento',
+  WAITING_USER: 'Aguardando retorno do empreendedor',
+  WAITING_SUPERVISION: 'Aguardando acompanhamento interno',
+  RESOLVED: 'Resolvido',
+  CLOSED: 'Fechado',
+  CANCELLED: 'Cancelado',
+} as const;
 
 @Injectable()
 export class ExtensionReportsService {

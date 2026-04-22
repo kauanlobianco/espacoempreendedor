@@ -1,0 +1,77 @@
+
+> espaco-empreendedor-backend@0.1.0 start:dev
+> nest start --watch
+
+[2J[3J[H[[90m03:06:31[0m] Starting compilation in watch mode...
+
+[[90m03:06:34[0m] Found 0 errors. Watching for file changes.
+
+[32m[Nest] 21904  - [39m21/04/2026, 03:06:35 [32m    LOG[39m [38;5;3m[NestFactory] [39m[32mStarting Nest application...[39m
+[32m[Nest] 21904  - [39m21/04/2026, 03:06:35 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAppModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 21904  - [39m21/04/2026, 03:06:35 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mPrismaModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 21904  - [39m21/04/2026, 03:06:35 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mPassportModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 21904  - [39m21/04/2026, 03:06:35 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigHostModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 21904  - [39m21/04/2026, 03:06:35 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAuditModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 21904  - [39m21/04/2026, 03:06:35 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mUsersModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 21904  - [39m21/04/2026, 03:06:35 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 21904  - [39m21/04/2026, 03:06:35 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mConfigModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 21904  - [39m21/04/2026, 03:06:35 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAttendancesModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 21904  - [39m21/04/2026, 03:06:35 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mExtensionHoursModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 21904  - [39m21/04/2026, 03:06:35 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mMailModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 21904  - [39m21/04/2026, 03:06:35 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mJwtModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 21904  - [39m21/04/2026, 03:06:35 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mThrottlerModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 21904  - [39m21/04/2026, 03:06:35 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mCasesModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 21904  - [39m21/04/2026, 03:06:35 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mValidationsModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 21904  - [39m21/04/2026, 03:06:35 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mExtensionReportsModule dependencies initialized[39m[38;5;3m +1ms[39m
+[32m[Nest] 21904  - [39m21/04/2026, 03:06:35 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mRequestsModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 21904  - [39m21/04/2026, 03:06:35 [32m    LOG[39m [38;5;3m[InstanceLoader] [39m[32mAuthModule dependencies initialized[39m[38;5;3m +0ms[39m
+[32m[Nest] 21904  - [39m21/04/2026, 03:06:35 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mAuditController {/api/audit}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 21904  - [39m21/04/2026, 03:06:35 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/audit, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 21904  - [39m21/04/2026, 03:06:35 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mAuthController {/api/auth}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 21904  - [39m21/04/2026, 03:06:35 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/auth/register, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 21904  - [39m21/04/2026, 03:06:35 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/auth/register/student, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 21904  - [39m21/04/2026, 03:06:35 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/auth/login, POST} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 21904  - [39m21/04/2026, 03:06:35 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/auth/first-access, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 21904  - [39m21/04/2026, 03:06:35 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/auth/me, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 21904  - [39m21/04/2026, 03:06:35 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mUsersController {/api/users}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 21904  - [39m21/04/2026, 03:06:35 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/users, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 21904  - [39m21/04/2026, 03:06:35 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/users/pending, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 21904  - [39m21/04/2026, 03:06:35 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/users/:id, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 21904  - [39m21/04/2026, 03:06:35 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/users/:id/performance, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 21904  - [39m21/04/2026, 03:06:35 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/users/:id/active, PATCH} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 21904  - [39m21/04/2026, 03:06:35 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mRequestsController {/api/requests}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 21904  - [39m21/04/2026, 03:06:35 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/requests, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 21904  - [39m21/04/2026, 03:06:35 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/requests/track, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 21904  - [39m21/04/2026, 03:06:35 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mCasesController {/api/cases}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 21904  - [39m21/04/2026, 03:06:35 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/cases, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 21904  - [39m21/04/2026, 03:06:35 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/cases/:id, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 21904  - [39m21/04/2026, 03:06:35 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/cases/:id/assign, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 21904  - [39m21/04/2026, 03:06:35 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/cases/:id/status, PATCH} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 21904  - [39m21/04/2026, 03:06:35 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mAttendancesController {/api/cases/:caseId/attendances}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 21904  - [39m21/04/2026, 03:06:35 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/cases/:caseId/attendances, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 21904  - [39m21/04/2026, 03:06:35 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/cases/:caseId/attendances, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 21904  - [39m21/04/2026, 03:06:35 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mValidationsController {/api/validations}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 21904  - [39m21/04/2026, 03:06:35 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/validations/pending, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 21904  - [39m21/04/2026, 03:06:35 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/validations/:id/decision, PATCH} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 21904  - [39m21/04/2026, 03:06:35 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mExtensionHoursController {/api/extension-hours}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 21904  - [39m21/04/2026, 03:06:35 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/extension-hours, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 21904  - [39m21/04/2026, 03:06:35 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/extension-hours/me, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 21904  - [39m21/04/2026, 03:06:35 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/extension-hours/students/:studentId/summary, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 21904  - [39m21/04/2026, 03:06:35 [32m    LOG[39m [38;5;3m[RoutesResolver] [39m[32mExtensionReportsController {/api/extension-reports}:[39m[38;5;3m +0ms[39m
+[32m[Nest] 21904  - [39m21/04/2026, 03:06:35 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/extension-reports/eligible-cases, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 21904  - [39m21/04/2026, 03:06:35 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/extension-reports/mine, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 21904  - [39m21/04/2026, 03:06:35 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/extension-reports/drafts, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 21904  - [39m21/04/2026, 03:06:35 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/extension-reports/:id, PATCH} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 21904  - [39m21/04/2026, 03:06:35 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/extension-reports/:id/submit, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 21904  - [39m21/04/2026, 03:06:35 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/extension-reports/:id, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 21904  - [39m21/04/2026, 03:06:35 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/extension-reports/:id/preview.pdf, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 21904  - [39m21/04/2026, 03:06:35 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/extension-reports/:id/generated.pdf, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 21904  - [39m21/04/2026, 03:06:35 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/extension-reports/:id/signed.pdf, GET} route[39m[38;5;3m +1ms[39m
+[32m[Nest] 21904  - [39m21/04/2026, 03:06:35 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/extension-reports, GET} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 21904  - [39m21/04/2026, 03:06:35 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/extension-reports/:id/claim, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 21904  - [39m21/04/2026, 03:06:35 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/extension-reports/:id/upload-signed, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 21904  - [39m21/04/2026, 03:06:35 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/extension-reports/:id/complete, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 21904  - [39m21/04/2026, 03:06:35 [32m    LOG[39m [38;5;3m[RouterExplorer] [39m[32mMapped {/api/extension-reports/:id/return, POST} route[39m[38;5;3m +0ms[39m
+[32m[Nest] 21904  - [39m21/04/2026, 03:06:35 [32m    LOG[39m [38;5;3m[NestApplication] [39m[32mNest application successfully started[39m[38;5;3m +1ms[39m
+[32m[Nest] 21904  - [39m21/04/2026, 03:06:35 [32m    LOG[39m [38;5;3m[Bootstrap] [39m[32mAPI ouvindo em http://localhost:3000/api[39m
+[32m[Nest] 21904  - [39m21/04/2026, 03:06:35 [32m    LOG[39m [38;5;3m[Bootstrap] [39m[32mDocs: http://localhost:3000/api/docs[39m

@@ -1,6 +1,25 @@
 import { Injectable } from '@nestjs/common';
 import PDFDocument from 'pdfkit';
-import { INSTITUTIONAL, CATEGORY_LABELS } from './institutional-content';
+import { CATEGORY_LABELS, INSTITUTIONAL } from './institutional-content';
+
+const STATUS_LABELS: Record<string, string> = {
+  NEW: 'Novo',
+  TRIAGED: 'Triado',
+  ASSIGNED: 'Assumido',
+  IN_PROGRESS: 'Em andamento',
+  WAITING_USER: 'Aguardando retorno do empreendedor',
+  WAITING_SUPERVISION: 'Aguardando acompanhamento interno',
+  RESOLVED: 'Resolvido',
+  CLOSED: 'Fechado',
+  CANCELLED: 'Cancelado',
+};
+
+const INTERACTION_LABELS: Record<string, string> = {
+  SIMPLE_GUIDANCE: 'Orientacao simples',
+  GUIDANCE_WITH_REFERRAL: 'Orientacao com encaminhamento',
+  DETAILED_SUPPORT: 'Apoio detalhado',
+  ONGOING_CASE: 'Acompanhamento do caso',
+};
 
 export interface ReportPdfItem {
   snapshotDate: Date;
@@ -54,19 +73,19 @@ export class ReportPdfService {
     });
   }
 
-  private render(doc: PDFKit.PDFDocument, p: ReportPdfPayload) {
-    if (p.watermark) this.watermark(doc, p.watermark);
+  private render(doc: PDFKit.PDFDocument, payload: ReportPdfPayload) {
+    if (payload.watermark) this.watermark(doc, payload.watermark);
 
-    this.header(doc, p);
-    this.sectionIdentification(doc, p);
+    this.header(doc, payload);
+    this.sectionIdentification(doc, payload);
     this.sectionProjectContext(doc);
-    this.sectionNarrative(doc, p);
-    this.sectionActivities(doc, p);
-    this.sectionGeneralNarrative(doc, p);
+    this.sectionNarrative(doc, payload);
+    this.sectionActivities(doc, payload);
+    this.sectionGeneralNarrative(doc, payload);
     this.sectionImpact(doc);
-    this.sectionConsolidation(doc, p);
-    this.sectionSignatures(doc, p);
-    this.footer(doc, p);
+    this.sectionConsolidation(doc, payload);
+    this.sectionSignatures(doc, payload);
+    this.footer(doc, payload);
   }
 
   private watermark(doc: PDFKit.PDFDocument, text: string) {
@@ -81,11 +100,8 @@ export class ReportPdfService {
     doc.opacity(1).fillColor('black');
   }
 
-  private header(doc: PDFKit.PDFDocument, p: ReportPdfPayload) {
-    doc
-      .fillColor('#0b2a4a')
-      .rect(56, 56, doc.page.width - 112, 56)
-      .fill();
+  private header(doc: PDFKit.PDFDocument, payload: ReportPdfPayload) {
+    doc.fillColor('#0b2a4a').rect(56, 56, doc.page.width - 112, 56).fill();
 
     doc
       .fillColor('white')
@@ -101,7 +117,7 @@ export class ReportPdfService {
     doc
       .fillColor('#6b7280')
       .fontSize(9)
-      .text(`Documento ${p.code} • Emitido em ${this.fmtDate(p.generatedAt)}`, 56, 120);
+      .text(`Documento ${payload.code} • Emitido em ${this.fmtDate(payload.generatedAt)}`, 56, 120);
 
     doc.moveDown(1.5);
     doc.fillColor('black');
@@ -109,33 +125,38 @@ export class ReportPdfService {
 
   private sectionTitle(doc: PDFKit.PDFDocument, title: string) {
     if (doc.y > doc.page.height - 140) doc.addPage();
+
     doc
       .moveDown(0.8)
       .fillColor('#0b2a4a')
       .font('Helvetica-Bold')
       .fontSize(11)
       .text(title.toUpperCase(), { characterSpacing: 0.5 });
+
     doc
       .moveTo(doc.x, doc.y + 2)
       .lineTo(doc.page.width - 56, doc.y + 2)
       .strokeColor('#0b2a4a')
       .lineWidth(1)
       .stroke();
+
     doc.moveDown(0.6).fillColor('#111827').font('Helvetica').fontSize(10);
   }
 
-  private sectionIdentification(doc: PDFKit.PDFDocument, p: ReportPdfPayload) {
-    this.sectionTitle(doc, '1. Identificação do discente');
+  private sectionIdentification(doc: PDFKit.PDFDocument, payload: ReportPdfPayload) {
+    this.sectionTitle(doc, '1. Identificacao do discente');
+
     const rows: Array<[string, string]> = [
-      ['Nome completo', p.student.fullName],
-      ['E-mail institucional', p.student.email],
-      ['Matrícula', p.student.enrollment || '—'],
+      ['Nome completo', payload.student.fullName],
+      ['E-mail institucional', payload.student.email],
+      ['Matricula', payload.student.enrollment || '—'],
       ['Curso', INSTITUTIONAL.course],
       ['Polo / Unidade', INSTITUTIONAL.polo],
     ];
-    rows.forEach(([k, v]) => {
-      doc.font('Helvetica-Bold').text(`${k}: `, { continued: true });
-      doc.font('Helvetica').text(v);
+
+    rows.forEach(([label, value]) => {
+      doc.font('Helvetica-Bold').text(`${label}: `, { continued: true });
+      doc.font('Helvetica').text(value);
     });
   }
 
@@ -150,17 +171,17 @@ export class ReportPdfService {
     doc.font('Helvetica').text(INSTITUTIONAL.purpose, { align: 'justify' });
   }
 
-  private sectionNarrative(doc: PDFKit.PDFDocument, p: ReportPdfPayload) {
+  private sectionNarrative(doc: PDFKit.PDFDocument, payload: ReportPdfPayload) {
     this.sectionTitle(doc, '3. Relato reflexivo do(a) discente');
-    doc.text(p.narrative, { align: 'justify' });
+    doc.text(payload.narrative, { align: 'justify' });
   }
 
-  private sectionActivities(doc: PDFKit.PDFDocument, p: ReportPdfPayload) {
+  private sectionActivities(doc: PDFKit.PDFDocument, payload: ReportPdfPayload) {
     this.sectionTitle(doc, '4. Registro das atividades realizadas');
-    p.items.forEach((item, idx) => this.renderCaseCard(doc, item, idx + 1));
+    payload.items.forEach((item, index) => this.renderCaseCard(doc, item, index + 1));
   }
 
-  private renderCaseCard(doc: PDFKit.PDFDocument, item: ReportPdfItem, n: number) {
+  private renderCaseCard(doc: PDFKit.PDFDocument, item: ReportPdfItem, index: number) {
     const estimatedHeight = 130;
     if (doc.y + estimatedHeight > doc.page.height - 80) doc.addPage();
 
@@ -182,7 +203,7 @@ export class ReportPdfService {
       .font('Helvetica-Bold')
       .fontSize(10)
       .fillColor('#0b2a4a')
-      .text(`#${n} — ${category}`, padX, y);
+      .text(`#${index} — ${category}`, padX, y);
 
     doc
       .font('Helvetica')
@@ -206,24 +227,25 @@ export class ReportPdfService {
     };
 
     writeField('Demanda', item.snapshotSummary);
-    writeField('Ação realizada', item.snapshotAction);
-    writeField('Orientação prestada', item.snapshotOutcome);
-    writeField('Situação final', item.snapshotStatus);
+    writeField('Acao realizada', this.formatSnapshotAction(item.snapshotAction));
+    writeField('Orientacao prestada', item.snapshotOutcome);
+    writeField('Situacao final', this.formatStatus(item.snapshotStatus));
 
     doc.y = startY + estimatedHeight + 6;
     doc.x = 56;
     doc.fillColor('#111827');
   }
 
-  private sectionGeneralNarrative(doc: PDFKit.PDFDocument, p: ReportPdfPayload) {
-    this.sectionTitle(doc, '5. Descrição geral das atividades');
-    const cats = [
-      ...new Set(p.items.map((i) => CATEGORY_LABELS[i.snapshotCategory] ?? i.snapshotCategory)),
+  private sectionGeneralNarrative(doc: PDFKit.PDFDocument, payload: ReportPdfPayload) {
+    this.sectionTitle(doc, '5. Descricao geral das atividades');
+    const categories = [
+      ...new Set(payload.items.map((item) => CATEGORY_LABELS[item.snapshotCategory] ?? item.snapshotCategory)),
     ];
-    const catsSentence = cats.length
-      ? ` Entre as demandas atendidas destacam-se: ${cats.join(', ')}.`
+    const categoriesSentence = categories.length
+      ? ` Entre as demandas atendidas destacam-se: ${categories.join(', ')}.`
       : '';
-    doc.text(INSTITUTIONAL.generalNarrativeBase + catsSentence, { align: 'justify' });
+
+    doc.text(INSTITUTIONAL.generalNarrativeBase + categoriesSentence, { align: 'justify' });
   }
 
   private sectionImpact(doc: PDFKit.PDFDocument) {
@@ -231,40 +253,45 @@ export class ReportPdfService {
     doc.text(INSTITUTIONAL.impact, { align: 'justify' });
   }
 
-  private sectionConsolidation(doc: PDFKit.PDFDocument, p: ReportPdfPayload) {
-    this.sectionTitle(doc, '7. Consolidação das horas extensionistas');
+  private sectionConsolidation(doc: PDFKit.PDFDocument, payload: ReportPdfPayload) {
+    this.sectionTitle(doc, '7. Consolidacao das horas extensionistas');
     const period =
-      p.periodStart && p.periodEnd
-        ? `${this.fmtDate(p.periodStart)} a ${this.fmtDate(p.periodEnd)}`
+      payload.periodStart && payload.periodEnd
+        ? `${this.fmtDate(payload.periodStart)} a ${this.fmtDate(payload.periodEnd)}`
         : '—';
+
     doc.font('Helvetica-Bold').text('Total de atendimentos: ', { continued: true });
-    doc.font('Helvetica').text(String(p.items.length));
+    doc.font('Helvetica').text(String(payload.items.length));
     doc.font('Helvetica-Bold').text('Total de horas: ', { continued: true });
-    doc.font('Helvetica').text(`${p.totalHours.toFixed(2)} h`);
-    doc.font('Helvetica-Bold').text('Período: ', { continued: true });
+    doc.font('Helvetica').text(`${payload.totalHours.toFixed(2)} h`);
+    doc.font('Helvetica-Bold').text('Periodo: ', { continued: true });
     doc.font('Helvetica').text(period);
   }
 
-  private sectionSignatures(doc: PDFKit.PDFDocument, p: ReportPdfPayload) {
-    this.sectionTitle(doc, '8. Validação e assinaturas');
+  private sectionSignatures(doc: PDFKit.PDFDocument, payload: ReportPdfPayload) {
+    this.sectionTitle(doc, '8. Validacao e assinaturas');
     if (doc.y > doc.page.height - 180) doc.addPage();
 
     doc.moveDown(2);
     const y = doc.y;
-    const colW = (doc.page.width - 112 - 24) / 2;
+    const columnWidth = (doc.page.width - 112 - 24) / 2;
 
-    doc.moveTo(56, y).lineTo(56 + colW, y).strokeColor('#111827').stroke();
-    doc.moveTo(56 + colW + 24, y).lineTo(doc.page.width - 56, y).stroke();
+    doc.moveTo(56, y).lineTo(56 + columnWidth, y).strokeColor('#111827').stroke();
+    doc.moveTo(56 + columnWidth + 24, y).lineTo(doc.page.width - 56, y).stroke();
 
     doc.font('Helvetica').fontSize(9).fillColor('#374151');
-    doc.text(p.student.fullName, 56, y + 4, { width: colW });
-    doc.text('Assinatura do(a) discente', 56, y + 18, { width: colW });
+    doc.text(payload.student.fullName, 56, y + 4, { width: columnWidth });
+    doc.text('Assinatura do(a) discente', 56, y + 18, { width: columnWidth });
 
-    doc.text('Nome do(a) responsável', 56 + colW + 24, y + 4, { width: colW });
-    doc.text('Assinatura do(a) responsável', 56 + colW + 24, y + 18, { width: colW });
+    doc.text('Nome do(a) responsavel', 56 + columnWidth + 24, y + 4, {
+      width: columnWidth,
+    });
+    doc.text('Assinatura do(a) responsavel', 56 + columnWidth + 24, y + 18, {
+      width: columnWidth,
+    });
   }
 
-  private footer(doc: PDFKit.PDFDocument, p: ReportPdfPayload) {
+  private footer(doc: PDFKit.PDFDocument, payload: ReportPdfPayload) {
     const range = doc.bufferedPageRange();
     for (let i = 0; i < range.count; i++) {
       doc.switchToPage(range.start + i);
@@ -273,7 +300,7 @@ export class ReportPdfService {
         .fontSize(8)
         .fillColor('#9ca3af')
         .text(
-          `${INSTITUTIONAL.university} • ${INSTITUTIONAL.project} • ${p.code} • Página ${i + 1}/${range.count}`,
+          `${INSTITUTIONAL.university} • ${INSTITUTIONAL.project} • ${payload.code} • Pagina ${i + 1}/${range.count}`,
           56,
           doc.page.height - 40,
           { width: doc.page.width - 112, align: 'center' },
@@ -281,7 +308,22 @@ export class ReportPdfService {
     }
   }
 
-  private fmtDate(d: Date) {
-    return new Intl.DateTimeFormat('pt-BR', { dateStyle: 'short' }).format(new Date(d));
+  private fmtDate(date: Date) {
+    return new Intl.DateTimeFormat('pt-BR', { dateStyle: 'short' }).format(new Date(date));
+  }
+
+  private formatStatus(status: string) {
+    return STATUS_LABELS[status] ?? status;
+  }
+
+  private formatSnapshotAction(action: string) {
+    let formatted = action;
+
+    for (const [raw, label] of Object.entries(INTERACTION_LABELS)) {
+      formatted = formatted.replaceAll(`[${raw}]`, `${label}:`);
+      formatted = formatted.replaceAll(raw, label);
+    }
+
+    return formatted.replaceAll('→', ': ').replace(/\s+\|\s+/g, ' | ').trim();
   }
 }

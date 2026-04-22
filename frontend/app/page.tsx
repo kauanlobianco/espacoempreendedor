@@ -47,34 +47,34 @@ export default function HomePage() {
   return (
     <PublicShell>
       <section className="relative overflow-hidden">
-        <div className="absolute inset-x-0 top-0 h-[34rem] bg-[radial-gradient(circle_at_top_left,rgba(242,116,32,0.1),transparent_32%),linear-gradient(180deg,rgba(255,255,255,0.42),rgba(252,249,244,0))]" />
-        <div className="mx-auto max-w-7xl px-4 pb-10 pt-10 md:px-6 md:pb-14 md:pt-16">
-          <div className="grid items-center gap-10 lg:grid-cols-[0.88fr_1.12fr] lg:gap-8">
-            <div className="relative z-10 max-w-xl space-y-8">
-              <div className="space-y-6">
-                <h1 className="max-w-[13ch] text-[clamp(2.5rem,4.8vw,4.1rem)] font-extrabold leading-[0.94] tracking-[-0.045em] text-brand-ink">
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-[34rem] bg-[radial-gradient(circle_at_top_left,rgba(242,116,32,0.1),transparent_32%),linear-gradient(180deg,rgba(255,255,255,0.42),rgba(252,249,244,0))]" />
+        <div className="mx-auto max-w-7xl px-4 pb-10 pt-8 md:px-6 md:pb-14 md:pt-16">
+          <div className="grid items-center gap-6 lg:grid-cols-[0.88fr_1.12fr] lg:gap-8">
+            <div className="relative z-10 max-w-xl space-y-6 md:space-y-8">
+              <div className="space-y-4 md:space-y-6">
+                <h1 className="text-[clamp(2rem,8vw,4.1rem)] font-extrabold leading-[0.94] tracking-[-0.045em] text-brand-ink md:max-w-[13ch]">
                   Ajuda real para quem quer{" "}
                   <span className="text-brand-orange">empreender</span>
                 </h1>
-                <p className="max-w-[34rem] text-[1.02rem] leading-8 text-brand-night/78 md:text-[1.12rem]">
+                <p className="text-[0.95rem] leading-7 text-brand-night/78 md:max-w-[34rem] md:text-[1.12rem] md:leading-8">
                   Aqui voce entende o que fazer, evita cobranca errada e encontra
                   ajuda humana para abrir, organizar ou regularizar seu MEI.
                 </p>
               </div>
 
-              <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
                 <Link
                   href="/quero-ajuda"
                   className={cn(
                     buttonVariants({ size: "lg" }),
-                    "h-14 rounded-full border-0 bg-gradient-to-r from-brand-orange-deep to-brand-orange px-8 text-base font-semibold text-white shadow-soft hover:brightness-105",
+                    "h-12 w-full rounded-full border-0 bg-gradient-to-r from-brand-orange-deep to-brand-orange px-8 text-base font-semibold text-white shadow-soft hover:brightness-105 sm:h-14 sm:w-auto",
                   )}
                 >
                   Quero ajuda agora
                 </Link>
                 <Link
                   href="/acompanhar"
-                  className="inline-flex items-center gap-2 text-base font-semibold text-brand-ink transition-colors hover:text-brand-orange"
+                  className="inline-flex items-center justify-center gap-2 text-base font-semibold text-brand-ink transition-colors hover:text-brand-orange sm:justify-start"
                 >
                   Acompanhar pedido
                   <ArrowRight className="size-4" />
@@ -82,15 +82,15 @@ export default function HomePage() {
               </div>
             </div>
 
-            <div className="relative min-h-[20rem] w-full lg:min-h-[31rem]">
-              <div className="absolute inset-x-0 bottom-0 top-0 rounded-[3rem] bg-[radial-gradient(circle_at_52%_62%,rgba(28,28,28,0.1),transparent_32%)] blur-3xl" />
-              <div className="relative h-full min-h-[20rem] w-full lg:min-h-[31rem]">
+            <div className="relative min-h-[18rem] w-full sm:min-h-[24rem] lg:min-h-[35rem]">
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 top-0 rounded-[3rem] bg-[radial-gradient(circle_at_52%_62%,rgba(28,28,28,0.1),transparent_32%)] blur-3xl" />
+              <div className="relative h-full min-h-[18rem] w-full sm:min-h-[24rem] lg:min-h-[35rem]">
                 <Image
-                  src="/hero/pavilion-atelier.png"
+                  src="/hero/espaco-empreendedor-hero-v2.png"
                   alt="Pavilhao do Espaco do Empreendedor"
                   fill
                   priority
-                  className="object-contain object-center drop-shadow-[0_28px_40px_rgba(28,28,28,0.16)]"
+                  className="scale-[1.18] object-contain object-center drop-shadow-[0_28px_40px_rgba(28,28,28,0.16)] sm:scale-[1.24] lg:scale-[1.28]"
                   sizes="(min-width: 1024px) 56rem, 100vw"
                 />
               </div>
@@ -99,7 +99,7 @@ export default function HomePage() {
         </div>
 
         <div className="mx-auto max-w-7xl px-4 pb-6 md:px-6 md:pb-10">
-          <div className="grid gap-4 lg:grid-cols-4">
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {PILLARS.map((pillar, index) => (
               <div
                 key={pillar.title}
@@ -232,7 +232,7 @@ export default function HomePage() {
                 href="/quero-ajuda"
                 className={cn(
                   buttonVariants({ size: "lg" }),
-                  "rounded-full border-0 bg-gradient-to-r from-brand-orange-deep to-brand-orange px-7 text-white",
+                  "w-full rounded-full border-0 bg-gradient-to-r from-brand-orange-deep to-brand-orange px-7 text-white sm:w-auto",
                 )}
               >
                 Pedir ajuda
@@ -241,7 +241,7 @@ export default function HomePage() {
                 href="/acompanhar"
                 className={cn(
                   buttonVariants({ size: "lg", variant: "outline" }),
-                  "rounded-full border-0 bg-white px-7 hover:bg-white/90",
+                  "w-full rounded-full border-0 bg-white px-7 hover:bg-white/90 sm:w-auto",
                 )}
               >
                 Acompanhar
