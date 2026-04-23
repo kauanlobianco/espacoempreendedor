@@ -2,6 +2,7 @@ import 'reflect-metadata';
 import { NestFactory } from '@nestjs/core';
 import { ValidationPipe, Logger } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import type { Request, Response } from 'express';
 import helmet from 'helmet';
 import { AppModule } from './app.module';
 import { HttpExceptionFilter } from './common/filters/http-exception.filter';
@@ -13,7 +14,7 @@ async function bootstrap() {
     process.env.CORS_ORIGIN?.split(',').map((origin) => origin.trim()).filter(Boolean) ?? [];
   const startedAt = new Date().toISOString();
 
-  app.use('/health', (_req, res) => {
+  app.use('/health', (_req: Request, res: Response) => {
     res.status(200).json({
       status: 'ok',
       service: 'espaco-empreendedor-backend',
