@@ -201,6 +201,7 @@ export interface CaseListItem {
   request: {
     fullName: string;
     phone: string;
+    cpf: string | null;
     city: string | null;
     state: string | null;
   };

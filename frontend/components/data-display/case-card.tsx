@@ -1,8 +1,9 @@
 import Link from "next/link";
-import { ArrowRight, MapPin, UserCircle } from "lucide-react";
+import { ArrowRight, Clock, MapPin, UserCircle } from "lucide-react";
 
 import { CaseStatusBadge } from "@/components/data-display/case-status-badge";
 import { buttonVariants } from "@/components/ui/button";
+import { Pill } from "@/components/ui/pill";
 import { CATEGORY_LABEL } from "@/lib/constants/domain";
 import { formatDateTime } from "@/lib/formatters";
 import { cn } from "@/lib/utils";
@@ -12,36 +13,106 @@ export function CaseCard({
   item,
   href,
   actionLabel = "Abrir caso",
+  layout = "row",
 }: {
   item: CaseListItem;
   href: string;
   actionLabel?: string;
+  layout?: "row" | "stack";
 }) {
   const assignedTo = item.assignments[0]?.student.fullName;
 
+  if (layout === "row") {
+    return (
+      <Link
+        href={href}
+        className={cn(
+          "group/card relative grid gap-5 rounded-2xl border bg-white p-5 transition-all md:grid-cols-[160px_1fr_auto] md:items-center",
+          "border-[color:var(--brand-soft-line)] hover:border-[color:var(--brand-line)] hover:shadow-soft",
+        )}
+      >
+        <div className="flex flex-col gap-1.5">
+          <span className="font-mono text-[12px] font-semibold tracking-wide text-[var(--brand-night)]">
+            {item.code}
+          </span>
+          <span className="flex items-center gap-1 text-[11.5px] text-[var(--brand-mute)]">
+            <Clock className="size-3" />
+            {formatDateTime(item.updatedAt)}
+          </span>
+        </div>
+        <div className="space-y-1.5">
+          <div className="flex flex-wrap items-center gap-2">
+            <h3 className="font-display text-lg leading-tight text-[var(--brand-ink)]">
+              {item.request.fullName}
+            </h3>
+            <Pill tone="ghost" size="sm">
+              {CATEGORY_LABEL[item.category]}
+            </Pill>
+          </div>
+          {item.summary ? (
+            <p className="line-clamp-2 text-[13.5px] leading-relaxed text-[var(--brand-mute)]">
+              {item.summary}
+            </p>
+          ) : null}
+          <div className="flex flex-wrap items-center gap-x-4 gap-y-1 pt-1 text-[11.5px] text-[var(--brand-mute)]">
+            {item.request.city ? (
+              <span className="flex items-center gap-1">
+                <MapPin className="size-3" />
+                {item.request.city}
+                {item.request.state ? ` · ${item.request.state}` : ""}
+              </span>
+            ) : null}
+            {assignedTo ? (
+              <span className="flex items-center gap-1">
+                <UserCircle className="size-3" />
+                {assignedTo}
+              </span>
+            ) : null}
+          </div>
+        </div>
+        <div className="flex flex-col items-end gap-3">
+          <CaseStatusBadge status={item.status} />
+          <span
+            className={cn(
+              "inline-flex items-center gap-1.5 text-[12.5px] font-semibold text-[var(--brand-ink)] transition-colors group-hover/card:text-[var(--brand-orange-deep)]",
+            )}
+          >
+            {actionLabel}
+            <ArrowRight className="size-3.5 transition-transform group-hover/card:translate-x-0.5" />
+          </span>
+        </div>
+      </Link>
+    );
+  }
+
   return (
-    <div className="flex flex-col gap-3 rounded-2xl border border-brand-line/60 bg-white/80 p-5 transition-shadow hover:shadow-soft">
+    <div className="relative flex flex-col gap-3 rounded-2xl border border-[color:var(--brand-soft-line)] bg-white p-5 transition-shadow hover:shadow-soft">
       <div className="flex flex-wrap items-center gap-2">
-        <span className="rounded-full border border-brand-line/60 bg-brand-paper px-2.5 py-0.5 font-mono text-[11px] font-semibold text-brand-night">
+        <span className="font-mono text-[11.5px] font-semibold text-[var(--brand-night)]">
           {item.code}
         </span>
-        <CaseStatusBadge status={item.status} />
-        <span className="text-[11px] font-medium uppercase tracking-[0.18em] text-muted-foreground">
+        <CaseStatusBadge status={item.status} size="sm" />
+        <Pill tone="ghost" size="sm">
           {CATEGORY_LABEL[item.category]}
-        </span>
+        </Pill>
       </div>
 
       <div>
-        <h3 className="text-base font-semibold text-brand-ink">{item.request.fullName}</h3>
+        <h3 className="font-display text-lg leading-tight text-[var(--brand-ink)]">
+          {item.request.fullName}
+        </h3>
         {item.summary ? (
-          <p className="mt-1 line-clamp-2 text-sm leading-5 text-muted-foreground">
+          <p className="mt-1 line-clamp-2 text-[13.5px] leading-relaxed text-[var(--brand-mute)]">
             {item.summary}
           </p>
         ) : null}
       </div>
 
-      <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-brand-night/65">
-        <span>{formatDateTime(item.updatedAt)}</span>
+      <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-[11.5px] text-[var(--brand-mute)]">
+        <span className="flex items-center gap-1">
+          <Clock className="size-3" />
+          {formatDateTime(item.updatedAt)}
+        </span>
         {item.request.city ? (
           <span className="flex items-center gap-1">
             <MapPin className="size-3" />
@@ -60,8 +131,8 @@ export function CaseCard({
       <Link
         href={href}
         className={cn(
-          buttonVariants({ variant: "ghost", size: "sm" }),
-          "mt-auto justify-between rounded-xl border border-brand-line/60",
+          buttonVariants({ variant: "outline", size: "sm" }),
+          "mt-auto justify-between",
         )}
       >
         {actionLabel}

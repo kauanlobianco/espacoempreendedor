@@ -1,0 +1,143 @@
+Atue como design lead, UI/UX lead e especialista em product craft para revisar e refinar o projeto já gerado no Cloud Design.
+
+CONTEXTO
+As telas principais da plataforma já foram geradas e já existe contexto suficiente do produto, do repositório e da direção visual. O objetivo agora não é criar do zero, e sim fazer uma varredura completa de qualidade visual, consistência, clareza, hierarquia e acabamento.
+
+A plataforma é o Espaço Empreendedor, com:
+- área pública para microempreendedores
+- área do aluno extensionista
+- área do professor/orientador
+
+O sistema já tem base funcional e conceito visual inicial, mas ainda precisa de refinamento para parecer um produto realmente maduro, claro, coeso e bem resolvido.
+
+OBJETIVO
+Faça uma revisão geral de todas as telas e proponha/execute ajustes de UI e UX com foco em craft.
+
+Quero que você:
+- identifique o que ainda está fraco
+- identifique inconsistências visuais
+- refine layout, componentes, hierarquia e navegação
+- melhore densidade de informação
+- ajuste ritmo visual e espaçamento
+- refine tipografia
+- refine copy quando necessário
+- complete telas ou estados que ainda estiverem faltando
+- eleve a qualidade geral do design
+
+FOCO PRINCIPAL
+A prioridade é design, não lógica.
+
+Quero uma varredura completa em:
+- landing page / hero
+- páginas públicas
+- login
+- dashboards
+- lista de casos
+- detalhe do caso
+- registro de atendimento
+- fluxo de horas extensionistas
+- telas do professor
+- estados vazios
+- feedbacks
+- consistência entre componentes
+- coerência do design system
+
+O QUE AVALIAR
+Revise cuidadosamente:
+
+1. Hierarquia visual
+- o que está competindo demais
+- o que não está claro
+- o que deveria ter mais ou menos destaque
+
+2. Tipografia
+- tamanhos
+- pesos
+- contraste
+- ritmo de leitura
+- coerência entre áreas públicas e internas
+
+3. Layout
+- grids
+- alinhamentos
+- respiro
+- distribuição de blocos
+- proporção entre áreas
+
+4. Densidade de informação
+- excesso de texto aberto
+- excesso de caixas
+- excesso de elementos simultâneos
+- oportunidades para simplificar ou colapsar conteúdo
+
+5. Componentes
+- botões
+- tabelas
+- cards
+- inputs
+- filtros
+- badges
+- status
+- navegação
+- menus
+- sidebars
+- cabeçalhos
+- CTAs
+
+6. Experiência dos fluxos
+- clareza das ações
+- compreensão do próximo passo
+- facilidade para operar
+- confiança visual
+- sensação de produto completo
+
+DIREÇÃO
+Você tem liberdade criativa para ajustar o que for necessário, desde que preserve:
+- a identidade geral do Espaço Empreendedor
+- o uso do laranja como cor importante
+- a proposta institucional e humana da plataforma
+- a imagem da hero já aprovada, se continuar funcionando bem
+
+Pode ajustar:
+- tipografia
+- spacing
+- grids
+- composição
+- hierarquia
+- copy
+- componentes
+- organização das telas
+- design system
+
+Pode incluir:
+- novos estados
+- novos componentes
+- telas auxiliares
+- melhorias de navegação
+- refinamentos de microinteração visual
+- melhorias de usabilidade
+
+IMPORTANTE
+Não quero mudanças aleatórias.
+Quero revisão crítica de design, com intenção clara.
+Pense como alguém polishando um produto para apresentação séria e uso real.
+
+O que eu espero:
+1. Diagnóstico do que ainda está fraco
+2. Lista de melhorias prioritárias
+3. Ajustes nas telas existentes
+4. Complemento das telas/estados que faltarem
+5. Refinamento do design system
+6. Resultado visual mais maduro, limpo, claro e convincente
+
+CRITÉRIO FINAL
+A plataforma precisa parecer:
+- mais profissional
+- mais coesa
+- mais refinada
+- mais confiável
+- mais natural de usar
+- menos “primeira versão”
+- mais “produto bem resolvido”
+
+Faça uma varredura completa de design e refine tudo o que for necessário para chegar nesse nível.

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Manrope, Plus_Jakarta_Sans } from "next/font/google";
+import { Fraunces, JetBrains_Mono, Manrope } from "next/font/google";
 
 import { AppProviders } from "@/components/layout/app-providers";
 import "./globals.css";
@@ -7,11 +7,21 @@ import "./globals.css";
 const manrope = Manrope({
   variable: "--font-manrope",
   subsets: ["latin"],
+  display: "swap",
 });
 
-const plusJakartaSans = Plus_Jakarta_Sans({
-  variable: "--font-plus-jakarta",
+const fraunces = Fraunces({
+  variable: "--font-fraunces",
   subsets: ["latin"],
+  style: ["normal", "italic"],
+  axes: ["SOFT", "opsz"],
+  display: "swap",
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  variable: "--font-jetbrains-mono",
+  subsets: ["latin"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -26,7 +36,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-BR" className={`${manrope.variable} ${plusJakartaSans.variable}`}>
+    <html lang="pt-BR" className={`${manrope.variable} ${fraunces.variable} ${jetbrainsMono.variable}`}>
       <body className="min-h-screen font-sans">
         <AppProviders>{children}</AppProviders>
       </body>

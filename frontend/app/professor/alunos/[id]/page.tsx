@@ -3,15 +3,24 @@
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
-import { ArrowLeft, Clock3, FileText, FolderKanban, Mail, Phone, UserRound } from "lucide-react";
+import {
+  ArrowLeft,
+  Clock3,
+  FileText,
+  FolderKanban,
+  Mail,
+  Phone,
+  UserRound,
+} from "lucide-react";
 
 import { CaseStatusBadge } from "@/components/data-display/case-status-badge";
 import { MetricCard } from "@/components/data-display/metric-card";
 import { EmptyState } from "@/components/feedback/empty-state";
-import { PageHeader } from "@/components/feedback/page-header";
 import { SectionHeader } from "@/components/feedback/section-header";
+import { Avatar } from "@/components/ui/avatar";
 import { buttonVariants } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Eyebrow } from "@/components/ui/eyebrow";
+import { Pill } from "@/components/ui/pill";
 import { CATEGORY_LABEL, PREFERRED_CHANNEL_LABEL, STATUS_LABEL } from "@/lib/constants/domain";
 import { formatDate, formatDateTime, formatHours, maskCpf } from "@/lib/formatters";
 import { cn } from "@/lib/utils";
@@ -52,7 +61,9 @@ function describeHistoryItem(item: StudentPerformanceCaseHistoryItem) {
       ? `Status alterado para ${STATUS_LABEL[metadata.to]}`
       : "Status atualizado no caso",
     description: metadata.from
-      ? `Fluxo saiu de ${STATUS_LABEL[metadata.from]} para ${metadata.to ? STATUS_LABEL[metadata.to] : "um novo status"}.`
+      ? `Fluxo saiu de ${STATUS_LABEL[metadata.from]} para ${
+          metadata.to ? STATUS_LABEL[metadata.to] : "um novo status"
+        }.`
       : "O caso recebeu uma atualizacao de andamento.",
     note: metadata.note,
   };
@@ -60,20 +71,22 @@ function describeHistoryItem(item: StudentPerformanceCaseHistoryItem) {
 
 function AttendanceItem({ attendance }: { attendance: StudentPerformanceAttendanceItem }) {
   return (
-    <div className="rounded-2xl bg-brand-paper/70 p-4">
+    <div className="rounded-2xl border border-[color:var(--brand-soft-line)] bg-white p-4 shadow-soft">
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <p className="text-sm font-semibold text-brand-ink">
+        <p className="text-sm font-semibold text-[var(--brand-ink)]">
           {PREFERRED_CHANNEL_LABEL[attendance.channel]}
         </p>
-        <p className="text-xs text-muted-foreground">{formatDateTime(attendance.occurredAt)}</p>
+        <p className="text-xs text-[var(--brand-mute)]">{formatDateTime(attendance.occurredAt)}</p>
       </div>
-      <div className="mt-2 flex flex-wrap gap-2 text-xs text-brand-night/75">
-        <span className="rounded-full bg-white px-2.5 py-1">{attendance.durationMin} min</span>
-        <span className="rounded-full bg-white px-2.5 py-1">
+      <div className="mt-2 flex flex-wrap gap-2">
+        <Pill tone="orange" size="sm">
+          {attendance.durationMin} min
+        </Pill>
+        <Pill tone="neutral" size="sm">
           {attendance.nextStep || "Sem proximo passo"}
-        </span>
+        </Pill>
       </div>
-      <p className="mt-3 text-sm leading-6 text-brand-night/80">{attendance.summary}</p>
+      <p className="mt-3 text-sm leading-6 text-[var(--brand-night)]">{attendance.summary}</p>
     </div>
   );
 }
@@ -91,14 +104,14 @@ export default function ProfessorAlunoProfilePage() {
   if (performanceQuery.isLoading) {
     return (
       <section className="space-y-6">
-        <div className="h-28 animate-pulse rounded-[28px] border border-brand-line bg-white/70" />
+        <div className="h-28 animate-pulse rounded-[28px] border border-[color:var(--brand-soft-line)] bg-white/70" />
         <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
-          <div className="h-32 animate-pulse rounded-2xl border border-brand-line bg-white/70" />
-          <div className="h-32 animate-pulse rounded-2xl border border-brand-line bg-white/70" />
-          <div className="h-32 animate-pulse rounded-2xl border border-brand-line bg-white/70" />
-          <div className="h-32 animate-pulse rounded-2xl border border-brand-line bg-white/70" />
+          <div className="h-32 animate-pulse rounded-2xl border border-[color:var(--brand-soft-line)] bg-white/70" />
+          <div className="h-32 animate-pulse rounded-2xl border border-[color:var(--brand-soft-line)] bg-white/70" />
+          <div className="h-32 animate-pulse rounded-2xl border border-[color:var(--brand-soft-line)] bg-white/70" />
+          <div className="h-32 animate-pulse rounded-2xl border border-[color:var(--brand-soft-line)] bg-white/70" />
         </div>
-        <div className="h-80 animate-pulse rounded-[28px] border border-brand-line bg-white/70" />
+        <div className="h-80 animate-pulse rounded-[28px] border border-[color:var(--brand-soft-line)] bg-white/70" />
       </section>
     );
   }
@@ -133,45 +146,50 @@ export default function ProfessorAlunoProfilePage() {
         Voltar para alunos
       </Link>
 
-      <div className="grid gap-5 xl:grid-cols-[1.1fr_0.9fr]">
-        <PageHeader
-          eyebrow="Perfil do aluno"
-          title={student.fullName}
-          description="Veja o volume de casos, o tempo dedicado e todo o historico operacional deste aluno."
-        />
+      <div className="rounded-[32px] border border-[color:var(--brand-soft-line)] bg-white p-6 shadow-soft md:p-8">
+        <div className="grid gap-6 xl:grid-cols-[1.15fr_0.85fr] xl:items-start">
+          <div className="flex items-start gap-5">
+            <Avatar name={student.fullName} size="xl" tone="orange" />
+            <div className="space-y-3">
+              <Eyebrow>Perfil do aluno</Eyebrow>
+              <h1 className="font-display text-[40px] leading-[1.05] tracking-[-0.03em] text-[var(--brand-ink)] md:text-[48px]">
+                {student.fullName}
+              </h1>
+              <p className="max-w-xl text-[14.5px] leading-relaxed text-[var(--brand-mute)]">
+                Veja o volume de casos, o tempo dedicado e todo o historico operacional deste aluno.
+              </p>
+              {student.active ? (
+                <Pill tone="green" withDot>
+                  Aluno ativo
+                </Pill>
+              ) : (
+                <Pill tone="amber" withDot>
+                  Inativo
+                </Pill>
+              )}
+            </div>
+          </div>
 
-        <Card className="border-brand-line bg-white/90 shadow-soft">
-          <CardContent className="grid gap-3 p-6 text-sm leading-6 text-brand-night/85 sm:grid-cols-2">
-            <div className="rounded-2xl bg-brand-paper/70 p-4">
-              <div className="mb-2 flex items-center gap-2 text-brand-ink">
-                <Mail className="size-4 text-brand-orange" />
-                <span className="font-semibold">E-mail</span>
-              </div>
-              <p>{student.email}</p>
-            </div>
-            <div className="rounded-2xl bg-brand-paper/70 p-4">
-              <div className="mb-2 flex items-center gap-2 text-brand-ink">
-                <UserRound className="size-4 text-brand-orange" />
-                <span className="font-semibold">Matricula UFF</span>
-              </div>
-              <p>{student.studentProfile?.enrollment || "Nao informada"}</p>
-            </div>
-            <div className="rounded-2xl bg-brand-paper/70 p-4">
-              <div className="mb-2 flex items-center gap-2 text-brand-ink">
-                <FileText className="size-4 text-brand-orange" />
-                <span className="font-semibold">CPF</span>
-              </div>
-              <p>{maskCpf(student.studentProfile?.cpf)}</p>
-            </div>
-            <div className="rounded-2xl bg-brand-paper/70 p-4">
-              <div className="mb-2 flex items-center gap-2 text-brand-ink">
-                <Clock3 className="size-4 text-brand-orange" />
-                <span className="font-semibold">Desde</span>
-              </div>
-              <p>{formatDate(student.createdAt)}</p>
-            </div>
-          </CardContent>
-        </Card>
+          <dl className="grid gap-3 sm:grid-cols-2">
+            <InfoTile icon={<Mail className="size-4" />} label="E-mail" value={student.email} />
+            <InfoTile
+              icon={<UserRound className="size-4" />}
+              label="Matricula UFF"
+              value={student.studentProfile?.enrollment || "Nao informada"}
+            />
+            <InfoTile
+              icon={<FileText className="size-4" />}
+              label="CPF"
+              value={maskCpf(student.studentProfile?.cpf)}
+              mono
+            />
+            <InfoTile
+              icon={<Clock3 className="size-4" />}
+              label="Desde"
+              value={formatDate(student.createdAt)}
+            />
+          </dl>
+        </div>
       </div>
 
       <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
@@ -184,7 +202,7 @@ export default function ProfessorAlunoProfilePage() {
           label="Casos em andamento"
           value={String(stats.openCases)}
           help="Casos que ainda seguem ativos no fluxo."
-          accent={stats.openCases > 0}
+          tone={stats.openCases > 0 ? "accent" : "default"}
         />
         <MetricCard
           label="Horas dedicadas"
@@ -213,105 +231,83 @@ export default function ProfessorAlunoProfilePage() {
         ) : (
           <div className="space-y-5">
             {cases.map((item) => (
-              <Card key={item.id} className="border-brand-line bg-white/90 shadow-soft">
-                <CardContent className="space-y-6 p-6">
+              <div
+                key={item.id}
+                className="rounded-[28px] border border-[color:var(--brand-soft-line)] bg-white p-6 shadow-soft md:p-7"
+              >
+                <div className="space-y-6">
                   <div className="flex flex-wrap items-start justify-between gap-4">
                     <div className="space-y-2">
                       <div className="flex flex-wrap items-center gap-3">
-                        <span className="rounded-full bg-brand-paper px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em] text-brand-night">
+                        <span className="rounded-full bg-[var(--brand-paper-deep)] px-3 py-1 font-mono text-[11px] font-semibold uppercase tracking-[0.24em] text-[var(--brand-night)]">
                           {item.code}
                         </span>
                         <CaseStatusBadge status={item.status} />
                       </div>
-                      <div>
-                        <h2 className="text-xl font-semibold text-brand-ink">
-                          {CATEGORY_LABEL[item.category]}
-                        </h2>
-                        <p className="text-sm text-muted-foreground">
-                          Solicitante: {item.request.fullName}
-                        </p>
-                        <p className="text-sm text-muted-foreground">
-                          Contato: {item.request.phone}
-                        </p>
-                      </div>
+                      <h2 className="font-display text-[24px] leading-tight tracking-tight text-[var(--brand-ink)]">
+                        {CATEGORY_LABEL[item.category]}
+                      </h2>
+                      <p className="text-sm text-[var(--brand-mute)]">
+                        Solicitante: {item.request.fullName} · {item.request.phone}
+                      </p>
                     </div>
 
                     <Link
                       href={`/professor/casos/${item.id}`}
-                      className={cn(
-                        buttonVariants({ variant: "ghost", size: "sm" }),
-                        "rounded-xl border border-brand-line/60",
-                      )}
+                      className={cn(buttonVariants({ variant: "outline", size: "sm" }), "gap-2")}
                     >
                       Abrir caso
                     </Link>
                   </div>
 
                   <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
-                    <div className="rounded-2xl bg-brand-paper/70 p-4">
-                      <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-brand-night/60">
-                        Inicio no aluno
-                      </p>
-                      <p className="mt-2 text-sm font-medium text-brand-ink">
-                        {formatDateTime(item.assignedAt)}
-                      </p>
-                    </div>
-                    <div className="rounded-2xl bg-brand-paper/70 p-4">
-                      <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-brand-night/60">
-                        Fechamento
-                      </p>
-                      <p className="mt-2 text-sm font-medium text-brand-ink">
-                        {formatDateTime(item.closedAt)}
-                      </p>
-                    </div>
-                    <div className="rounded-2xl bg-brand-paper/70 p-4">
-                      <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-brand-night/60">
-                        Atendimentos
-                      </p>
-                      <p className="mt-2 text-sm font-medium text-brand-ink">
-                        {item.totalAttendances} registro(s)
-                      </p>
-                    </div>
-                    <div className="rounded-2xl bg-brand-paper/70 p-4">
-                      <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-brand-night/60">
-                        Tempo dedicado
-                      </p>
-                      <p className="mt-2 text-sm font-medium text-brand-ink">
-                        {formatDurationLabel(item.totalMinutes)}
-                      </p>
-                    </div>
+                    <StatTile label="Inicio no aluno" value={formatDateTime(item.assignedAt)} />
+                    <StatTile label="Fechamento" value={formatDateTime(item.closedAt)} />
+                    <StatTile
+                      label="Atendimentos"
+                      value={`${item.totalAttendances} registro(s)`}
+                    />
+                    <StatTile
+                      label="Tempo dedicado"
+                      value={formatDurationLabel(item.totalMinutes)}
+                      accent
+                    />
                   </div>
 
                   <div className="grid gap-5 xl:grid-cols-[0.95fr_1.05fr]">
                     <div className="space-y-3">
                       <div className="flex items-center gap-2">
-                        <FolderKanban className="size-4 text-brand-orange" />
-                        <h3 className="text-base font-semibold text-brand-ink">
+                        <FolderKanban className="size-4 text-[var(--brand-orange-deep)]" />
+                        <h3 className="font-display text-[18px] tracking-tight text-[var(--brand-ink)]">
                           Etapas do caso
                         </h3>
                       </div>
 
                       {!item.history.length ? (
-                        <div className="rounded-2xl bg-brand-paper/60 p-4 text-sm text-muted-foreground">
+                        <div className="rounded-2xl border border-[color:var(--brand-soft-line)] bg-[var(--brand-paper-deep)]/55 p-4 text-sm text-[var(--brand-mute)]">
                           Ainda nao ha etapas registradas para este caso.
                         </div>
                       ) : (
                         <div className="space-y-3">
                           {item.history.map((historyItem) => {
                             const copy = describeHistoryItem(historyItem);
-
                             return (
-                              <div key={historyItem.id} className="rounded-2xl bg-brand-paper/70 p-4">
-                                <p className="text-sm font-semibold text-brand-ink">{copy.title}</p>
-                                <p className="mt-1 text-sm leading-6 text-brand-night/80">
+                              <div
+                                key={historyItem.id}
+                                className="rounded-2xl border border-[color:var(--brand-soft-line)] bg-white p-4 shadow-soft"
+                              >
+                                <p className="text-sm font-semibold text-[var(--brand-ink)]">
+                                  {copy.title}
+                                </p>
+                                <p className="mt-1 text-sm leading-6 text-[var(--brand-night)]">
                                   {copy.description}
                                 </p>
                                 {copy.note ? (
-                                  <p className="mt-2 text-sm leading-6 text-brand-night/75">
+                                  <p className="mt-2 text-sm leading-6 text-[var(--brand-mute)]">
                                     Observacao: {copy.note}
                                   </p>
                                 ) : null}
-                                <p className="mt-3 text-xs text-muted-foreground">
+                                <p className="mt-3 text-xs text-[var(--brand-mute)]">
                                   {formatDateTime(historyItem.createdAt)}
                                 </p>
                               </div>
@@ -323,14 +319,14 @@ export default function ProfessorAlunoProfilePage() {
 
                     <div className="space-y-3">
                       <div className="flex items-center gap-2">
-                        <Phone className="size-4 text-brand-orange" />
-                        <h3 className="text-base font-semibold text-brand-ink">
+                        <Phone className="size-4 text-[var(--brand-orange-deep)]" />
+                        <h3 className="font-display text-[18px] tracking-tight text-[var(--brand-ink)]">
                           Atendimentos realizados
                         </h3>
                       </div>
 
                       {!item.attendances.length ? (
-                        <div className="rounded-2xl bg-brand-paper/60 p-4 text-sm text-muted-foreground">
+                        <div className="rounded-2xl border border-[color:var(--brand-soft-line)] bg-[var(--brand-paper-deep)]/55 p-4 text-sm text-[var(--brand-mute)]">
                           Este caso ainda nao tem atendimentos registrados por este aluno.
                         </div>
                       ) : (
@@ -342,12 +338,67 @@ export default function ProfessorAlunoProfilePage() {
                       )}
                     </div>
                   </div>
-                </CardContent>
-              </Card>
+                </div>
+              </div>
             ))}
           </div>
         )}
       </div>
     </section>
+  );
+}
+
+function InfoTile({
+  icon,
+  label,
+  value,
+  mono = false,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  value: string;
+  mono?: boolean;
+}) {
+  return (
+    <div className="rounded-2xl border border-[color:var(--brand-soft-line)] bg-[var(--brand-paper-deep)]/45 p-4">
+      <div className="flex items-center gap-2 text-[var(--brand-orange-deep)]">
+        {icon}
+        <p className="font-eyebrow text-[var(--brand-mute)]">{label}</p>
+      </div>
+      <p
+        className={cn(
+          "mt-2 text-sm leading-6 text-[var(--brand-ink)]",
+          mono && "font-mono",
+        )}
+      >
+        {value}
+      </p>
+    </div>
+  );
+}
+
+function StatTile({
+  label,
+  value,
+  accent = false,
+}: {
+  label: string;
+  value: string;
+  accent?: boolean;
+}) {
+  return (
+    <div
+      className={cn(
+        "rounded-2xl border p-4",
+        accent
+          ? "border-[color:rgba(232,93,31,0.24)] bg-[var(--brand-orange-ghost)]"
+          : "border-[color:var(--brand-soft-line)] bg-[var(--brand-paper-deep)]/55",
+      )}
+    >
+      <p className="font-eyebrow text-[var(--brand-mute)]">{label}</p>
+      <p className="mt-2 font-display text-[22px] leading-none tracking-tight text-[var(--brand-ink)]">
+        {value}
+      </p>
+    </div>
   );
 }

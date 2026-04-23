@@ -4,16 +4,26 @@ import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { ArrowLeft, ArrowRight, Send } from "lucide-react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  FileText,
+  Search,
+  Send,
+  Sparkles,
+} from "lucide-react";
 
+import { EmptyState } from "@/components/feedback/empty-state";
 import { PageHeader } from "@/components/feedback/page-header";
 import { Button } from "@/components/ui/button";
+import { Eyebrow } from "@/components/ui/eyebrow";
+import { Input } from "@/components/ui/input";
+import { Pill } from "@/components/ui/pill";
 import { Textarea } from "@/components/ui/textarea";
-import { EmptyState } from "@/components/feedback/empty-state";
-import { cn } from "@/lib/utils";
-import { getErrorMessage } from "@/lib/api/client";
-import { extensionReportsService } from "@/services/extension-reports";
 import { MIN_NARRATIVE_CHARS } from "@/features/extension-reports/status";
+import { getErrorMessage } from "@/lib/api/client";
+import { cn } from "@/lib/utils";
+import { extensionReportsService } from "@/services/extension-reports";
 
 const NARRATIVE_PLACEHOLDER = `Relate, em primeira pessoa, sua experiência no Espaço Empreendedor. Inclua:
 • como você participou do projeto e apoiou os microempreendedores
@@ -21,6 +31,13 @@ const NARRATIVE_PLACEHOLDER = `Relate, em primeira pessoa, sua experiência no E
 • aprendizados técnicos e humanos
 • contribuição para sua formação acadêmica e profissional
 • como suas ações ajudaram a orientar, resolver ou encaminhar casos reais`;
+
+const STEPS = [
+  { n: 1, label: "Casos" },
+  { n: 2, label: "Resumo" },
+  { n: 3, label: "Relato" },
+  { n: 4, label: "Envio" },
+] as const;
 
 export default function NewReportWizardPage() {
   const router = useRouter();
@@ -77,30 +94,69 @@ export default function NewReportWizardPage() {
         description="Selecione casos concluídos, escreva sua reflexão e envie para análise do(a) professor(a)."
       />
 
-      <div className="flex gap-2">
-        {[1, 2, 3, 4].map((n) => (
-          <div
-            key={n}
-            className={cn(
-              "h-1.5 flex-1 rounded-full",
-              n <= step ? "bg-brand-orange" : "bg-slate-200",
-            )}
-          />
-        ))}
+      <div className="rounded-[20px] border border-[color:var(--brand-soft-line)] bg-white p-4 shadow-soft">
+        <div className="flex items-center justify-between gap-2">
+          {STEPS.map((s, idx) => {
+            const done = step > s.n;
+            const current = step === s.n;
+            return (
+              <div key={s.n} className="flex flex-1 items-center gap-3">
+                <div
+                  className={cn(
+                    "flex size-9 shrink-0 items-center justify-center rounded-full border text-[12px] font-bold transition-all",
+                    current
+                      ? "border-[var(--brand-orange)] bg-[var(--brand-orange)] text-white shadow-[0_6px_18px_rgba(232,93,31,0.28)]"
+                      : done
+                        ? "border-[var(--brand-orange-deep)] bg-[var(--brand-orange-ghost)] text-[var(--brand-orange-deep)]"
+                        : "border-[color:var(--brand-soft-line)] bg-white text-[var(--brand-mute)]",
+                  )}
+                >
+                  {s.n}
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p
+                    className={cn(
+                      "text-[13px] font-semibold",
+                      current
+                        ? "text-[var(--brand-ink)]"
+                        : done
+                          ? "text-[var(--brand-orange-deep)]"
+                          : "text-[var(--brand-mute)]",
+                    )}
+                  >
+                    {s.label}
+                  </p>
+                </div>
+                {idx < STEPS.length - 1 ? (
+                  <span
+                    className={cn(
+                      "hidden h-0.5 flex-1 rounded-full md:block",
+                      done
+                        ? "bg-[var(--brand-orange)]"
+                        : "bg-[var(--brand-paper-deep)]",
+                    )}
+                  />
+                ) : null}
+              </div>
+            );
+          })}
+        </div>
       </div>
 
       {step === 1 && (
         <div className="space-y-4">
-          <div>
-            <input
+          <div className="relative">
+            <Search className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 text-[var(--brand-mute)]" />
+            <Input
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Buscar por código, categoria ou resumo"
-              className="w-full rounded-xl border border-brand-line bg-white px-4 py-2.5 text-sm outline-none focus:border-brand-orange"
+              className="pl-10"
             />
           </div>
+
           {eligibleQuery.isLoading ? (
-            <div className="h-32 animate-pulse rounded-2xl border border-brand-line bg-white/70" />
+            <div className="h-32 animate-pulse rounded-[24px] border border-[color:var(--brand-soft-line)] bg-white/70" />
           ) : !cases.length ? (
             <EmptyState
               title="Nenhum caso elegível"
@@ -109,86 +165,86 @@ export default function NewReportWizardPage() {
               primaryLabel="Ver meus casos"
             />
           ) : (
-            <ul className="space-y-2">
+            <div className="space-y-2.5">
               {filteredCases.map((c) => {
                 const checked = !!selected[c.id];
                 return (
-                  <li key={c.id}>
-                    <label
-                      className={cn(
-                        "flex cursor-pointer items-start gap-3 rounded-2xl border bg-white p-4 transition",
-                        checked
-                          ? "border-brand-orange shadow-sm"
-                          : "border-brand-line hover:border-brand-orange/50",
-                      )}
-                    >
-                      <input
-                        type="checkbox"
-                        checked={checked}
-                        onChange={(e) =>
-                          setSelected((s) => ({ ...s, [c.id]: e.target.checked }))
-                        }
-                        className="mt-1 size-4 accent-brand-orange"
-                      />
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2">
-                          <span className="font-semibold text-brand-ink">{c.code}</span>
-                          <span className="rounded-full bg-slate-100 px-2 py-0.5 text-xs text-slate-700">
-                            {c.category}
-                          </span>
-                          <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-xs text-emerald-800">
-                            {c.status}
-                          </span>
-                        </div>
-                        <p className="mt-1 text-sm text-muted-foreground">{c.summary}</p>
-                        <p className="mt-1 text-xs text-muted-foreground">
-                          {c.attendances} atendimento(s) • {c.totalHours.toFixed(2)}h
-                        </p>
+                  <label
+                    key={c.id}
+                    className={cn(
+                      "flex cursor-pointer items-start gap-3 rounded-[20px] border bg-white p-4 transition-all",
+                      checked
+                        ? "border-[var(--brand-orange)] shadow-[0_12px_28px_rgba(232,93,31,0.14)]"
+                        : "border-[color:var(--brand-soft-line)] hover:border-[color:rgba(232,93,31,0.32)]",
+                    )}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={checked}
+                      onChange={(e) =>
+                        setSelected((s) => ({ ...s, [c.id]: e.target.checked }))
+                      }
+                      className="mt-1 size-4 accent-[var(--brand-orange)]"
+                    />
+                    <div className="flex-1">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className="font-mono text-[13px] font-semibold text-[var(--brand-ink)]">
+                          {c.code}
+                        </span>
+                        <Pill tone="neutral" size="sm">
+                          {c.category}
+                        </Pill>
+                        <Pill tone="green" size="sm" withDot>
+                          {c.status}
+                        </Pill>
                       </div>
-                    </label>
-                  </li>
+                      <p className="mt-1.5 text-[14px] leading-6 text-[var(--brand-night)]">
+                        {c.summary}
+                      </p>
+                      <p className="mt-1 text-xs text-[var(--brand-mute)]">
+                        {c.attendances} atendimento(s) · {c.totalHours.toFixed(2)}h
+                      </p>
+                    </div>
+                  </label>
                 );
               })}
-            </ul>
+            </div>
           )}
         </div>
       )}
 
       {step === 2 && (
-        <div className="rounded-2xl border border-brand-line bg-white p-6">
-          <h3 className="text-sm font-semibold uppercase tracking-wide text-brand-orange">
-            Resumo da seleção
-          </h3>
-          <dl className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-3">
-            <div>
-              <dt className="text-xs text-muted-foreground">Casos selecionados</dt>
-              <dd className="mt-1 text-2xl font-semibold text-brand-ink">
-                {selectedCases.length}
-              </dd>
-            </div>
-            <div>
-              <dt className="text-xs text-muted-foreground">Total de horas</dt>
-              <dd className="mt-1 text-2xl font-semibold text-brand-ink">
-                {totalHours.toFixed(2)}h
-              </dd>
-            </div>
-            <div>
-              <dt className="text-xs text-muted-foreground">Categorias</dt>
-              <dd className="mt-1 text-sm text-brand-ink">
-                {[...new Set(selectedCases.map((c) => c.category))].join(", ") || "—"}
-              </dd>
-            </div>
+        <div className="rounded-[28px] border border-[color:var(--brand-soft-line)] bg-white p-6 shadow-soft md:p-7">
+          <Eyebrow>Resumo da seleção</Eyebrow>
+          <h2 className="mt-2 font-display text-[28px] leading-tight tracking-tight text-[var(--brand-ink)]">
+            Confira antes de avançar
+          </h2>
+
+          <dl className="mt-5 grid gap-3 sm:grid-cols-3">
+            <SummaryTile label="Casos selecionados" value={String(selectedCases.length)} />
+            <SummaryTile label="Total de horas" value={`${totalHours.toFixed(2)}h`} accent />
+            <SummaryTile
+              label="Categorias"
+              value={[...new Set(selectedCases.map((c) => c.category))].join(", ") || "—"}
+              small
+            />
           </dl>
-          <ul className="mt-6 space-y-2 text-sm">
+
+          <ul className="mt-6 space-y-1.5 text-sm">
             {selectedCases.map((c) => (
               <li
                 key={c.id}
-                className="flex justify-between border-b border-dashed border-brand-line/60 py-1.5"
+                className="flex items-start justify-between gap-4 rounded-xl bg-[var(--brand-paper-deep)]/55 px-3 py-2.5"
               >
-                <span>
-                  <strong>{c.code}</strong> — {c.summary}
+                <div className="min-w-0">
+                  <span className="font-mono text-[12.5px] font-semibold text-[var(--brand-ink)]">
+                    {c.code}
+                  </span>
+                  <span className="ml-2 text-[var(--brand-night)]">{c.summary}</span>
+                </div>
+                <span className="shrink-0 text-[var(--brand-mute)]">
+                  {c.totalHours.toFixed(2)}h
                 </span>
-                <span className="text-muted-foreground">{c.totalHours.toFixed(2)}h</span>
               </li>
             ))}
           </ul>
@@ -196,49 +252,68 @@ export default function NewReportWizardPage() {
       )}
 
       {step === 3 && (
-        <div className="space-y-3">
-          <label className="text-sm font-medium text-brand-ink">
-            Relato reflexivo (obrigatório, mínimo {MIN_NARRATIVE_CHARS} caracteres)
-          </label>
+        <div className="space-y-3 rounded-[28px] border border-[color:var(--brand-soft-line)] bg-white p-6 shadow-soft md:p-7">
+          <Eyebrow>Relato reflexivo</Eyebrow>
+          <h2 className="font-display text-[28px] leading-tight tracking-tight text-[var(--brand-ink)]">
+            Sua vivência como extensionista
+          </h2>
+          <p className="text-sm leading-6 text-[var(--brand-mute)]">
+            Obrigatório, com pelo menos {MIN_NARRATIVE_CHARS} caracteres.
+          </p>
+
           <Textarea
             value={narrative}
             onChange={(e) => setNarrative(e.target.value)}
             placeholder={NARRATIVE_PLACEHOLDER}
             rows={14}
-            className="font-normal"
+            className="mt-3"
           />
-          <div className="flex justify-between text-xs">
-            <span className={narrativeOk ? "text-emerald-700" : "text-muted-foreground"}>
+
+          <div className="flex items-center justify-between text-xs">
+            <span
+              className={cn(
+                "font-semibold",
+                narrativeOk
+                  ? "text-[var(--brand-green)]"
+                  : "text-[var(--brand-mute)]",
+              )}
+            >
               {narrative.trim().length} / {MIN_NARRATIVE_CHARS} caracteres mínimos
             </span>
+            {narrativeOk ? (
+              <Pill tone="green" size="sm" icon={<Sparkles className="size-3" />}>
+                Pronto
+              </Pill>
+            ) : null}
           </div>
         </div>
       )}
 
       {step === 4 && (
-        <div className="space-y-4 rounded-2xl border border-brand-line bg-white p-6">
-          <h3 className="text-sm font-semibold uppercase tracking-wide text-brand-orange">
-            Confirmação
-          </h3>
-          <p className="text-sm text-muted-foreground">
-            Ao enviar, o sistema gerará o PDF institucional e o encaminhará para análise do(a)
-            professor(a). Após a assinatura, o documento ficará disponível para download.
-          </p>
-          <dl className="grid grid-cols-1 gap-4 sm:grid-cols-3 text-sm">
+        <div className="rounded-[28px] border border-[color:var(--brand-soft-line)] bg-white p-6 shadow-soft md:p-7">
+          <div className="flex items-start gap-4">
+            <span className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-[var(--brand-orange-ghost)] text-[var(--brand-orange-deep)]">
+              <FileText className="size-5" />
+            </span>
             <div>
-              <dt className="text-xs text-muted-foreground">Casos</dt>
-              <dd className="font-semibold">{selectedCases.length}</dd>
+              <Eyebrow>Confirmação</Eyebrow>
+              <h2 className="mt-2 font-display text-[28px] leading-tight tracking-tight text-[var(--brand-ink)]">
+                Tudo pronto para envio?
+              </h2>
+              <p className="mt-2 text-sm leading-6 text-[var(--brand-mute)]">
+                Ao enviar, o sistema gera o PDF institucional e encaminha para análise do(a)
+                professor(a). Após a assinatura, o documento fica disponível para download.
+              </p>
             </div>
-            <div>
-              <dt className="text-xs text-muted-foreground">Total de horas</dt>
-              <dd className="font-semibold">{totalHours.toFixed(2)}h</dd>
-            </div>
-            <div>
-              <dt className="text-xs text-muted-foreground">Narrativa</dt>
-              <dd className="font-semibold">
-                {narrative.trim().length} caracteres
-              </dd>
-            </div>
+          </div>
+
+          <dl className="mt-6 grid gap-3 sm:grid-cols-3">
+            <SummaryTile label="Casos" value={String(selectedCases.length)} />
+            <SummaryTile label="Total de horas" value={`${totalHours.toFixed(2)}h`} accent />
+            <SummaryTile
+              label="Narrativa"
+              value={`${narrative.trim().length} caracteres`}
+            />
           </dl>
         </div>
       )}
@@ -273,5 +348,38 @@ export default function NewReportWizardPage() {
         )}
       </div>
     </section>
+  );
+}
+
+function SummaryTile({
+  label,
+  value,
+  accent = false,
+  small = false,
+}: {
+  label: string;
+  value: string;
+  accent?: boolean;
+  small?: boolean;
+}) {
+  return (
+    <div
+      className={cn(
+        "rounded-2xl border p-4",
+        accent
+          ? "border-[color:rgba(232,93,31,0.24)] bg-[var(--brand-orange-ghost)]"
+          : "border-[color:var(--brand-soft-line)] bg-[var(--brand-paper-deep)]/55",
+      )}
+    >
+      <p className="font-eyebrow text-[var(--brand-mute)]">{label}</p>
+      <p
+        className={cn(
+          "mt-2 font-display leading-none tracking-tight text-[var(--brand-ink)]",
+          small ? "text-[15px]" : "text-[24px]",
+        )}
+      >
+        {value}
+      </p>
+    </div>
   );
 }

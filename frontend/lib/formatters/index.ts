@@ -20,6 +20,27 @@ export function formatDateTime(value?: string | null) {
   }).format(new Date(value));
 }
 
+export function formatRelativeTime(value?: string | null) {
+  if (!value) return "—";
+
+  const target = new Date(value).getTime();
+  const now = Date.now();
+  const diffMs = now - target;
+
+  if (diffMs < 60 * 1000) return "agora";
+
+  const diffMin = Math.floor(diffMs / (60 * 1000));
+  if (diffMin < 60) return `ha ${diffMin} min`;
+
+  const diffHours = Math.floor(diffMin / 60);
+  if (diffHours < 24) return `ha ${diffHours}h`;
+
+  const diffDays = Math.floor(diffHours / 24);
+  if (diffDays < 7) return `ha ${diffDays}d`;
+
+  return formatDateTime(value);
+}
+
 export function formatHours(value?: number | null) {
   if (typeof value !== "number") return "0 h";
 
@@ -27,7 +48,7 @@ export function formatHours(value?: number | null) {
 }
 
 export function maskCpf(value?: string | null) {
-  if (!value) return "Não informado";
+  if (!value) return "Nao informado";
 
   const digits = value.replace(/\D/g, "");
   if (digits.length !== 11) return value;

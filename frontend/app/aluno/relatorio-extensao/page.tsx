@@ -2,14 +2,15 @@
 
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
-import { FileText, Plus } from "lucide-react";
+import { ArrowRight, FileText, Plus } from "lucide-react";
 
-import { PageHeader } from "@/components/feedback/page-header";
 import { EmptyState } from "@/components/feedback/empty-state";
+import { PageHeader } from "@/components/feedback/page-header";
 import { buttonVariants } from "@/components/ui/button";
+import { Pill } from "@/components/ui/pill";
 import { cn } from "@/lib/utils";
+import { STATUS_LABEL, STATUS_PILL_TONE } from "@/features/extension-reports/status";
 import { extensionReportsService } from "@/services/extension-reports";
-import { STATUS_LABEL, STATUS_TONE } from "@/features/extension-reports/status";
 
 function formatDate(iso: string | null) {
   if (!iso) return "—";
@@ -24,22 +25,25 @@ export default function StudentReportsListPage() {
 
   return (
     <section className="space-y-6">
-      <div className="flex flex-wrap items-end justify-between gap-4">
-        <PageHeader
-          eyebrow="Extensão"
-          title="Relatórios de horas extensionistas"
-          description="Gere, acompanhe e baixe seus relatórios institucionais de atendimentos do Espaço Empreendedor."
-        />
-        <Link
-          href="/aluno/relatorio-extensao/novo"
-          className={cn(buttonVariants(), "gap-2")}
-        >
-          <Plus className="size-4" /> Novo relatório
-        </Link>
-      </div>
+      <PageHeader
+        eyebrow="Extensão"
+        title="Relatórios de horas extensionistas"
+        description="Gere, acompanhe e baixe seus relatórios institucionais de atendimentos do Espaço Empreendedor."
+        actions={
+          <Link
+            href="/aluno/relatorio-extensao/novo"
+            className={cn(buttonVariants(), "gap-2")}
+          >
+            <Plus className="size-4" /> Novo relatório
+          </Link>
+        }
+      />
 
       {isLoading ? (
-        <div className="h-40 animate-pulse rounded-2xl border border-brand-line bg-white/70" />
+        <div className="space-y-3">
+          <div className="h-28 animate-pulse rounded-[24px] border border-[color:var(--brand-soft-line)] bg-white/70" />
+          <div className="h-28 animate-pulse rounded-[24px] border border-[color:var(--brand-soft-line)] bg-white/70" />
+        </div>
       ) : !data?.length ? (
         <EmptyState
           title="Nenhum relatório ainda"
@@ -48,48 +52,53 @@ export default function StudentReportsListPage() {
           primaryLabel="Gerar relatório"
         />
       ) : (
-        <ul className="space-y-3">
+        <div className="space-y-3">
           {data.map((r) => (
-            <li
+            <Link
               key={r.id}
-              className="rounded-2xl border border-brand-line bg-white/80 p-5 transition hover:shadow-sm"
+              href={`/aluno/relatorio-extensao/${r.id}`}
+              className="group block rounded-[24px] border border-[color:var(--brand-soft-line)] bg-white p-5 shadow-soft transition-all hover:-translate-y-0.5 hover:shadow-lift md:p-6"
             >
               <div className="flex flex-wrap items-start justify-between gap-4">
-                <div className="space-y-1">
-                  <div className="flex items-center gap-2">
-                    <FileText className="size-4 text-brand-orange" />
-                    <span className="font-semibold text-brand-ink">{r.code}</span>
-                    <span
-                      className={cn(
-                        "rounded-full px-2 py-0.5 text-xs font-medium",
-                        STATUS_TONE[r.status],
-                      )}
-                    >
-                      {STATUS_LABEL[r.status]}
+                <div className="min-w-0 flex-1 space-y-2">
+                  <div className="flex flex-wrap items-center gap-2.5">
+                    <span className="flex size-9 items-center justify-center rounded-xl bg-[var(--brand-orange-ghost)] text-[var(--brand-orange-deep)]">
+                      <FileText className="size-4" />
                     </span>
+                    <span className="font-mono text-[13px] font-semibold tracking-tight text-[var(--brand-ink)]">
+                      {r.code}
+                    </span>
+                    <Pill tone={STATUS_PILL_TONE[r.status]} withDot>
+                      {STATUS_LABEL[r.status]}
+                    </Pill>
                   </div>
-                  <p className="text-sm text-muted-foreground">
-                    {r.totalHours.toFixed(2)}h •{" "}
+
+                  <p className="text-[13.5px] text-[var(--brand-mute)]">
+                    <span className="font-semibold text-[var(--brand-ink)]">
+                      {r.totalHours.toFixed(2)}h
+                    </span>
+                    {"  ·  "}
                     {r.periodStart && r.periodEnd
                       ? `${formatDate(r.periodStart)} – ${formatDate(r.periodEnd)}`
                       : "Período não definido"}
                   </p>
+
                   {r.reviewerNote && r.status === "RETURNED" ? (
-                    <p className="text-sm text-rose-700">
-                      <strong>Observação:</strong> {r.reviewerNote}
-                    </p>
+                    <div className="mt-2 rounded-xl border border-[color:rgba(168,42,31,0.22)] bg-[color:rgba(168,42,31,0.06)] px-3 py-2 text-[13px] leading-5 text-[var(--brand-red)]">
+                      <strong className="font-semibold">Observação: </strong>
+                      {r.reviewerNote}
+                    </div>
                   ) : null}
                 </div>
-                <Link
-                  href={`/aluno/relatorio-extensao/${r.id}`}
-                  className={cn(buttonVariants({ variant: "outline" }), "gap-2")}
-                >
+
+                <div className="flex items-center gap-1.5 text-sm font-semibold text-[var(--brand-orange-deep)]">
                   Abrir
-                </Link>
+                  <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" />
+                </div>
               </div>
-            </li>
+            </Link>
           ))}
-        </ul>
+        </div>
       )}
     </section>
   );

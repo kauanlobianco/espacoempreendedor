@@ -8,23 +8,27 @@ type Tone = "info" | "warning" | "success" | "note";
 const TONES: Record<Tone, { icon: typeof Info; className: string; iconClass: string }> = {
   info: {
     icon: Info,
-    className: "border-brand-night/15 bg-brand-night/5 text-brand-night",
-    iconClass: "text-brand-night",
+    className:
+      "border-[color:rgba(30,95,140,0.18)] bg-[color:rgba(30,95,140,0.06)] text-[var(--brand-blue)]",
+    iconClass: "text-[var(--brand-blue)]",
   },
   warning: {
     icon: AlertTriangle,
-    className: "border-amber-300/60 bg-amber-50 text-amber-950",
-    iconClass: "text-amber-700",
+    className:
+      "border-[color:rgba(178,113,0,0.22)] bg-[color:rgba(178,113,0,0.08)] text-[var(--brand-amber)]",
+    iconClass: "text-[var(--brand-amber)]",
   },
   success: {
     icon: ShieldCheck,
-    className: "border-emerald-300/60 bg-emerald-50 text-emerald-950",
-    iconClass: "text-emerald-700",
+    className:
+      "border-[color:rgba(47,125,91,0.22)] bg-[color:rgba(47,125,91,0.08)] text-[var(--brand-green)]",
+    iconClass: "text-[var(--brand-green)]",
   },
   note: {
     icon: Sparkles,
-    className: "border-brand-line bg-brand-paper text-brand-ink",
-    iconClass: "text-brand-orange",
+    className:
+      "border-[color:var(--brand-soft-line)] bg-[var(--brand-orange-ghost)] text-[var(--brand-ink)]",
+    iconClass: "text-[var(--brand-orange-deep)]",
   },
 };
 
@@ -43,15 +47,17 @@ export function Callout({
   return (
     <div
       className={cn(
-        "flex gap-3 rounded-2xl border px-4 py-3 text-sm leading-6",
+        "flex gap-3 rounded-2xl border px-4 py-3.5 text-sm leading-6",
         toneClass,
         className,
       )}
     >
       <Icon className={cn("mt-0.5 size-4 shrink-0", iconClass)} />
       <div className="space-y-1">
-        {title ? <p className="font-medium">{title}</p> : null}
-        {children ? <div className="text-[0.9em] opacity-90">{children}</div> : null}
+        {title ? <p className="font-semibold tracking-tight text-[var(--brand-ink)]">{title}</p> : null}
+        {children ? (
+          <div className="text-[0.9em] text-[var(--brand-mute)]">{children}</div>
+        ) : null}
       </div>
     </div>
   );

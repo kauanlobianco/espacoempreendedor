@@ -1,3 +1,4 @@
+import type { PillTone } from "@/components/ui/pill";
 import type {
   AttendanceChannel,
   AttendanceInteractionType,
@@ -71,22 +72,22 @@ export const VALIDATION_LABEL: Record<ValidationStatus, string> = {
   REJECTED: "Reprovado",
 };
 
-export const STATUS_TONE: Record<CaseStatus, string> = {
-  NEW: "bg-amber-100 text-amber-900 border-amber-200",
-  TRIAGED: "bg-orange-100 text-orange-900 border-orange-200",
-  ASSIGNED: "bg-indigo-100 text-indigo-900 border-indigo-200",
-  IN_PROGRESS: "bg-sky-100 text-sky-900 border-sky-200",
-  WAITING_USER: "bg-yellow-100 text-yellow-900 border-yellow-200",
-  WAITING_SUPERVISION: "bg-violet-100 text-violet-900 border-violet-200",
-  RESOLVED: "bg-emerald-100 text-emerald-900 border-emerald-200",
-  CLOSED: "bg-zinc-200 text-zinc-900 border-zinc-300",
-  CANCELLED: "bg-rose-100 text-rose-900 border-rose-200",
+export const STATUS_TONE: Record<CaseStatus, PillTone> = {
+  NEW: "amber",
+  TRIAGED: "orange",
+  ASSIGNED: "blue",
+  IN_PROGRESS: "orange",
+  WAITING_USER: "amber",
+  WAITING_SUPERVISION: "blue",
+  RESOLVED: "green",
+  CLOSED: "neutral",
+  CANCELLED: "red",
 };
 
-export const VALIDATION_TONE: Record<ValidationStatus, string> = {
-  PENDING: "bg-amber-100 text-amber-900 border-amber-200",
-  APPROVED: "bg-emerald-100 text-emerald-900 border-emerald-200",
-  REJECTED: "bg-rose-100 text-rose-900 border-rose-200",
+export const VALIDATION_TONE: Record<ValidationStatus, PillTone> = {
+  PENDING: "amber",
+  APPROVED: "green",
+  REJECTED: "red",
 };
 
 export const CASE_TRANSITIONS: Record<CaseStatus, CaseStatus[]> = {
@@ -148,13 +149,13 @@ export const INTERACTION_TYPE_LABEL: Record<AttendanceInteractionType, string> =
   ONGOING_CASE: "Apoio detalhado", // fallback para registros legados
 };
 
-export const STUDENT_NAV = [
+export const STUDENT_NAV: Array<{ href: string; label: string; badge?: number | string }> = [
   { href: "/aluno/fila", label: "Fila" },
   { href: "/aluno/meus-casos", label: "Meus casos" },
   { href: "/aluno/relatorio-extensao", label: "Relatório de extensão" },
 ];
 
-export const PROFESSOR_NAV = [
+export const PROFESSOR_NAV: Array<{ href: string; label: string; badge?: number | string }> = [
   { href: "/professor/dashboard", label: "Dashboard" },
   { href: "/professor/alunos", label: "Alunos" },
   { href: "/professor/relatorios", label: "Relatórios" },

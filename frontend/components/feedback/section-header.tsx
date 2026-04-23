@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+
 import { cn } from "@/lib/utils";
 
 export function SectionHeader({
@@ -5,39 +7,65 @@ export function SectionHeader({
   title,
   description,
   align = "start",
+  actions,
+  tone = "light",
   className,
 }: {
   eyebrow?: string;
   title: string;
   description?: string;
   align?: "start" | "center";
+  actions?: ReactNode;
+  tone?: "light" | "dark";
   className?: string;
 }) {
+  const isDark = tone === "dark";
   return (
     <div
       className={cn(
-        "space-y-2",
-        align === "center" && "mx-auto max-w-2xl text-center",
+        "flex flex-col gap-4 md:flex-row md:items-end md:justify-between",
+        align === "center" && "items-center text-center md:flex-col",
         className,
       )}
     >
-      {eyebrow ? (
-        <p className="text-[11px] font-semibold uppercase tracking-[0.22em] text-brand-orange">
-          {eyebrow}
-        </p>
-      ) : null}
-      <h2 className="text-2xl font-semibold tracking-tight text-brand-ink md:text-3xl">
-        {title}
-      </h2>
-      {description ? (
-        <p
+      <div
+        className={cn(
+          "space-y-2",
+          align === "center" && "max-w-2xl",
+        )}
+      >
+        {eyebrow ? (
+          <p
+            className={cn(
+              "font-eyebrow",
+              isDark ? "text-[var(--brand-orange)]" : "text-[var(--brand-orange-deep)]",
+            )}
+          >
+            {eyebrow}
+          </p>
+        ) : null}
+        <h2
           className={cn(
-            "max-w-2xl text-sm leading-6 text-muted-foreground",
-            align === "center" && "mx-auto",
+            "font-display text-3xl leading-tight tracking-tight md:text-4xl",
+            isDark ? "text-white" : "text-[var(--brand-ink)]",
           )}
         >
-          {description}
-        </p>
+          {title}
+        </h2>
+        {description ? (
+          <p
+            className={cn(
+              "max-w-2xl text-[14.5px] leading-relaxed",
+              isDark ? "text-white/70" : "text-[var(--brand-mute)]",
+              align === "center" && "mx-auto",
+            )}
+          >
+            {description}
+          </p>
+        ) : null}
+      </div>
+      {actions ? (
+        <div className="flex flex-wrap items-center gap-2.5">{actions}</div>
       ) : null}
     </div>
   );

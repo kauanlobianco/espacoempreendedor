@@ -65,7 +65,7 @@ export class CasesService {
       this.prisma.case.findMany({
         where,
         include: {
-          request: { select: { fullName: true, phone: true, city: true, state: true } },
+          request: { select: { fullName: true, phone: true, cpf: true, city: true, state: true } },
           assignments: {
             where: { active: true },
             include: {

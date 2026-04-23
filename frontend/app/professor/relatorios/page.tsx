@@ -3,13 +3,19 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
+import { ArrowRight } from "lucide-react";
 
-import { PageHeader } from "@/components/feedback/page-header";
 import { EmptyState } from "@/components/feedback/empty-state";
+import { PageHeader } from "@/components/feedback/page-header";
+import { Avatar } from "@/components/ui/avatar";
 import { buttonVariants } from "@/components/ui/button";
+import { Pill } from "@/components/ui/pill";
+import {
+  STATUS_LABEL,
+  STATUS_PILL_TONE,
+} from "@/features/extension-reports/status";
 import { cn } from "@/lib/utils";
 import { extensionReportsService } from "@/services/extension-reports";
-import { STATUS_LABEL, STATUS_TONE } from "@/features/extension-reports/status";
 import type { ExtensionReportStatus } from "@/types/api";
 
 const TABS: Array<{ key: "QUEUE" | ExtensionReportStatus; label: string }> = [
@@ -36,71 +42,79 @@ export default function ProfessorReportsQueuePage() {
         description="Revise, baixe, assine e devolva relatórios institucionais enviados pelos(as) discentes."
       />
 
-      <div className="flex flex-wrap gap-2 border-b border-brand-line">
-        {TABS.map((t) => (
-          <button
-            key={t.key}
-            onClick={() => setTab(t.key)}
-            className={cn(
-              "rounded-t-lg px-4 py-2 text-sm font-medium transition",
-              tab === t.key
-                ? "border-b-2 border-brand-orange text-brand-ink"
-                : "text-muted-foreground hover:text-brand-ink",
-            )}
-          >
-            {t.label}
-          </button>
-        ))}
+      <div className="flex flex-wrap gap-2 rounded-[20px] border border-[color:var(--brand-soft-line)] bg-white p-1.5 shadow-soft">
+        {TABS.map((t) => {
+          const isActive = tab === t.key;
+          return (
+            <button
+              key={t.key}
+              type="button"
+              onClick={() => setTab(t.key)}
+              className={cn(
+                "rounded-xl px-4 py-2 text-[13px] font-semibold transition-colors",
+                isActive
+                  ? "bg-[var(--brand-ink)] text-white"
+                  : "text-[var(--brand-mute)] hover:bg-[var(--brand-paper-deep)] hover:text-[var(--brand-ink)]",
+              )}
+            >
+              {t.label}
+            </button>
+          );
+        })}
       </div>
 
       {isLoading ? (
-        <div className="h-40 animate-pulse rounded-2xl border border-brand-line bg-white/70" />
+        <div className="space-y-3">
+          <div className="h-24 animate-pulse rounded-[24px] border border-[color:var(--brand-soft-line)] bg-white/70" />
+          <div className="h-24 animate-pulse rounded-[24px] border border-[color:var(--brand-soft-line)] bg-white/70" />
+        </div>
       ) : !data?.length ? (
         <EmptyState
           title="Nada por aqui"
           description="Não há relatórios neste filtro no momento."
         />
       ) : (
-        <ul className="space-y-3">
+        <div className="space-y-3">
           {data.map((r) => (
-            <li
+            <div
               key={r.id}
-              className="rounded-2xl border border-brand-line bg-white p-5"
+              className="flex flex-wrap items-start justify-between gap-4 rounded-[24px] border border-[color:var(--brand-soft-line)] bg-white p-5 shadow-soft md:p-6"
             >
-              <div className="flex flex-wrap items-start justify-between gap-4">
-                <div>
-                  <div className="flex items-center gap-2">
-                    <span className="font-semibold text-brand-ink">{r.code}</span>
-                    <span
-                      className={cn(
-                        "rounded-full px-2 py-0.5 text-xs font-medium",
-                        STATUS_TONE[r.status],
-                      )}
-                    >
-                      {STATUS_LABEL[r.status]}
+              <div className="flex min-w-0 flex-1 items-start gap-4">
+                <Avatar name={r.student.fullName} size="md" tone="orange" />
+                <div className="min-w-0 flex-1 space-y-1.5">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="font-mono text-[13px] font-semibold text-[var(--brand-ink)]">
+                      {r.code}
                     </span>
+                    <Pill tone={STATUS_PILL_TONE[r.status]} withDot>
+                      {STATUS_LABEL[r.status]}
+                    </Pill>
                   </div>
-                  <p className="mt-1 text-sm text-brand-ink">
+                  <p className="text-[14px] font-semibold text-[var(--brand-ink)]">
                     {r.student.fullName}{" "}
-                    <span className="text-muted-foreground">({r.student.email})</span>
+                    <span className="font-normal text-[var(--brand-mute)]">
+                      · {r.student.email}
+                    </span>
                   </p>
-                  <p className="text-xs text-muted-foreground">
-                    {r._count.items} caso(s) • {r.totalHours.toFixed(2)}h •{" "}
+                  <p className="text-xs text-[var(--brand-mute)]">
+                    {r._count.items} caso(s) · {r.totalHours.toFixed(2)}h ·{" "}
                     {r.submittedAt
                       ? `Enviado em ${new Date(r.submittedAt).toLocaleDateString("pt-BR")}`
                       : "Rascunho"}
                   </p>
                 </div>
-                <Link
-                  href={`/professor/relatorios/${r.id}`}
-                  className={cn(buttonVariants(), "gap-2")}
-                >
-                  Abrir revisão
-                </Link>
               </div>
-            </li>
+              <Link
+                href={`/professor/relatorios/${r.id}`}
+                className={cn(buttonVariants(), "gap-2")}
+              >
+                Abrir revisão
+                <ArrowRight className="size-4" />
+              </Link>
+            </div>
           ))}
-        </ul>
+        </div>
       )}
     </section>
   );

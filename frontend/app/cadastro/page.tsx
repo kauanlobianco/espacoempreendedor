@@ -6,11 +6,18 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
+import {
+  ArrowUpRight,
+  GraduationCap,
+  IdCard,
+  Mail,
+  ShieldCheck,
+  UserRound,
+} from "lucide-react";
 
-import { PageHeader } from "@/components/feedback/page-header";
-import { PublicShell } from "@/components/layout/public-shell";
+import { SiteLogo } from "@/components/branding/site-logo";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Eyebrow } from "@/components/ui/eyebrow";
 import { Input } from "@/components/ui/input";
 import { getErrorMessage } from "@/lib/api/client";
 import { authService } from "@/services/auth";
@@ -25,6 +32,21 @@ const schema = z.object({
 });
 
 type RegisterValues = z.infer<typeof schema>;
+
+const STEPS = [
+  {
+    title: "Você envia seus dados",
+    description: "Nome, CPF, e-mail institucional e matrícula UFF.",
+  },
+  {
+    title: "Um professor aprova",
+    description: "A aprovação acontece na área interna, pelo orientador do projeto.",
+  },
+  {
+    title: "Você cria sua senha",
+    description: "No primeiro acesso, basta o e-mail institucional e uma nova senha.",
+  },
+];
 
 export default function CadastroAlunoPage() {
   const form = useForm<RegisterValues>({
@@ -44,63 +66,186 @@ export default function CadastroAlunoPage() {
   });
 
   return (
-    <PublicShell>
-      <section className="mx-auto max-w-5xl space-y-8 px-4 py-10 md:px-6 md:py-16">
-        <PageHeader
-          eyebrow="Cadastro de aluno"
-          title="Entre na equipe extensionista"
-          description="Preencha seus dados de aluno UFF. Um professor aprova seu cadastro e, depois disso, você cria sua senha no primeiro acesso."
-        />
-
-        <div className="grid gap-6 lg:grid-cols-[1fr_0.9fr]">
-          <Card className="border-brand-line bg-white/90 shadow-soft">
-            <CardContent className="p-6">
-              <form className="space-y-4" onSubmit={form.handleSubmit((values) => mutation.mutate(values))}>
-                <div>
-                  <label className="mb-2 block text-sm font-medium text-brand-ink">Nome completo</label>
-                  <Input {...form.register("fullName")} />
-                </div>
-                <div className="grid gap-4 md:grid-cols-2">
-                  <div>
-                    <label className="mb-2 block text-sm font-medium text-brand-ink">CPF</label>
-                    <Input placeholder="000.000.000-00" {...form.register("cpf")} />
-                  </div>
-                  <div>
-                    <label className="mb-2 block text-sm font-medium text-brand-ink">Matrícula UFF</label>
-                    <Input {...form.register("enrollment")} />
-                  </div>
-                </div>
-                <div>
-                  <label className="mb-2 block text-sm font-medium text-brand-ink">E-mail institucional</label>
-                  <Input placeholder="seu.email@id.uff.br" {...form.register("email")} />
-                </div>
-                <Button type="submit" className="w-full" disabled={mutation.isPending}>
-                  Enviar cadastro
-                </Button>
-              </form>
-            </CardContent>
-          </Card>
-
-          <Card className="border-brand-line bg-brand-ink text-white shadow-brand">
-            <CardContent className="space-y-4 p-6">
-              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-white/65">
-                Como funciona
-              </p>
-              <h2 className="font-heading text-5xl uppercase leading-none">
-                Cadastro, aprovação e acesso.
-              </h2>
-              <div className="space-y-3 text-sm leading-6 text-white/75">
-                <p>1. Você envia nome, CPF, e-mail institucional e matrícula UFF.</p>
-                <p>2. Um professor aprova o cadastro na área interna.</p>
-                <p>3. No primeiro acesso, você informa apenas o e-mail e cria sua senha.</p>
-              </div>
-              <Link href="/login" className="text-sm font-semibold text-brand-orange">
-                Já foi aprovado? Ir para login
+    <main className="min-h-screen bg-[var(--brand-paper)]">
+      <div className="grid min-h-screen w-full lg:grid-cols-2">
+        <section className="relative overflow-hidden bg-[var(--brand-ink)] px-8 py-12 text-white md:px-14 md:py-16 lg:px-16 xl:px-20">
+          <div
+            aria-hidden
+            className="pointer-events-none absolute -right-24 -top-24 size-[420px] rounded-full opacity-50 radial-orange-orb"
+          />
+          <div className="relative z-10 mx-auto flex h-full w-full max-w-[640px] flex-col justify-between gap-12">
+            <div className="flex items-start justify-between gap-6">
+              <SiteLogo invert size="md" wordmarkOnly className="pt-1" />
+              <Link
+                href="/login"
+                className="hidden items-center gap-1.5 text-[12.5px] font-semibold text-white/55 hover:text-white md:inline-flex"
+              >
+                Já tenho acesso
               </Link>
-            </CardContent>
-          </Card>
-        </div>
-      </section>
-    </PublicShell>
+            </div>
+
+            <div className="space-y-6">
+              <Eyebrow tone="orange">Cadastro de aluno</Eyebrow>
+              <h1 className="font-display text-[44px] leading-[1.05] tracking-[-0.035em] md:text-[56px]">
+                Entre para a equipe{" "}
+                <em className="not-italic text-[var(--brand-orange)]">extensionista.</em>
+              </h1>
+              <p className="max-w-md text-[15px] leading-relaxed text-white/70">
+                O cadastro é aberto a alunos da UFF vinculados ao projeto. Depois da aprovação do
+                professor, você cria sua senha no primeiro acesso.
+              </p>
+
+              <div className="grid max-w-md gap-2.5 pt-2">
+                {STEPS.map((step, index) => (
+                  <div
+                    key={step.title}
+                    className="flex items-start gap-3.5 rounded-2xl border border-white/8 bg-white/5 px-4 py-3"
+                  >
+                    <span className="flex size-8 shrink-0 items-center justify-center rounded-xl bg-[color:rgba(232,93,31,0.18)] text-[12px] font-bold text-[var(--brand-orange)]">
+                      {index + 1}
+                    </span>
+                    <div>
+                      <div className="text-[13.5px] font-semibold text-white">{step.title}</div>
+                      <div className="text-[12.5px] text-white/55">{step.description}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-2 text-[12.5px] text-white/50">
+              <Link href="/" className="hover:text-white/80">
+                ← Voltar ao site público
+              </Link>
+              <Link href="/login" className="hover:text-white/80">
+                Já fui aprovado. Fazer login
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        <section className="flex items-center px-6 py-12 md:px-16 md:py-16 lg:px-16 xl:px-20">
+          <div className="mx-auto w-full max-w-md">
+            <div className="mb-10 space-y-2">
+              <Eyebrow>Novo cadastro</Eyebrow>
+              <h2 className="font-display text-[40px] leading-tight tracking-[-0.03em] text-[var(--brand-ink)]">
+                Preencha seus dados
+              </h2>
+              <p className="text-[14.5px] text-[var(--brand-mute)]">
+                Dados acadêmicos são usados apenas para validar o vínculo com o projeto.
+              </p>
+            </div>
+
+            <form
+              className="space-y-5"
+              onSubmit={form.handleSubmit((values) => mutation.mutate(values))}
+            >
+              <FieldWithIcon
+                label="Nome completo"
+                icon={<UserRound className="size-4" />}
+                error={form.formState.errors.fullName?.message}
+              >
+                <Input
+                  placeholder="Como aparece na matrícula"
+                  autoComplete="name"
+                  className="border-0 bg-transparent shadow-none focus-visible:ring-0"
+                  {...form.register("fullName")}
+                />
+              </FieldWithIcon>
+
+              <div className="grid gap-4 sm:grid-cols-2">
+                <FieldWithIcon
+                  label="CPF"
+                  icon={<IdCard className="size-4" />}
+                  error={form.formState.errors.cpf?.message}
+                >
+                  <Input
+                    placeholder="000.000.000-00"
+                    inputMode="numeric"
+                    className="border-0 bg-transparent shadow-none focus-visible:ring-0"
+                    {...form.register("cpf")}
+                  />
+                </FieldWithIcon>
+
+                <FieldWithIcon
+                  label="Matrícula UFF"
+                  icon={<GraduationCap className="size-4" />}
+                  error={form.formState.errors.enrollment?.message}
+                >
+                  <Input
+                    placeholder="Seu nº de matrícula"
+                    className="border-0 bg-transparent shadow-none focus-visible:ring-0"
+                    {...form.register("enrollment")}
+                  />
+                </FieldWithIcon>
+              </div>
+
+              <FieldWithIcon
+                label="E-mail institucional"
+                icon={<Mail className="size-4" />}
+                error={form.formState.errors.email?.message}
+              >
+                <Input
+                  type="email"
+                  placeholder="seu.email@id.uff.br"
+                  autoComplete="email"
+                  className="border-0 bg-transparent shadow-none focus-visible:ring-0"
+                  {...form.register("email")}
+                />
+              </FieldWithIcon>
+
+              <Button
+                type="submit"
+                size="lg"
+                className="w-full justify-center"
+                disabled={mutation.isPending}
+              >
+                {mutation.isPending ? "Enviando cadastro..." : "Enviar cadastro"}
+                <ArrowUpRight className="size-4" />
+              </Button>
+
+              <div className="flex items-start gap-2.5 rounded-2xl border border-[color:var(--brand-soft-line)] bg-[var(--brand-orange-ghost)] px-4 py-3 text-[12.5px] leading-5 text-[var(--brand-night)]">
+                <ShieldCheck className="mt-0.5 size-4 shrink-0 text-[var(--brand-orange-deep)]" />
+                <span>
+                  Seus dados são usados apenas para validar o vínculo com o projeto. A aprovação é
+                  feita por um professor responsável.
+                </span>
+              </div>
+            </form>
+          </div>
+        </section>
+      </div>
+    </main>
+  );
+}
+
+function FieldWithIcon({
+  label,
+  icon,
+  error,
+  children,
+}: {
+  label: string;
+  icon: React.ReactNode;
+  error?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="space-y-1.5">
+      <label className="block text-[12.5px] font-semibold tracking-wide text-[var(--brand-night)]">
+        {label}
+      </label>
+      <div
+        className={`flex items-center gap-2.5 rounded-xl border bg-white px-3.5 transition-colors focus-within:border-[var(--brand-orange)] focus-within:ring-3 focus-within:ring-[color:rgba(232,93,31,0.18)] ${
+          error
+            ? "border-[var(--brand-red)]/60"
+            : "border-[color:var(--brand-line)]"
+        }`}
+      >
+        <span className="text-[var(--brand-mute)]">{icon}</span>
+        <div className="min-w-0 flex-1">{children}</div>
+      </div>
+      {error ? <p className="text-xs text-[var(--brand-red)]">{error}</p> : null}
+    </div>
   );
 }

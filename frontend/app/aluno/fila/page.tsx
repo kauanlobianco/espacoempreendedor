@@ -1,26 +1,33 @@
 "use client";
 
-import { useDeferredValue, useState } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { Funnel, Sparkles } from "lucide-react";
 import { toast } from "sonner";
-import { Search } from "lucide-react";
 
-import { CaseCard } from "@/components/data-display/case-card";
+import { StudentCaseRow } from "@/components/data-display/student-case-row";
 import { EmptyState } from "@/components/feedback/empty-state";
 import { PageHeader } from "@/components/feedback/page-header";
-import { Button } from "@/components/ui/button";
-import { Callout } from "@/components/ui/callout";
-import { Input } from "@/components/ui/input";
+import { Button, buttonVariants } from "@/components/ui/button";
+import { Pill } from "@/components/ui/pill";
 import { useAuth } from "@/hooks/use-auth";
 import { getErrorMessage } from "@/lib/api/client";
+import { cn } from "@/lib/utils";
 import { casesService } from "@/services/cases";
+
+type FilterKey = "ALL" | "NEW" | "TRIAGED";
+
+const FILTERS: Array<{ key: FilterKey; label: string }> = [
+  { key: "ALL", label: "Todos" },
+  { key: "NEW", label: "Novos" },
+  { key: "TRIAGED", label: "Triados" },
+];
 
 export default function StudentQueuePage() {
   const queryClient = useQueryClient();
   const { user } = useAuth();
-  const [search, setSearch] = useState("");
-  const deferredSearch = useDeferredValue(search);
+  const [filter, setFilter] = useState<FilterKey>("ALL");
 
   const queueQuery = useQuery({
     queryKey: ["cases", "queue"],
@@ -34,72 +41,121 @@ export default function StudentQueuePage() {
       void queryClient.invalidateQueries({ queryKey: ["cases"] });
     },
     onError: (error) => {
-      toast.error(getErrorMessage(error, "Não foi possível assumir esse caso."));
+      toast.error(getErrorMessage(error, "Nao foi possivel assumir esse caso."));
     },
   });
 
-  const items =
-    queueQuery.data?.items.filter((item) => {
-      const inQueue = item.status === "NEW" || item.status === "TRIAGED";
-      const matchesSearch =
-        !deferredSearch ||
-        item.code.toLowerCase().includes(deferredSearch.toLowerCase()) ||
-        item.request.fullName.toLowerCase().includes(deferredSearch.toLowerCase());
-      return inQueue && matchesSearch;
-    }) ?? [];
+  const queueItems = useMemo(
+    () =>
+      (queueQuery.data?.items ?? []).filter(
+        (item) => item.status === "NEW" || item.status === "TRIAGED",
+      ),
+    [queueQuery.data?.items],
+  );
+
+  const newCount = queueItems.filter((item) => item.status === "NEW").length;
+  const triagedCount = queueItems.filter((item) => item.status === "TRIAGED").length;
+
+  const filteredItems = useMemo(() => {
+    return queueItems.filter((item) => {
+      if (filter === "ALL") return true;
+      if (filter === "NEW") return item.status === "NEW";
+      return item.status === "TRIAGED";
+    });
+  }, [filter, queueItems]);
 
   return (
     <section className="space-y-5">
       <PageHeader
-        eyebrow="Fila de atendimento"
-        title="Casos disponíveis"
-        description="Visualize a fila, encontre o caso certo e assuma quando fizer sentido."
+        eyebrow="Quem pode atender"
+        title={`${queueItems.length} pedidos aguardando atendimento`}
+        description="Escolha um caso compativel com sua carga e avance a fila com clareza de acompanhamento."
+        actions={
+          <>
+            <Button variant="outline" size="sm" className="gap-2">
+              <Funnel className="size-3.5" />
+              Filtros
+            </Button>
+            <Link
+              href="/aluno/meus-casos"
+              className={cn(buttonVariants({ variant: "outline", size: "sm" }))}
+            >
+              Minha fila
+            </Link>
+          </>
+        }
       />
 
-      <div className="relative">
-        <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
-        <Input
-          value={search}
-          onChange={(event) => setSearch(event.target.value)}
-          placeholder="Buscar por nome ou código"
-          className="pl-9"
-        />
+      <div className="flex flex-wrap gap-2">
+        {FILTERS.map((item) => {
+          const count =
+            item.key === "ALL"
+              ? queueItems.length
+              : item.key === "NEW"
+                  ? newCount
+                  : triagedCount;
+
+          return (
+            <button key={item.key} type="button" onClick={() => setFilter(item.key)}>
+              <Pill
+                tone={filter === item.key ? "orange" : "neutral"}
+                size="lg"
+                withDot={item.key === "NEW"}
+              >
+                {item.label} · {count}
+              </Pill>
+            </button>
+          );
+        })}
       </div>
 
       {queueQuery.isLoading ? (
-        <div className="grid gap-4 lg:grid-cols-2">
-          <div className="h-52 animate-pulse rounded-2xl border border-brand-line bg-white/70" />
-          <div className="h-52 animate-pulse rounded-2xl border border-brand-line bg-white/70" />
+        <div className="space-y-3">
+          <div className="h-24 animate-pulse rounded-[24px] border border-brand-line bg-white/70" />
+          <div className="h-24 animate-pulse rounded-[24px] border border-brand-line bg-white/70" />
+          <div className="h-24 animate-pulse rounded-[24px] border border-brand-line bg-white/70" />
         </div>
-      ) : items.length === 0 ? (
+      ) : filteredItems.length === 0 ? (
         <EmptyState
-          title="Fila vazia"
-          description="Não há casos novos ou triados com esse filtro agora."
+          title="Nada disponivel na fila"
+          description="Quando novos pedidos entrarem ou a triagem liberar mais casos, eles aparecem aqui."
         />
       ) : (
-        <div className="grid gap-4 lg:grid-cols-2">
-          {items.map((item) => (
-            <div key={item.id} className="space-y-2.5">
-              <CaseCard item={item} href={`/aluno/casos/${item.id}`} actionLabel="Ver detalhes" />
-              <Button
-                className="w-full"
-                onClick={() => assignMutation.mutate(item.id)}
-                disabled={assignMutation.isPending}
-              >
-                Assumir este caso
-              </Button>
-            </div>
-          ))}
+        <div className="space-y-3">
+          {filteredItems.map((item) => {
+            return (
+              <StudentCaseRow
+                key={item.id}
+                item={item}
+                href={`/aluno/casos/${item.id}`}
+                action={
+                  <div className="flex flex-wrap items-center gap-2 md:flex-col md:items-end">
+                    <Link
+                      href={`/aluno/casos/${item.id}`}
+                      className={cn(
+                        buttonVariants({ variant: "outline", size: "sm" }),
+                        "min-w-[104px] justify-between",
+                      )}
+                    >
+                      Abrir
+                    </Link>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="min-w-[104px] justify-between"
+                      onClick={() => assignMutation.mutate(item.id)}
+                      disabled={assignMutation.isPending}
+                    >
+                      Assumir
+                      <Sparkles className="size-3.5" />
+                    </Button>
+                  </div>
+                }
+              />
+            );
+          })}
         </div>
       )}
-
-      <Callout tone="info">
-        Depois de assumir, o caso aparece em{" "}
-        <Link href="/aluno/meus-casos" className="font-semibold underline underline-offset-2">
-          Meus casos
-        </Link>
-        .
-      </Callout>
     </section>
   );
 }
