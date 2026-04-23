@@ -11,6 +11,15 @@ async function bootstrap() {
   const logger = new Logger('Bootstrap');
   const configuredOrigins =
     process.env.CORS_ORIGIN?.split(',').map((origin) => origin.trim()).filter(Boolean) ?? [];
+  const startedAt = new Date().toISOString();
+
+  app.use('/health', (_req, res) => {
+    res.status(200).json({
+      status: 'ok',
+      service: 'espaco-empreendedor-backend',
+      date: startedAt,
+    });
+  });
 
   app.use(helmet());
   app.enableCors({
