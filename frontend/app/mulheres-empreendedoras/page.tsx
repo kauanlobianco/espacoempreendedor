@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import {
   ArrowRight,
@@ -51,32 +52,60 @@ export default function MulheresEmpreendedorasPage() {
     <PublicShell>
       <section className="mx-auto max-w-5xl space-y-14 px-4 py-10 md:px-6 md:py-16">
         {/* Hero */}
-        <div className="relative overflow-hidden rounded-[32px] border border-[color:var(--brand-soft-line)] bg-white p-8 shadow-soft md:p-12">
+        <div className="relative overflow-hidden rounded-[32px] border border-[color:var(--brand-soft-line)] bg-white shadow-soft">
+          {/* radial glow — canto superior esquerdo */}
           <div
             aria-hidden
-            className="pointer-events-none absolute -right-24 -top-24 size-[320px] rounded-full opacity-60 radial-orange-orb"
+            className="pointer-events-none absolute -left-20 -top-20 size-[360px] rounded-full opacity-50 radial-orange-orb"
           />
-          <div className="relative z-10 max-w-2xl">
-            <Eyebrow>Para mulheres empreendedoras</Eyebrow>
-            <h1 className="mt-4 font-display text-[40px] leading-[1.05] tracking-[-0.03em] text-[var(--brand-ink)] md:text-[56px]">
-              Você não precisa{" "}
-              <em className="not-italic text-[var(--brand-orange)]">empreender sozinha.</em>
-            </h1>
-            <p className="mt-5 max-w-xl text-[15.5px] leading-relaxed text-[var(--brand-mute)]">
-              Um espaço de orientação, escuta e direcionamento para mulheres que estão começando,
-              trabalham por conta própria ou querem dar o próximo passo com mais segurança.
-            </p>
-            <div className="mt-7 flex flex-wrap gap-3">
-              <Link href="/quero-ajuda" className={cn(buttonVariants({ size: "lg" }), "gap-2")}>
-                Pedir orientação
-                <ArrowRight className="size-4" />
-              </Link>
-              <Link
-                href="/sobre"
-                className={cn(buttonVariants({ variant: "outline", size: "lg" }))}
-              >
-                Conhecer o projeto
-              </Link>
+          {/* radial glow sutil — canto inferior direito */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute -bottom-16 right-64 size-[220px] rounded-full opacity-25 radial-orange-orb"
+          />
+
+          <div className="relative z-10 grid items-end gap-0 lg:grid-cols-[1fr_360px]">
+            {/* Texto */}
+            <div className="p-8 md:p-12">
+              <Eyebrow>Para mulheres empreendedoras</Eyebrow>
+              <h1 className="mt-4 font-display text-[40px] leading-[1.05] tracking-[-0.03em] text-[var(--brand-ink)] md:text-[52px]">
+                Você não precisa{" "}
+                <em className="not-italic text-[var(--brand-orange)]">empreender sozinha.</em>
+              </h1>
+              <p className="mt-5 max-w-lg text-[15.5px] leading-relaxed text-[var(--brand-mute)]">
+                Um espaço de orientação, escuta e direcionamento para mulheres que estão
+                começando, trabalham por conta própria ou querem dar o próximo passo com mais
+                segurança.
+              </p>
+              <div className="mt-7 flex flex-wrap gap-3">
+                <Link href="/quero-ajuda" className={cn(buttonVariants({ size: "lg" }), "gap-2")}>
+                  Pedir orientação
+                  <ArrowRight className="size-4" />
+                </Link>
+                <Link
+                  href="/sobre"
+                  className={cn(buttonVariants({ variant: "outline", size: "lg" }))}
+                >
+                  Conhecer o projeto
+                </Link>
+              </div>
+            </div>
+
+            {/* Ilustração */}
+            <div className="relative hidden self-end lg:flex lg:justify-center">
+              {/* base em gradiente suave para fundir com o card */}
+              <div
+                aria-hidden
+                className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-white to-transparent"
+              />
+              <Image
+                src="/hero/mulheres-empreendedoras.png"
+                alt="Três mulheres empreendedoras"
+                width={340}
+                height={440}
+                priority
+                className="relative z-10 select-none"
+              />
             </div>
           </div>
         </div>
