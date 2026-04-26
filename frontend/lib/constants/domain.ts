@@ -113,6 +113,7 @@ export const PUBLIC_NAV = [
   { href: "/quero-ajuda", label: "Quero ajuda" },
   { href: "/acompanhar", label: "Acompanhar" },
   { href: "/informacoes/abrir-mei", label: "Abrir MEI" },
+  { href: "/mulheres-empreendedoras", label: "Mulheres" },
   { href: "/sobre", label: "Sobre" },
 ];
 

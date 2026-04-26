@@ -100,6 +100,7 @@ export function PublicShell({ children }: { children: ReactNode }) {
               <li><Link href="/informacoes/ja-sou-mei" className="hover:text-[var(--brand-orange)]">Já sou MEI</Link></li>
               <li><Link href="/informacoes/nota-fiscal" className="hover:text-[var(--brand-orange)]">Nota fiscal e DAS</Link></li>
               <li><Link href="/informacoes/golpes" className="hover:text-[var(--brand-orange)]">Golpes e cobranças</Link></li>
+              <li><Link href="/mulheres-empreendedoras" className="hover:text-[var(--brand-orange)]">Mulheres empreendedoras</Link></li>
               <li><Link href="/sobre" className="hover:text-[var(--brand-orange)]">Sobre o projeto</Link></li>
               <li><Link href="/login" className="hover:text-[var(--brand-orange)]">Área interna</Link></li>
             </ul>
