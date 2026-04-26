@@ -63,7 +63,7 @@ export default function GolpesPage() {
           <QuickFacts
             items={[
               {
-                icon: Hourglass,
+                icon: "Hourglass",
                 kicker: "Pressa",
                 title: "'Você tem 24h para pagar'",
                 description:
@@ -71,7 +71,7 @@ export default function GolpesPage() {
                 tone: "amber",
               },
               {
-                icon: AlertOctagon,
+                icon: "AlertOctagon",
                 kicker: "Ameaça",
                 title: "'CNPJ será cancelado'",
                 description:
@@ -79,7 +79,7 @@ export default function GolpesPage() {
                 tone: "amber",
               },
               {
-                icon: Globe2,
+                icon: "Globe2",
                 kicker: "Link estranho",
                 title: "Sem .gov.br",
                 description:
@@ -87,7 +87,7 @@ export default function GolpesPage() {
                 tone: "amber",
               },
               {
-                icon: Mail,
+                icon: "Mail",
                 kicker: "Boleto avulso",
                 title: "Cobrança que você não pediu",
                 description:
@@ -142,7 +142,7 @@ export default function GolpesPage() {
             scenarios={[
               {
                 id: "boleto-email",
-                icon: Mail,
+                icon: "Mail",
                 label: "Boleto por e-mail",
                 hint: "Cobrança que apareceu sem aviso",
                 intro:
@@ -158,7 +158,7 @@ export default function GolpesPage() {
               },
               {
                 id: "mensagem-whatsapp",
-                icon: PhoneCall,
+                icon: "PhoneCall",
                 label: "Mensagem por WhatsApp",
                 hint: "Pressa, ameaça e link suspeito",
                 intro:
@@ -174,7 +174,7 @@ export default function GolpesPage() {
               },
               {
                 id: "site-falso",
-                icon: Globe2,
+                icon: "Globe2",
                 label: "Caí em site parecido",
                 hint: "Imitação do portal oficial",
                 intro:
@@ -189,7 +189,7 @@ export default function GolpesPage() {
               },
               {
                 id: "ja-paguei",
-                icon: CircleAlert,
+                icon: "CircleAlert",
                 label: "Já paguei algo suspeito",
                 hint: "O dinheiro já saiu",
                 intro:
@@ -218,25 +218,25 @@ export default function GolpesPage() {
             variant="horizontal"
             items={[
               {
-                icon: ShieldAlert,
+                icon: "ShieldAlert",
                 title: "Pare e respire",
                 description: "Não pague nem clique em nada antes de checar com calma.",
                 hint: "Pressa é o ingrediente principal de quase todo golpe.",
               },
               {
-                icon: Eye,
+                icon: "Eye",
                 title: "Olhe para os detalhes",
                 description:
                   "Domínio, CNPJ do emissor, ortografia, urgência. Anote o que estiver fora do padrão.",
               },
               {
-                icon: FileSearch,
+                icon: "FileSearch",
                 title: "Confirme no canal oficial",
                 description:
                   "Acesse o portal pelo navegador (digitando o endereço) e verifique se há cobrança real.",
               },
               {
-                icon: BadgeCheck,
+                icon: "BadgeCheck",
                 title: "Decida com segurança",
                 description:
                   "Se tudo bater com canal oficial, pague por lá. Caso contrário, descarte e bloqueie.",
@@ -256,7 +256,7 @@ export default function GolpesPage() {
           <RichGuide
             sections={[
               {
-                icon: ShieldCheck,
+                icon: "ShieldCheck",
                 title: "Como conferir antes de pagar qualquer coisa",
                 intro:
                   "Pequenas verificações que demoram um minuto e podem te livrar de prejuízo.",
@@ -270,7 +270,7 @@ export default function GolpesPage() {
                   "Boleto legítimo do governo sempre tem favorecido vinculado à União ou município.",
               },
               {
-                icon: Ban,
+                icon: "Ban",
                 title: "O que nunca fazer",
                 intro:
                   "Estas situações são sempre suspeitas. Não há exceção para o caso real do governo.",
@@ -284,7 +284,7 @@ export default function GolpesPage() {
                   "O governo nunca pede pagamento por mensagem com link. Sem exceções.",
               },
               {
-                icon: KeyRound,
+                icon: "KeyRound",
                 title: "Se já clicou em algo suspeito",
                 intro:
                   "Mesmo que você não tenha pago, o clique pode ter exposto dados. Vale agir nas próximas horas.",
@@ -298,7 +298,7 @@ export default function GolpesPage() {
                   "Se notar acesso suspeito na gov.br, recupere a conta com biometria pelo app.",
               },
               {
-                icon: TriangleAlert,
+                icon: "TriangleAlert",
                 title: "Se já pagou e suspeita de fraude",
                 intro:
                   "A janela de tempo para reverter é curta — agir nas próximas horas faz diferença.",
@@ -311,7 +311,7 @@ export default function GolpesPage() {
                 tip: "Mesmo casos sem devolução do dinheiro ajudam a alimentar investigações coletivas.",
               },
               {
-                icon: MessageSquareWarning,
+                icon: "MessageSquareWarning",
                 title: "Quando pedir ajuda humana",
                 intro:
                   "A equipe do Espaço Empreendedor pode te orientar com calma. Em alguns casos, isso evita que o problema se repita.",
@@ -331,7 +331,7 @@ export default function GolpesPage() {
         {/* Alerta forte */}
         <AlertCard
           tone="red"
-          icon={AlertTriangle}
+          icon="AlertTriangle"
           eyebrow="Linha vermelha"
           title="Estes pedidos nunca são oficiais — e ponto"
           description="Sempre que receber um destes, considere golpe e ignore."

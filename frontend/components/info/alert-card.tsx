@@ -1,7 +1,7 @@
-import type { LucideIcon } from "lucide-react";
 import { ShieldAlert } from "lucide-react";
 
 import { Eyebrow } from "@/components/ui/eyebrow";
+import { InfoIconView, type InfoIconName } from "@/components/info/info-icons";
 import { cn } from "@/lib/utils";
 
 export function AlertCard({
@@ -9,14 +9,14 @@ export function AlertCard({
   title,
   description,
   items,
-  icon: Icon = ShieldAlert,
+  icon = "ShieldAlert",
   tone = "amber",
 }: {
   eyebrow?: string;
   title: string;
   description?: string;
   items?: ReadonlyArray<string>;
-  icon?: LucideIcon;
+  icon?: InfoIconName;
   tone?: "amber" | "red";
 }) {
   const styles = {
@@ -45,7 +45,7 @@ export function AlertCard({
             t.icon,
           )}
         >
-          <Icon className="size-5" />
+          {icon ? <InfoIconView name={icon} className="size-5" /> : <ShieldAlert className="size-5" />}
         </span>
         <div className="space-y-2">
           <Eyebrow tone="mute" className={t.eyebrow}>

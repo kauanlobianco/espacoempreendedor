@@ -1,9 +1,8 @@
-import type { LucideIcon } from "lucide-react";
-
+import { InfoIconView, type InfoIconName } from "@/components/info/info-icons";
 import { cn } from "@/lib/utils";
 
 export interface StepFlowItem {
-  icon?: LucideIcon;
+  icon?: InfoIconName;
   title: string;
   description: string;
   hint?: string;
@@ -20,7 +19,6 @@ export function StepFlow({
     return (
       <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
         {items.map((item, i) => {
-          const Icon = item.icon;
           return (
             <div
               key={item.title}
@@ -30,9 +28,9 @@ export function StepFlow({
                 <span className="flex size-9 items-center justify-center rounded-full bg-[var(--brand-ink)] text-[12px] font-bold text-white">
                   {i + 1}
                 </span>
-                {Icon ? (
+                {item.icon ? (
                   <span className="flex size-9 items-center justify-center rounded-xl bg-[var(--brand-orange-ghost)] text-[var(--brand-orange-deep)]">
-                    <Icon className="size-4" />
+                    <InfoIconView name={item.icon} className="size-4" />
                   </span>
                 ) : null}
               </div>
@@ -55,7 +53,6 @@ export function StepFlow({
   return (
     <ol className="relative ml-3 space-y-4 border-l border-dashed border-[color:var(--brand-line)] pl-6">
       {items.map((item, i) => {
-        const Icon = item.icon;
         return (
           <li key={item.title} className="relative">
             <span
@@ -67,9 +64,9 @@ export function StepFlow({
             </span>
             <div className="rounded-2xl border border-[color:var(--brand-soft-line)] bg-white p-5 shadow-soft">
               <div className="flex flex-wrap items-center gap-2">
-                {Icon ? (
+                {item.icon ? (
                   <span className="flex size-8 items-center justify-center rounded-xl bg-[var(--brand-orange-ghost)] text-[var(--brand-orange-deep)]">
-                    <Icon className="size-4" />
+                    <InfoIconView name={item.icon} className="size-4" />
                   </span>
                 ) : null}
                 <h3 className="font-display text-[20px] leading-tight tracking-tight text-[var(--brand-ink)]">

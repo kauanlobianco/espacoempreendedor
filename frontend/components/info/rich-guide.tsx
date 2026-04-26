@@ -1,13 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import type { LucideIcon } from "lucide-react";
 import { ChevronDown, AlertTriangle, Lightbulb, ArrowRight } from "lucide-react";
 
+import { InfoIconView, type InfoIconName } from "@/components/info/info-icons";
 import { cn } from "@/lib/utils";
 
 export interface GuideSection {
-  icon?: LucideIcon;
+  icon?: InfoIconName;
   title: string;
   intro?: string;
   checklist?: ReadonlyArray<string>;
@@ -29,7 +29,6 @@ export function RichGuide({
     <div className="overflow-hidden rounded-[28px] border border-[color:var(--brand-soft-line)] bg-white shadow-soft">
       {sections.map((section, i) => {
         const isOpen = openIndex === i;
-        const Icon = section.icon;
         return (
           <div
             key={section.title}
@@ -48,8 +47,8 @@ export function RichGuide({
             >
               <span className="flex items-center gap-3">
                 <span className="flex size-9 shrink-0 items-center justify-center rounded-xl bg-[var(--brand-orange-ghost)] text-[var(--brand-orange-deep)]">
-                  {Icon ? (
-                    <Icon className="size-4" />
+                  {section.icon ? (
+                    <InfoIconView name={section.icon} className="size-4" />
                   ) : (
                     <span className="text-[12px] font-bold">{i + 1}</span>
                   )}

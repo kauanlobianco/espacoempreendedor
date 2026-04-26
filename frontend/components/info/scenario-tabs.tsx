@@ -1,15 +1,15 @@
 "use client";
 
 import { useState } from "react";
-import type { LucideIcon } from "lucide-react";
 import { Check, ArrowRight } from "lucide-react";
 
 import { Eyebrow } from "@/components/ui/eyebrow";
+import { InfoIconView, type InfoIconName } from "@/components/info/info-icons";
 import { cn } from "@/lib/utils";
 
 export interface Scenario {
   id: string;
-  icon: LucideIcon;
+  icon: InfoIconName;
   label: string;
   hint?: string;
   intro: string;
@@ -32,7 +32,6 @@ export function ScenarioTabs({ scenarios }: { scenarios: ReadonlyArray<Scenario>
       >
         {scenarios.map((s) => {
           const isActive = s.id === active.id;
-          const Icon = s.icon;
           return (
             <button
               key={s.id}
@@ -55,7 +54,7 @@ export function ScenarioTabs({ scenarios }: { scenarios: ReadonlyArray<Scenario>
                     : "bg-[var(--brand-paper-deep)] text-[var(--brand-night)] group-hover:bg-[var(--brand-orange-ghost)] group-hover:text-[var(--brand-orange-deep)]",
                 )}
               >
-                <Icon className="size-4" />
+                <InfoIconView name={s.icon} className="size-4" />
               </span>
               <div className="min-w-0">
                 <p

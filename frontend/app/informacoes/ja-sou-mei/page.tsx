@@ -60,7 +60,7 @@ export default function JaSouMeiPage() {
           <QuickFacts
             items={[
               {
-                icon: CalendarClock,
+                icon: "CalendarClock",
                 kicker: "Todo mês",
                 title: "Pague o DAS",
                 description:
@@ -68,7 +68,7 @@ export default function JaSouMeiPage() {
                 tone: "orange",
               },
               {
-                icon: ScrollText,
+                icon: "ScrollText",
                 kicker: "Todo ano",
                 title: "Faça a declaração",
                 description:
@@ -76,7 +76,7 @@ export default function JaSouMeiPage() {
                 tone: "amber",
               },
               {
-                icon: FileEdit,
+                icon: "FileEdit",
                 kicker: "Quando muda",
                 title: "Atualize seus dados",
                 description:
@@ -84,7 +84,7 @@ export default function JaSouMeiPage() {
                 tone: "neutral",
               },
               {
-                icon: DoorOpen,
+                icon: "DoorOpen",
                 kicker: "Se for parar",
                 title: "Faça a baixa",
                 description:
@@ -106,7 +106,7 @@ export default function JaSouMeiPage() {
             scenarios={[
               {
                 id: "em-dia",
-                icon: CheckCircle2,
+                icon: "CheckCircle2",
                 label: "Estou em dia",
                 hint: "Sem dívida, mas quero organizar",
                 intro:
@@ -122,7 +122,7 @@ export default function JaSouMeiPage() {
               },
               {
                 id: "atrasado",
-                icon: AlertTriangle,
+                icon: "AlertTriangle",
                 label: "Tenho DAS atrasado",
                 hint: "Algumas guias em aberto",
                 intro:
@@ -138,7 +138,7 @@ export default function JaSouMeiPage() {
               },
               {
                 id: "mudou-negocio",
-                icon: RefreshCcw,
+                icon: "RefreshCcw",
                 label: "Algo no negócio mudou",
                 hint: "Endereço, atividade ou contato",
                 intro:
@@ -152,7 +152,7 @@ export default function JaSouMeiPage() {
               },
               {
                 id: "parar",
-                icon: PauseCircle,
+                icon: "PauseCircle",
                 label: "Quero pausar ou encerrar",
                 hint: "Vou parar com o MEI",
                 intro:
@@ -181,24 +181,24 @@ export default function JaSouMeiPage() {
             variant="horizontal"
             items={[
               {
-                icon: CalendarDays,
+                icon: "CalendarDays",
                 title: "Todo dia 20",
                 description: "DAS do mês anterior vence. Pagamento via portal ou app oficial.",
                 hint: "Atraso gera juros e pode afetar benefícios.",
               },
               {
-                icon: ScrollText,
+                icon: "ScrollText",
                 title: "Até 31 de maio",
                 description: "Declaração anual (DASN-SIMEI) referente ao ano anterior.",
                 hint: "Obrigatória mesmo sem faturamento.",
               },
               {
-                icon: Wallet,
+                icon: "Wallet",
                 title: "A cada trimestre",
                 description: "Boa hora para conferir quanto faturou e ajustar a rotina.",
               },
               {
-                icon: Sparkles,
+                icon: "Sparkles",
                 title: "Início do ano novo",
                 description:
                   "Confira mudanças no MEI e atualize cadastro se algo mudou em casa ou no negócio.",
@@ -217,7 +217,7 @@ export default function JaSouMeiPage() {
           <RichGuide
             sections={[
               {
-                icon: CalendarDays,
+                icon: "CalendarDays",
                 title: "Cuidados do mês",
                 intro:
                   "Pequenos hábitos mensais evitam multa, dívida acumulada e perda de benefício.",
@@ -230,7 +230,7 @@ export default function JaSouMeiPage() {
                 tip: "O app oficial do MEI envia lembrete antes do vencimento.",
               },
               {
-                icon: ScrollText,
+                icon: "ScrollText",
                 title: "Cuidados do ano",
                 intro:
                   "Uma vez por ano você confirma o que faturou. É rápido, mas obrigatório.",
@@ -244,7 +244,7 @@ export default function JaSouMeiPage() {
                   "Atraso na declaração gera multa e pode bloquear emissão de novas guias.",
               },
               {
-                icon: Coins,
+                icon: "Coins",
                 title: "Se você está com dívida",
                 intro:
                   "Existem três cenários comuns. Identificar o tipo ajuda a escolher o caminho certo.",
@@ -258,7 +258,7 @@ export default function JaSouMeiPage() {
                   "Se a dívida vai além do MEI atual, vale conversar com a equipe do Espaço Empreendedor antes de tomar decisão.",
               },
               {
-                icon: Settings,
+                icon: "Settings",
                 title: "Quando algo muda",
                 intro:
                   "Endereço, telefone, atividade — manter o cadastro atualizado custa pouco e evita transtorno.",
@@ -270,7 +270,7 @@ export default function JaSouMeiPage() {
                 ],
               },
               {
-                icon: RotateCcw,
+                icon: "RotateCcw",
                 title: "Se vai parar de vez",
                 intro:
                   "A baixa do MEI é gratuita e instantânea. Mas alguns cuidados pós-baixa fazem diferença.",

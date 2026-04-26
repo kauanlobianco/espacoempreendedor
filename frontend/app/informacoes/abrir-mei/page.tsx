@@ -61,7 +61,7 @@ export default function AbrirMeiPage() {
           <QuickFacts
             items={[
               {
-                icon: Briefcase,
+                icon: "Briefcase",
                 kicker: "O que é",
                 title: "Um CNPJ simples para você",
                 description:
@@ -69,7 +69,7 @@ export default function AbrirMeiPage() {
                 tone: "orange",
               },
               {
-                icon: ShieldCheck,
+                icon: "ShieldCheck",
                 kicker: "Por que importa",
                 title: "Cobertura previdenciária",
                 description:
@@ -77,7 +77,7 @@ export default function AbrirMeiPage() {
                 tone: "green",
               },
               {
-                icon: AlertTriangle,
+                icon: "AlertTriangle",
                 kicker: "Erro comum",
                 title: "Pagar para abrir",
                 description:
@@ -85,7 +85,7 @@ export default function AbrirMeiPage() {
                 tone: "amber",
               },
               {
-                icon: Sparkles,
+                icon: "Sparkles",
                 kicker: "Próximo passo",
                 title: "Reúna os dados básicos",
                 description:
@@ -107,26 +107,26 @@ export default function AbrirMeiPage() {
             variant="horizontal"
             items={[
               {
-                icon: ListChecks,
+                icon: "ListChecks",
                 title: "Confirme se pode abrir",
                 description:
                   "Verifique se sua atividade está na lista oficial e se você cumpre os requisitos básicos do MEI.",
                 hint: "Quem é sócio ou administrador de outra empresa não pode ser MEI.",
               },
               {
-                icon: ClipboardList,
+                icon: "ClipboardList",
                 title: "Separe o que é exigido",
                 description:
                   "Conta gov.br ativa, CPF, endereço e a atividade que vai registrar como ocupação principal.",
               },
               {
-                icon: FileCheck2,
+                icon: "FileCheck2",
                 title: "Faça a abertura no portal",
                 description:
                   "O cadastro é todo online e leva poucos minutos. Você sai com CNPJ e o CCMEI no mesmo dia.",
               },
               {
-                icon: CalendarDays,
+                icon: "CalendarDays",
                 title: "Organize a rotina",
                 description:
                   "Pague o DAS todo mês até o dia 20 e envie a declaração anual até 31 de maio.",
@@ -146,7 +146,7 @@ export default function AbrirMeiPage() {
             scenarios={[
               {
                 id: "primeira-vez",
-                icon: Compass,
+                icon: "Compass",
                 label: "Estou começando agora",
                 hint: "Primeiro CNPJ da vida",
                 intro:
@@ -162,7 +162,7 @@ export default function AbrirMeiPage() {
               },
               {
                 id: "vendedor",
-                icon: Truck,
+                icon: "Truck",
                 label: "Vendo produto",
                 hint: "Comércio físico ou online",
                 intro:
@@ -177,7 +177,7 @@ export default function AbrirMeiPage() {
               },
               {
                 id: "prestador",
-                icon: Users,
+                icon: "Users",
                 label: "Presto serviço",
                 hint: "Trabalho autônomo",
                 intro:
@@ -193,7 +193,7 @@ export default function AbrirMeiPage() {
               },
               {
                 id: "freelancer",
-                icon: PiggyBank,
+                icon: "PiggyBank",
                 label: "Sou autônomo informal",
                 hint: "Já trabalho, mas sem CNPJ",
                 intro:
@@ -221,7 +221,7 @@ export default function AbrirMeiPage() {
           <RichGuide
             sections={[
               {
-                icon: Users,
+                icon: "Users",
                 title: "Quem pode abrir o MEI",
                 intro:
                   "Antes de qualquer passo, vale conferir os requisitos básicos. Eles são poucos, mas todos importam.",
@@ -234,7 +234,7 @@ export default function AbrirMeiPage() {
                 tip: "Se sua atividade não estiver na lista, há outros regimes simples que valem a pena consultar.",
               },
               {
-                icon: ClipboardList,
+                icon: "ClipboardList",
                 title: "O que separar antes de começar",
                 intro: "Itens simples que evitam idas e vindas durante o cadastro.",
                 checklist: [
@@ -248,7 +248,7 @@ export default function AbrirMeiPage() {
                   "Com tudo separado, a abertura no portal oficial leva poucos minutos.",
               },
               {
-                icon: FileText,
+                icon: "FileText",
                 title: "O que você recebe ao final",
                 intro:
                   "Logo após a confirmação, você já consegue baixar e usar todos os documentos do MEI.",
@@ -261,7 +261,7 @@ export default function AbrirMeiPage() {
                 tip: "Salve o CCMEI em PDF e também no celular. É comum precisar dele em bancos e cadastros.",
               },
               {
-                icon: CreditCard,
+                icon: "CreditCard",
                 title: "Cuidados financeiros logo no início",
                 intro:
                   "Mesmo com pouco faturamento, a guia mensal continua existindo. Um detalhe simples evita dor de cabeça.",

@@ -60,7 +60,7 @@ export default function NotaFiscalPage() {
           <QuickFacts
             items={[
               {
-                icon: Package,
+                icon: "Package",
                 kicker: "O que é",
                 title: "Nota fiscal",
                 description:
@@ -68,7 +68,7 @@ export default function NotaFiscalPage() {
                 tone: "orange",
               },
               {
-                icon: Receipt,
+                icon: "Receipt",
                 kicker: "Não confunda",
                 title: "DAS",
                 description:
@@ -76,7 +76,7 @@ export default function NotaFiscalPage() {
                 tone: "neutral",
               },
               {
-                icon: AlertTriangle,
+                icon: "AlertTriangle",
                 kicker: "Erro comum",
                 title: "Achar que MEI nunca emite",
                 description:
@@ -84,7 +84,7 @@ export default function NotaFiscalPage() {
                 tone: "amber",
               },
               {
-                icon: Sparkles,
+                icon: "Sparkles",
                 kicker: "Próximo passo",
                 title: "Saber o que você faz",
                 description:
@@ -172,7 +172,7 @@ export default function NotaFiscalPage() {
             scenarios={[
               {
                 id: "vendo-produto",
-                icon: ShoppingBag,
+                icon: "ShoppingBag",
                 label: "Vendo produto físico",
                 hint: "Loja, feira, marketplace",
                 intro:
@@ -188,7 +188,7 @@ export default function NotaFiscalPage() {
               },
               {
                 id: "presto-servico",
-                icon: Wrench,
+                icon: "Wrench",
                 label: "Presto serviço",
                 hint: "Trabalhos pontuais ou recorrentes",
                 intro:
@@ -203,7 +203,7 @@ export default function NotaFiscalPage() {
               },
               {
                 id: "vendo-online",
-                icon: Globe2,
+                icon: "Globe2",
                 label: "Vendo pela internet",
                 hint: "Site próprio, marketplace ou rede social",
                 intro:
@@ -217,7 +217,7 @@ export default function NotaFiscalPage() {
               },
               {
                 id: "produto-servico",
-                icon: Hammer,
+                icon: "Hammer",
                 label: "Faço produto sob encomenda",
                 hint: "Mistura entre produto e serviço",
                 intro:
@@ -246,24 +246,24 @@ export default function NotaFiscalPage() {
             variant="horizontal"
             items={[
               {
-                icon: CalendarDays,
+                icon: "CalendarDays",
                 title: "Pagar o DAS",
                 description:
                   "Vence todo dia 20. Pode ser emitido no portal oficial ou no app oficial do MEI.",
                 hint: "Sem pagar, INSS e regularidade ficam comprometidos.",
               },
               {
-                icon: FileText,
+                icon: "FileText",
                 title: "Emitir nota quando preciso",
                 description: "Para empresas, sempre. Para PF, conforme o tipo de operação.",
               },
               {
-                icon: Wallet,
+                icon: "Wallet",
                 title: "Conferir faturamento",
                 description: "Some o que entrou no mês para acompanhar o limite anual.",
               },
               {
-                icon: Building2,
+                icon: "Building2",
                 title: "Guardar comprovantes",
                 description:
                   "Notas, contratos e recibos. Mantenha por pelo menos 5 anos, idealmente em pasta digital.",
@@ -282,7 +282,7 @@ export default function NotaFiscalPage() {
           <RichGuide
             sections={[
               {
-                icon: FileText,
+                icon: "FileText",
                 title: "Quando a nota é obrigatória",
                 intro:
                   "A regra muda conforme o cliente final e o tipo de operação. Estes cenários cobrem a maior parte do dia a dia.",
@@ -295,7 +295,7 @@ export default function NotaFiscalPage() {
                 tip: "Mesmo quando não é obrigatória, emitir nota protege o vendedor em caso de problema.",
               },
               {
-                icon: Building2,
+                icon: "Building2",
                 title: "Sobre a NFS-e do MEI",
                 intro:
                   "A NFS-e nacional foi pensada para simplificar a vida de quem presta serviço.",
@@ -309,7 +309,7 @@ export default function NotaFiscalPage() {
                   "Se o seu município ainda não migrou totalmente, a equipe pode te ajudar a entender qual sistema usar.",
               },
               {
-                icon: CreditCard,
+                icon: "CreditCard",
                 title: "DAS — o básico que se repete",
                 intro:
                   "A guia mensal é mais simples do que parece. O importante é manter a regularidade.",
@@ -323,7 +323,7 @@ export default function NotaFiscalPage() {
                   "Não confie em mensagem que oferece 'guia DAS pronta' fora do canal oficial — golpe muito comum.",
               },
               {
-                icon: Receipt,
+                icon: "Receipt",
                 title: "Como organizar tudo isso na rotina",
                 intro:
                   "Hábito vale mais que sistema sofisticado. Algumas práticas simples evitam dor de cabeça.",

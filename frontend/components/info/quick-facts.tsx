@@ -1,5 +1,4 @@
-import type { LucideIcon } from "lucide-react";
-
+import { InfoIconView, type InfoIconName } from "@/components/info/info-icons";
 import { cn } from "@/lib/utils";
 
 export type QuickFactTone = "neutral" | "orange" | "amber" | "green";
@@ -28,7 +27,7 @@ const TONE_STYLES: Record<QuickFactTone, { card: string; pill: string; icon: str
 };
 
 export interface QuickFact {
-  icon: LucideIcon;
+  icon: InfoIconName;
   kicker: string;
   title: string;
   description: string;
@@ -40,7 +39,6 @@ export function QuickFacts({ items }: { items: ReadonlyArray<QuickFact> }) {
     <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
       {items.map((item) => {
         const tone = TONE_STYLES[item.tone ?? "neutral"];
-        const Icon = item.icon;
         return (
           <div
             key={item.title}
@@ -56,7 +54,7 @@ export function QuickFacts({ items }: { items: ReadonlyArray<QuickFact> }) {
                   tone.icon,
                 )}
               >
-                <Icon className="size-4" />
+                <InfoIconView name={item.icon} className="size-4" />
               </span>
               <span
                 className={cn(
