@@ -1,4 +1,4 @@
-import { Check, X } from "lucide-react";
+import { Check, Circle, X } from "lucide-react";
 
 import { Eyebrow } from "@/components/ui/eyebrow";
 import { cn } from "@/lib/utils";
@@ -9,16 +9,20 @@ export interface ComparisonColumn {
   items: ReadonlyArray<string>;
 }
 
+type ComparisonVariant = "judgement" | "types";
+
 export function Comparison({
   good,
   bad,
   goodLabel = "Isso sim",
-  badLabel = "Isso não",
+  badLabel = "Isso nao",
+  variant = "judgement",
 }: {
   good: ComparisonColumn;
   bad: ComparisonColumn;
   goodLabel?: string;
   badLabel?: string;
+  variant?: ComparisonVariant;
 }) {
   return (
     <div className="grid gap-3 md:grid-cols-2">
@@ -28,6 +32,7 @@ export function Comparison({
         title={good.title}
         caption={good.caption}
         items={good.items}
+        variant={variant}
       />
       <Column
         kind="bad"
@@ -35,6 +40,7 @@ export function Comparison({
         title={bad.title}
         caption={bad.caption}
         items={bad.items}
+        variant={variant}
       />
     </div>
   );
@@ -46,35 +52,46 @@ function Column({
   title,
   caption,
   items,
+  variant,
 }: {
   kind: "good" | "bad";
   kicker: string;
   title: string;
   caption?: string;
   items: ReadonlyArray<string>;
+  variant: ComparisonVariant;
 }) {
   const isGood = kind === "good";
+  const isTypes = variant === "types";
+  const borderTone = isGood
+    ? "border-[color:rgba(47,125,91,0.22)] bg-[color:rgba(47,125,91,0.06)]"
+    : isTypes
+      ? "border-[color:rgba(30,95,140,0.22)] bg-[color:rgba(30,95,140,0.06)]"
+      : "border-[color:rgba(168,42,31,0.22)] bg-[color:rgba(168,42,31,0.06)]";
+  const iconTone = isGood
+    ? "bg-[color:rgba(47,125,91,0.14)] text-[var(--brand-green)]"
+    : isTypes
+      ? "bg-[color:rgba(30,95,140,0.14)] text-[var(--brand-blue)]"
+      : "bg-[color:rgba(168,42,31,0.14)] text-[var(--brand-red)]";
+  const textTone = isGood
+    ? "text-[var(--brand-green)]"
+    : isTypes
+      ? "text-[var(--brand-blue)]"
+      : "text-[var(--brand-red)]";
+
   return (
-    <div
-      className={cn(
-        "rounded-[24px] border p-6 shadow-soft",
-        isGood
-          ? "border-[color:rgba(47,125,91,0.22)] bg-[color:rgba(47,125,91,0.06)]"
-          : "border-[color:rgba(168,42,31,0.22)] bg-[color:rgba(168,42,31,0.06)]",
-      )}
-    >
+    <div className={cn("rounded-[24px] border p-6 shadow-soft", borderTone)}>
       <div className="flex items-center gap-2">
-        <span
-          className={cn(
-            "flex size-9 items-center justify-center rounded-xl",
-            isGood
-              ? "bg-[color:rgba(47,125,91,0.14)] text-[var(--brand-green)]"
-              : "bg-[color:rgba(168,42,31,0.14)] text-[var(--brand-red)]",
+        <span className={cn("flex size-9 items-center justify-center rounded-xl", iconTone)}>
+          {isTypes ? (
+            <Circle className="size-3 fill-current" />
+          ) : isGood ? (
+            <Check className="size-4" />
+          ) : (
+            <X className="size-4" />
           )}
-        >
-          {isGood ? <Check className="size-4" /> : <X className="size-4" />}
         </span>
-        <Eyebrow tone="mute" className={isGood ? "text-[var(--brand-green)]" : "text-[var(--brand-red)]"}>
+        <Eyebrow tone="mute" className={textTone}>
           {kicker}
         </Eyebrow>
       </div>
@@ -95,12 +112,16 @@ function Column({
             <span
               className={cn(
                 "mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full",
-                isGood
-                  ? "bg-[color:rgba(47,125,91,0.18)] text-[var(--brand-green)]"
-                  : "bg-[color:rgba(168,42,31,0.18)] text-[var(--brand-red)]",
+                iconTone,
               )}
             >
-              {isGood ? <Check className="size-3" /> : <X className="size-3" />}
+              {isTypes ? (
+                <Circle className="size-2 fill-current" />
+              ) : isGood ? (
+                <Check className="size-3" />
+              ) : (
+                <X className="size-3" />
+              )}
             </span>
             <span>{item}</span>
           </li>

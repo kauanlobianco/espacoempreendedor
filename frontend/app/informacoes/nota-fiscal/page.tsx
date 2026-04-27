@@ -103,6 +103,7 @@ export default function NotaFiscalPage() {
             description="A primeira separação importante: o tipo de operação muda o modelo de nota e o sistema usado."
           />
           <Comparison
+            variant="types"
             goodLabel="Produto"
             badLabel="Serviço"
             good={{
@@ -136,6 +137,7 @@ export default function NotaFiscalPage() {
             description="O cliente final muda a obrigação de emitir nota."
           />
           <Comparison
+            variant="types"
             goodLabel="Para empresa (B2B)"
             badLabel="Para pessoa física (B2C)"
             good={{
