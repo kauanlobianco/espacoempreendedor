@@ -12,10 +12,11 @@ import {
   Lock,
   Trophy,
 } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { PageHeader } from "@/components/feedback/page-header";
+
 import { EmptyState } from "@/components/feedback/empty-state";
+import { PageHeader } from "@/components/feedback/page-header";
 import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { coursesService } from "@/services/courses";
 import type { CourseModuleSummary } from "@/types/api";
 
@@ -26,13 +27,14 @@ const STATUS_ICON = {
 };
 
 const STATUS_LABEL = {
-  NOT_STARTED: "Não iniciado",
+  NOT_STARTED: "Nao iniciado",
   IN_PROGRESS: "Em andamento",
-  COMPLETED: "Concluído",
+  COMPLETED: "Concluido",
 };
 
 function ProgressBar({ value, max }: { value: number; max: number }) {
   const pct = max === 0 ? 0 : Math.round((value / max) * 100);
+
   return (
     <div className="h-2 w-full overflow-hidden rounded-full bg-brand-paper">
       <div
@@ -43,12 +45,20 @@ function ProgressBar({ value, max }: { value: number; max: number }) {
   );
 }
 
-function ModuleRow({ mod, courseSlug, index }: { mod: CourseModuleSummary; courseSlug: string; index: number }) {
+function ModuleRow({
+  mod,
+  courseSlug,
+  index,
+}: {
+  mod: CourseModuleSummary;
+  courseSlug: string;
+  index: number;
+}) {
   return (
     <Link href={`/aluno/capacitacao/${courseSlug}/modulo/${mod.slug}`}>
       <div
         className={cn(
-          "group flex items-start gap-4 rounded-2xl border p-5 transition-all hover:shadow-md",
+          "group grid gap-4 rounded-2xl border p-5 transition-all hover:shadow-md md:grid-cols-[2.5rem_1fr_auto_auto]",
           mod.status === "COMPLETED"
             ? "border-emerald-200 bg-emerald-50/60 hover:border-emerald-300"
             : mod.status === "IN_PROGRESS"
@@ -58,7 +68,7 @@ function ModuleRow({ mod, courseSlug, index }: { mod: CourseModuleSummary; cours
       >
         <div
           className={cn(
-            "flex size-9 shrink-0 items-center justify-center rounded-xl text-sm font-bold",
+            "flex size-10 shrink-0 items-center justify-center rounded-xl text-sm font-bold",
             mod.status === "COMPLETED"
               ? "bg-emerald-100 text-emerald-700"
               : mod.status === "IN_PROGRESS"
@@ -66,26 +76,25 @@ function ModuleRow({ mod, courseSlug, index }: { mod: CourseModuleSummary; cours
                 : "bg-brand-paper text-muted-foreground",
           )}
         >
-          {mod.status === "COMPLETED" ? (
-            <CheckCircle2 className="size-4" />
-          ) : (
-            String(index + 1)
-          )}
+          {mod.status === "COMPLETED" ? <CheckCircle2 className="size-4" /> : String(index + 1)}
         </div>
 
-        <div className="min-w-0 flex-1">
-          <div className="flex items-center gap-2">
-            <span className="font-medium text-brand-ink">{mod.title}</span>
-          </div>
-          <p className="mt-0.5 text-sm text-muted-foreground">{mod.description}</p>
+        <div className="min-w-0">
+          <h2 className="font-display text-base font-semibold leading-tight text-brand-ink">
+            {mod.title}
+          </h2>
+          <p className="mt-1 text-sm leading-6 text-muted-foreground">{mod.description}</p>
+          <p className="mt-2 text-xs leading-5 text-brand-night/70">
+            Objetivo: {mod.objective}
+          </p>
         </div>
 
         <div className="flex items-center gap-2 text-xs text-muted-foreground">
           {STATUS_ICON[mod.status]}
-          <span className="hidden sm:inline">{STATUS_LABEL[mod.status]}</span>
+          <span>{STATUS_LABEL[mod.status]}</span>
         </div>
 
-        <ChevronRight className="size-4 shrink-0 text-brand-line transition-colors group-hover:text-brand-orange" />
+        <ChevronRight className="hidden size-4 shrink-0 self-center text-brand-line transition-colors group-hover:text-brand-orange md:block" />
       </div>
     </Link>
   );
@@ -113,30 +122,57 @@ export default function CourseDetailPage() {
   }
 
   if (courseQuery.isError || !courseQuery.data) {
-    return <EmptyState title="Curso não encontrado" description="Não foi possível carregar este curso." />;
+    return (
+      <EmptyState
+        title="Curso nao encontrado"
+        description="Nao foi possivel carregar este curso."
+      />
+    );
   }
 
   const course = courseQuery.data;
   const allDone = course.completedModules === course.totalModules;
+  const progress = Math.round((course.completedModules / course.totalModules) * 100);
 
   return (
     <section className="space-y-6">
       <PageHeader
-        eyebrow="Capacitação"
+        eyebrow="Capacitacao"
         title={course.title}
         description={course.description}
       />
 
-      {/* Progress card */}
-      <div className="rounded-2xl border border-brand-line/60 bg-white/80 p-5 shadow-soft">
-        <div className="flex flex-wrap items-center justify-between gap-4">
-          <div className="space-y-1">
-            <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-              Progresso
-            </p>
-            <p className="text-2xl font-bold text-brand-ink">
-              {course.completedModules}/{course.totalModules} módulos
-            </p>
+      <div className="rounded-2xl border border-brand-line/60 bg-white/85 p-6 shadow-soft">
+        <div className="grid gap-5 lg:grid-cols-[1fr_auto] lg:items-center">
+          <div className="space-y-4">
+            <div className="flex flex-wrap gap-3">
+              <span className="rounded-full bg-brand-paper px-3 py-1 text-xs font-semibold text-brand-night/70">
+                {course.totalModules} modulos
+              </span>
+              <span className="rounded-full bg-brand-paper px-3 py-1 text-xs font-semibold text-brand-night/70">
+                {course.totalQuestions} questoes
+              </span>
+              <span className="rounded-full bg-brand-paper px-3 py-1 text-xs font-semibold text-brand-night/70">
+                Nota minima {course.passingScore}/{course.totalQuestions}
+              </span>
+            </div>
+
+            <div>
+              <div className="flex items-end justify-between gap-4">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                    Progresso
+                  </p>
+                  <p className="mt-1 text-2xl font-bold text-brand-ink">
+                    {course.completedModules}/{course.totalModules} modulos
+                  </p>
+                </div>
+                <p className="text-sm font-semibold text-brand-orange">{progress}%</p>
+              </div>
+              <div className="mt-3">
+                <ProgressBar value={course.completedModules} max={course.totalModules} />
+              </div>
+            </div>
           </div>
 
           <div className="flex gap-3">
@@ -145,61 +181,56 @@ export default function CourseDetailPage() {
                 href={`/aluno/capacitacao/${slug}/certificado`}
                 className={cn(buttonVariants({ size: "sm" }), "gap-2")}
               >
-                <Trophy className="size-4" /> Ver certificado
+                <Trophy className="size-4" />
+                Ver certificado
               </Link>
             ) : allDone ? (
               <Link
                 href={`/aluno/capacitacao/${slug}/avaliacao`}
                 className={cn(buttonVariants({ size: "sm" }), "gap-2")}
               >
-                <GraduationCap className="size-4" /> Fazer avaliação
+                <GraduationCap className="size-4" />
+                Fazer avaliacao
               </Link>
             ) : null}
           </div>
         </div>
 
-        <div className="mt-4">
-          <ProgressBar value={course.completedModules} max={course.totalModules} />
-          <p className="mt-1.5 text-xs text-muted-foreground">
-            {Math.round((course.completedModules / course.totalModules) * 100)}% concluído
-          </p>
-        </div>
-
-        {course.quizPassed && (
-          <div className="mt-4 flex items-center gap-2 rounded-xl bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
+        {course.quizPassed ? (
+          <div className="mt-5 flex items-center gap-2 rounded-xl bg-emerald-50 px-4 py-3 text-sm text-emerald-700">
             <Trophy className="size-4 shrink-0" />
             <span>
-              Avaliação concluída com nota {course.bestScore}/{10}. Parabéns!
+              Avaliacao concluida com nota {course.bestScore}/{course.totalQuestions}.
             </span>
           </div>
-        )}
+        ) : null}
 
-        {course.attemptCount > 0 && !course.quizPassed && (
-          <div className="mt-4 flex items-center gap-2 rounded-xl bg-amber-50 px-4 py-3 text-sm text-amber-700">
+        {course.attemptCount > 0 && !course.quizPassed ? (
+          <div className="mt-5 flex items-center gap-2 rounded-xl bg-amber-50 px-4 py-3 text-sm text-amber-700">
             <Clock className="size-4 shrink-0" />
             <span>
-              Você fez {course.attemptCount} tentativa(s). Nota mínima: {course.passingScore}/10.
+              Voce fez {course.attemptCount} tentativa(s). Nota minima: {course.passingScore}/{course.totalQuestions}.
             </span>
           </div>
-        )}
+        ) : null}
       </div>
 
-      {/* Modules */}
       <div className="space-y-3">
-        <h2 className="font-display text-xl font-semibold text-brand-ink">Módulos</h2>
-        {course.modules.map((mod, i) => (
-          <ModuleRow key={mod.slug} mod={mod} courseSlug={slug} index={i} />
+        <h2 className="font-display text-xl font-semibold text-brand-ink">Modulos</h2>
+        {course.modules.map((mod, index) => (
+          <ModuleRow key={mod.slug} mod={mod} courseSlug={slug} index={index} />
         ))}
       </div>
 
-      {/* Quiz CTA */}
-      {!course.quizPassed && (
+      {!course.quizPassed ? (
         <div className="rounded-2xl border border-brand-line/60 bg-white/80 p-5 shadow-soft">
           <div className="flex items-start gap-4">
-            <div className={cn(
-              "flex size-10 shrink-0 items-center justify-center rounded-xl",
-              allDone ? "bg-brand-orange/15" : "bg-brand-paper",
-            )}>
+            <div
+              className={cn(
+                "flex size-10 shrink-0 items-center justify-center rounded-xl",
+                allDone ? "bg-brand-orange/15" : "bg-brand-paper",
+              )}
+            >
               {allDone ? (
                 <GraduationCap className="size-5 text-brand-orange" />
               ) : (
@@ -207,24 +238,24 @@ export default function CourseDetailPage() {
               )}
             </div>
             <div className="flex-1">
-              <h3 className="font-semibold text-brand-ink">Avaliação Final</h3>
+              <h3 className="font-semibold text-brand-ink">Avaliacao final</h3>
               <p className="mt-0.5 text-sm text-muted-foreground">
                 {allDone
-                  ? `10 questões de múltipla escolha. Acerte ${course.passingScore} de 10 para concluir o curso.`
-                  : `Conclua todos os ${course.totalModules} módulos para desbloquear a avaliação.`}
+                  ? `${course.totalQuestions} questoes de multipla escolha. Acerte ${course.passingScore} para concluir o curso.`
+                  : `Conclua todos os ${course.totalModules} modulos para desbloquear a avaliacao.`}
               </p>
             </div>
-            {allDone && (
+            {allDone ? (
               <Link
                 href={`/aluno/capacitacao/${slug}/avaliacao`}
                 className={cn(buttonVariants({ size: "sm" }))}
               >
                 Iniciar
               </Link>
-            )}
+            ) : null}
           </div>
         </div>
-      )}
+      ) : null}
     </section>
   );
 }

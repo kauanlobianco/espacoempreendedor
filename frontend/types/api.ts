@@ -463,10 +463,43 @@ export interface CourseModuleSummary {
   order: number;
   title: string;
   description: string;
-  keyTakeaways: string[];
+  objective: string;
   videoUrl?: string;
   status: CourseModuleStatus;
   completedAt: string | null;
+}
+
+export type CourseCalloutType =
+  | "attention"
+  | "practice"
+  | "common-error"
+  | "attendance-tip"
+  | "escalation"
+  | "official-source";
+
+export interface CourseCallout {
+  type: CourseCalloutType;
+  title: string;
+  body: string;
+}
+
+export type CourseActivityType =
+  | "reflection"
+  | "true-false"
+  | "case-study"
+  | "checklist"
+  | "scenario";
+
+export interface CourseModuleActivity {
+  type: CourseActivityType;
+  prompt: string;
+  options?: string[];
+  expectedAnswer?: string;
+}
+
+export interface CourseFixationQuestion {
+  question: string;
+  answer: string;
 }
 
 export interface CourseDetail {
@@ -474,6 +507,7 @@ export interface CourseDetail {
   title: string;
   description: string;
   passingScore: number;
+  totalQuestions: number;
   totalModules: number;
   completedModules: number;
   quizPassed: boolean;
@@ -483,7 +517,13 @@ export interface CourseDetail {
 }
 
 export interface CourseModuleDetail extends CourseModuleSummary {
+  intro: string;
   content: string;
+  callouts: CourseCallout[];
+  activity: CourseModuleActivity;
+  summary: string[];
+  fixationQuestions: CourseFixationQuestion[];
+  sources: string[];
   prev: { slug: string; title: string } | null;
   next: { slug: string; title: string } | null;
   isLastModule: boolean;
