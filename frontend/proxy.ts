@@ -1,14 +1,36 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
+import { SITE_ACCESS_COOKIE, SITE_ACCESS_TOKEN } from "@/lib/site-access";
+
 const studentPrefix = "/aluno";
 const professorPrefix = "/professor";
 const loginPath = "/login";
+const siteAccessPath = "/acesso";
+const siteAccessApiPath = "/api/site-access";
 
 export function proxy(request: NextRequest) {
   const token = request.cookies.get("ee_auth_token")?.value;
   const role = request.cookies.get("ee_auth_role")?.value;
+  const hasSiteAccess =
+    request.cookies.get(SITE_ACCESS_COOKIE)?.value === SITE_ACCESS_TOKEN;
   const pathname = request.nextUrl.pathname;
+  const isSiteAccessRoute = pathname === siteAccessPath;
+  const isSiteAccessApiRoute = pathname === siteAccessApiPath;
+
+  if (!hasSiteAccess && !isSiteAccessRoute && !isSiteAccessApiRoute) {
+    const accessUrl = new URL(siteAccessPath, request.url);
+    accessUrl.searchParams.set(
+      "next",
+      `${request.nextUrl.pathname}${request.nextUrl.search}`,
+    );
+    return NextResponse.redirect(accessUrl);
+  }
+
+  if (hasSiteAccess && isSiteAccessRoute) {
+    const next = request.nextUrl.searchParams.get("next");
+    return NextResponse.redirect(new URL(next?.startsWith("/") ? next : "/", request.url));
+  }
 
   if (pathname.startsWith(studentPrefix)) {
     if (!token) {
@@ -44,5 +66,7 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/login", "/aluno/:path*", "/professor/:path*"],
+  matcher: [
+    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:png|jpg|jpeg|gif|webp|svg|ico)$).*)",
+  ],
 };
