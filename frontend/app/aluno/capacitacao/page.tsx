@@ -2,8 +2,12 @@
 
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 import { BookOpen, CheckCircle2, ChevronRight, GraduationCap } from "lucide-react";
+
+import { EmptyState } from "@/components/feedback/empty-state";
 import { PageHeader } from "@/components/feedback/page-header";
+import { getErrorMessage } from "@/lib/api/client";
 import { coursesService } from "@/services/courses";
 
 export default function CapacitacaoPage() {
@@ -13,6 +17,9 @@ export default function CapacitacaoPage() {
   });
 
   const courses = coursesQuery.data ?? [];
+  const errorStatus = axios.isAxiosError(coursesQuery.error)
+    ? coursesQuery.error.response?.status
+    : null;
 
   return (
     <section className="space-y-5">
@@ -28,6 +35,29 @@ export default function CapacitacaoPage() {
             <div key={i} className="h-32 animate-pulse rounded-2xl border border-brand-line bg-white/70" />
           ))}
         </div>
+      ) : coursesQuery.isError ? (
+        <EmptyState
+          title={
+            errorStatus === 401
+              ? "Sessao expirada"
+              : "Nao foi possivel carregar os cursos"
+          }
+          description={
+            errorStatus === 401
+              ? "Entre novamente para acessar a capacitacao do aluno extensionista."
+              : getErrorMessage(
+                  coursesQuery.error,
+                  "A API de capacitacao nao respondeu como esperado. Confira se o backend publicado esta atualizado e se a URL da API do frontend aponta para o servico correto.",
+                )
+          }
+          primaryHref={errorStatus === 401 ? "/login" : undefined}
+          primaryLabel={errorStatus === 401 ? "Entrar novamente" : undefined}
+        />
+      ) : courses.length === 0 ? (
+        <EmptyState
+          title="Nenhum curso disponivel"
+          description="A API respondeu, mas ainda nao retornou cursos publicados para este ambiente."
+        />
       ) : (
         <div className="space-y-4">
           {courses.map((course) => (
