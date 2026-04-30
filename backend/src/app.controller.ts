@@ -9,6 +9,8 @@ export class AppController {
     return {
       status: 'ok',
       service: 'espaco-empreendedor-backend',
+      version: 'courses-enabled',
+      capabilities: ['courses'],
       date: new Date().toISOString(),
     };
   }

@@ -18,6 +18,8 @@ async function bootstrap() {
     res.status(200).json({
       status: 'ok',
       service: 'espaco-empreendedor-backend',
+      version: 'courses-enabled',
+      capabilities: ['courses'],
       date: startedAt,
     });
   });
