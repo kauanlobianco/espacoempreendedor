@@ -1460,6 +1460,15 @@ Algumas regras silenciosas, mas importantes:
 
 export const COURSES: Course[] = [MEI_COURSE];
 
+export function normalizeCourseSlug(slug: string): string {
+  try {
+    return decodeURIComponent(slug).trim().toLowerCase();
+  } catch {
+    return slug.trim().toLowerCase();
+  }
+}
+
 export function getCourseBySlug(slug: string): Course | undefined {
-  return COURSES.find((c) => c.slug === slug);
+  const normalizedSlug = normalizeCourseSlug(slug);
+  return COURSES.find((c) => normalizeCourseSlug(c.slug) === normalizedSlug);
 }

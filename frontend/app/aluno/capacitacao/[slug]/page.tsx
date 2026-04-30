@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 import {
   BookOpen,
   CheckCircle2,
@@ -16,6 +17,7 @@ import {
 import { EmptyState } from "@/components/feedback/empty-state";
 import { PageHeader } from "@/components/feedback/page-header";
 import { buttonVariants } from "@/components/ui/button";
+import { getErrorMessage } from "@/lib/api/client";
 import { cn } from "@/lib/utils";
 import { coursesService } from "@/services/courses";
 import type { CourseModuleSummary } from "@/types/api";
@@ -55,7 +57,7 @@ function ModuleRow({
   index: number;
 }) {
   return (
-    <Link href={`/aluno/capacitacao/${courseSlug}/modulo/${mod.slug}`}>
+    <Link href={`/aluno/capacitacao/${encodeURIComponent(courseSlug)}/modulo/${encodeURIComponent(mod.slug)}`}>
       <div
         className={cn(
           "group grid gap-4 rounded-2xl border p-5 transition-all hover:shadow-md md:grid-cols-[2.5rem_1fr_auto_auto]",
@@ -102,10 +104,13 @@ function ModuleRow({
 
 export default function CourseDetailPage() {
   const { slug } = useParams<{ slug: string }>();
+  const courseSlug = Array.isArray(slug) ? slug[0] : slug;
+  const decodedSlug = decodeURIComponent(courseSlug ?? "");
 
   const courseQuery = useQuery({
-    queryKey: ["course", slug],
-    queryFn: () => coursesService.getCourse(slug),
+    queryKey: ["course", decodedSlug],
+    queryFn: () => coursesService.getCourse(decodedSlug),
+    enabled: Boolean(decodedSlug),
   });
 
   if (courseQuery.isLoading) {
@@ -122,10 +127,33 @@ export default function CourseDetailPage() {
   }
 
   if (courseQuery.isError || !courseQuery.data) {
+    const errorStatus = axios.isAxiosError(courseQuery.error)
+      ? courseQuery.error.response?.status
+      : null;
+    const isAuthError = errorStatus === 401 || errorStatus === 403;
+    const isNotFound = errorStatus === 404;
+
     return (
       <EmptyState
-        title="Curso nao encontrado"
-        description="Nao foi possivel carregar este curso."
+        title={
+          isAuthError
+            ? "Sessao expirada"
+            : isNotFound
+              ? "Curso nao encontrado"
+              : "Nao foi possivel carregar o curso"
+        }
+        description={
+          isAuthError
+            ? "Entre novamente para acessar a capacitacao do aluno extensionista."
+            : isNotFound
+              ? `A API respondeu, mas nao encontrou o curso "${decodedSlug}". Confira se o backend publicado no Render esta atualizado.`
+              : getErrorMessage(
+                  courseQuery.error,
+                  "A API de capacitacao nao respondeu como esperado. Confira se a URL do frontend aponta para o backend publicado correto.",
+                )
+        }
+        primaryHref={isAuthError ? "/login" : "/aluno/capacitacao"}
+        primaryLabel={isAuthError ? "Entrar novamente" : "Voltar aos cursos"}
       />
     );
   }
@@ -178,7 +206,7 @@ export default function CourseDetailPage() {
           <div className="flex gap-3">
             {course.quizPassed ? (
               <Link
-                href={`/aluno/capacitacao/${slug}/certificado`}
+                href={`/aluno/capacitacao/${encodeURIComponent(decodedSlug)}/certificado`}
                 className={cn(buttonVariants({ size: "sm" }), "gap-2")}
               >
                 <Trophy className="size-4" />
@@ -186,7 +214,7 @@ export default function CourseDetailPage() {
               </Link>
             ) : allDone ? (
               <Link
-                href={`/aluno/capacitacao/${slug}/avaliacao`}
+                href={`/aluno/capacitacao/${encodeURIComponent(decodedSlug)}/avaliacao`}
                 className={cn(buttonVariants({ size: "sm" }), "gap-2")}
               >
                 <GraduationCap className="size-4" />
@@ -218,7 +246,7 @@ export default function CourseDetailPage() {
       <div className="space-y-3">
         <h2 className="font-display text-xl font-semibold text-brand-ink">Modulos</h2>
         {course.modules.map((mod, index) => (
-          <ModuleRow key={mod.slug} mod={mod} courseSlug={slug} index={index} />
+          <ModuleRow key={mod.slug} mod={mod} courseSlug={decodedSlug} index={index} />
         ))}
       </div>
 
@@ -247,7 +275,7 @@ export default function CourseDetailPage() {
             </div>
             {allDone ? (
               <Link
-                href={`/aluno/capacitacao/${slug}/avaliacao`}
+                href={`/aluno/capacitacao/${encodeURIComponent(decodedSlug)}/avaliacao`}
                 className={cn(buttonVariants({ size: "sm" }))}
               >
                 Iniciar

@@ -61,7 +61,7 @@ export default function CapacitacaoPage() {
       ) : (
         <div className="space-y-4">
           {courses.map((course) => (
-            <Link key={course.slug} href={`/aluno/capacitacao/${course.slug}`}>
+            <Link key={course.slug} href={`/aluno/capacitacao/${encodeURIComponent(course.slug)}`}>
               <div className="group flex items-start gap-5 rounded-2xl border border-brand-line/60 bg-white/80 p-6 shadow-soft transition-all hover:border-brand-orange/40 hover:shadow-md">
                 <div className="flex size-12 shrink-0 items-center justify-center rounded-xl bg-brand-orange/10">
                   <GraduationCap className="size-6 text-brand-orange" />
