@@ -444,3 +444,81 @@ export interface ExtensionReportQueueItem extends ExtensionReportSummary {
   student: { id: string; fullName: string; email: string };
   _count: { items: number };
 }
+
+// ── Courses ───────────────────────────────────────────────────
+
+export type CourseModuleStatus = "NOT_STARTED" | "IN_PROGRESS" | "COMPLETED";
+
+export interface CourseSummary {
+  slug: string;
+  title: string;
+  description: string;
+  passingScore: number;
+  totalModules: number;
+  totalQuestions: number;
+}
+
+export interface CourseModuleSummary {
+  slug: string;
+  order: number;
+  title: string;
+  description: string;
+  keyTakeaways: string[];
+  videoUrl?: string;
+  status: CourseModuleStatus;
+  completedAt: string | null;
+}
+
+export interface CourseDetail {
+  slug: string;
+  title: string;
+  description: string;
+  passingScore: number;
+  totalModules: number;
+  completedModules: number;
+  quizPassed: boolean;
+  bestScore: number | null;
+  attemptCount: number;
+  modules: CourseModuleSummary[];
+}
+
+export interface CourseModuleDetail extends CourseModuleSummary {
+  content: string;
+  prev: { slug: string; title: string } | null;
+  next: { slug: string; title: string } | null;
+  isLastModule: boolean;
+}
+
+export interface QuizQuestion {
+  id: number;
+  question: string;
+  options: string[];
+}
+
+export interface QuizFeedbackItem {
+  id: number;
+  question: string;
+  chosen: number;
+  correct: number;
+  isCorrect: boolean;
+  explanation: string;
+}
+
+export interface QuizResult {
+  attemptId: string;
+  score: number;
+  total: number;
+  passed: boolean;
+  passingScore: number;
+  feedback: QuizFeedbackItem[];
+}
+
+export interface CourseCertificate {
+  studentName: string;
+  courseTitle: string;
+  courseSlug: string;
+  score: number;
+  total: number;
+  completedAt: string;
+}
+

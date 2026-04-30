@@ -11,6 +11,7 @@ import { AttendancesModule } from './modules/attendances/attendances.module';
 import { ValidationsModule } from './modules/validations/validations.module';
 import { ExtensionHoursModule } from './modules/extension-hours/extension-hours.module';
 import { ExtensionReportsModule } from './modules/extension-reports/extension-reports.module';
+import { CoursesModule } from './modules/courses/courses.module';
 import { AuditModule } from './modules/audit/audit.module';
 import { MailModule } from './modules/mail/mail.module';
 
@@ -40,6 +41,7 @@ import { MailModule } from './modules/mail/mail.module';
     ValidationsModule,
     ExtensionHoursModule,
     ExtensionReportsModule,
+    CoursesModule,
   ],
 })
 export class AppModule {}

@@ -116,6 +116,8 @@ model User {
   auditLogs        AuditLog[]
   reportsAuthored  ExtensionReport[] @relation("ReportStudent")
   reportsReviewed  ExtensionReport[] @relation("ReportReviewer")
+  courseProgress   CourseModuleProgress[] @relation("CourseProgressStudent")
+  courseAttempts   CourseQuizAttempt[]    @relation("CourseAttemptStudent")
 }
 
 model StudentProfile {
@@ -351,4 +353,44 @@ model ExtensionReportItem {
 
   @@unique([reportId, caseId])
   @@index([caseId])
+}
+
+// ============================================================
+// COURSES (Capacitação do aluno extensionista)
+// ============================================================
+
+enum CourseModuleStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  COMPLETED
+}
+
+model CourseModuleProgress {
+  id          String             @id @default(uuid())
+  studentId   String
+  student     User               @relation("CourseProgressStudent", fields: [studentId], references: [id], onDelete: Cascade)
+  courseSlug  String
+  moduleSlug  String
+  status      CourseModuleStatus @default(IN_PROGRESS)
+  completedAt DateTime?
+  startedAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
+
+  @@unique([studentId, courseSlug, moduleSlug])
+  @@index([studentId, courseSlug])
+}
+
+model CourseQuizAttempt {
+  id           String   @id @default(uuid())
+  studentId    String
+  student      User     @relation("CourseAttemptStudent", fields: [studentId], references: [id], onDelete: Cascade)
+  courseSlug   String
+  score        Int
+  totalQuestions Int
+  passed       Boolean
+  answers      Json
+  attemptedAt  DateTime @default(now())
+
+  @@index([studentId, courseSlug])
+  @@index([attemptedAt])
 }

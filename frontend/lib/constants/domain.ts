@@ -154,6 +154,7 @@ export const STUDENT_NAV: Array<{ href: string; label: string; badge?: number | 
   { href: "/aluno/fila", label: "Fila" },
   { href: "/aluno/meus-casos", label: "Meus casos" },
   { href: "/aluno/relatorio-extensao", label: "Relatório de extensão" },
+  { href: "/aluno/capacitacao", label: "Capacitação" },
 ];
 
 export const PROFESSOR_NAV: Array<{ href: string; label: string; badge?: number | string }> = [
