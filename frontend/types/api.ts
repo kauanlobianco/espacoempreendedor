@@ -281,6 +281,7 @@ export interface CaseDetail {
     state: string | null;
     category: CaseCategory;
     description: string;
+    preferredChannel: AttendanceChannel | null;
     consentAccepted: boolean;
     trackingToken: string;
     createdAt: string;

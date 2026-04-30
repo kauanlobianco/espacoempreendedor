@@ -200,7 +200,7 @@ export function DashboardShell({
       />
 
       <div className="lg:grid lg:min-h-screen lg:grid-cols-[244px_minmax(0,1fr)]">
-        <aside className="hidden h-screen flex-col border-r border-[color:var(--brand-soft-line)] bg-white lg:flex">
+        <aside className="hidden h-screen flex-col border-r border-[color:var(--brand-soft-line)] bg-white lg:sticky lg:top-0 lg:flex lg:self-start">
           <div className="border-b border-[color:var(--brand-soft-line)] px-5 py-5">
             <SiteLogo href={homeHref} size="sm" />
           </div>

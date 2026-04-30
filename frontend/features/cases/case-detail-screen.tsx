@@ -14,6 +14,7 @@ import {
   CircleAlert,
   Clock3,
   Mail,
+  MessageCircle,
   MapPin,
   MoreHorizontal,
   Phone,
@@ -337,13 +338,22 @@ export function CaseDetailScreen({
                 <h1 className="font-display text-[2rem] leading-none tracking-[-0.04em] text-[var(--brand-ink)] md:text-[2.65rem]">
                   {item.request.fullName}
                 </h1>
-                <p className="max-w-4xl text-[14.5px] leading-7 text-[var(--brand-mute)]">
-                  {item.summary || item.request.description}
+                <p className="max-w-5xl whitespace-pre-wrap break-words text-[14.5px] leading-7 text-[var(--brand-mute)]">
+                  {item.request.description}
                 </p>
               </div>
 
               <div className="flex flex-wrap gap-2.5">
                 <InfoChip icon={<Phone className="size-3.5" />} label="Telefone" value={item.request.phone} />
+                <InfoChip
+                  icon={<MessageCircle className="size-3.5" />}
+                  label="Canal preferido"
+                  value={
+                    item.request.preferredChannel
+                      ? PREFERRED_CHANNEL_LABEL[item.request.preferredChannel]
+                      : "Nao informado"
+                  }
+                />
                 <InfoChip icon={<Mail className="size-3.5" />} label="E-mail" value={item.request.email || "Nao informado"} />
                 <InfoChip icon={<ShieldCheck className="size-3.5" />} label="CPF" value={maskCpf(item.request.cpf)} />
                 <InfoChip icon={<MapPin className="size-3.5" />} label="Localidade" value={formatLocation(item)} />
