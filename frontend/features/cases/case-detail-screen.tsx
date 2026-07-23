@@ -19,6 +19,7 @@ import {
   MoreHorizontal,
   Phone,
   ShieldCheck,
+  Store,
 } from "lucide-react";
 
 import { CaseStatusBadge } from "@/components/data-display/case-status-badge";
@@ -344,6 +345,7 @@ export function CaseDetailScreen({
               </div>
 
               <div className="flex flex-wrap gap-2.5">
+                <InfoChip icon={<Store className="size-3.5" />} label="Empreendimento" value={item.request.businessName || "Nao informado"} />
                 <InfoChip icon={<Phone className="size-3.5" />} label="Telefone" value={item.request.phone} />
                 <InfoChip
                   icon={<MessageCircle className="size-3.5" />}

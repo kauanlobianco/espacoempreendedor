@@ -142,9 +142,9 @@ export interface StudentPerformanceResponse {
 
 export interface CreateRequestPayload {
   fullName: string;
+  businessName?: string;
   email?: string;
   phone: string;
-  cpf?: string;
   city?: string;
   state?: string;
   category: CaseCategory;
@@ -200,6 +200,7 @@ export interface CaseListItem {
   closedAt: string | null;
   request: {
     fullName: string;
+    businessName: string | null;
     phone: string;
     cpf: string | null;
     city: string | null;
@@ -274,6 +275,7 @@ export interface CaseDetail {
   request: {
     id: string;
     fullName: string;
+    businessName: string | null;
     email: string | null;
     phone: string;
     cpf: string | null;

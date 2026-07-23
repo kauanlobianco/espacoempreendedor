@@ -5,13 +5,11 @@ import {
   ArrowUpRight,
   BadgeCheck,
   CalendarClock,
-  CheckCircle2,
   FileSearch,
   HandHelping,
   ShieldAlert,
   ShieldCheck,
   Users,
-  XCircle,
 } from "lucide-react";
 
 import { SectionHeader } from "@/components/feedback/section-header";
@@ -29,29 +27,10 @@ import { FAQ_ITEMS, QUICK_ACTIONS } from "@/lib/constants/domain";
 import { cn } from "@/lib/utils";
 
 const PILLARS = [
-  {
-    icon: HandHelping,
-    title: "Atendimento humano",
-    description:
-      "Pedidos entram na fila e são acompanhados por aluno e professor.",
-  },
-  {
-    icon: ShieldAlert,
-    title: "Conteúdo seguro",
-    description:
-      "Baseado em fontes oficiais e revisado por supervisão acadêmica.",
-  },
-  {
-    icon: BadgeCheck,
-    title: "Serviço gratuito",
-    description: "Mostramos o que é oficial e o que parece cobrança indevida.",
-  },
-  {
-    icon: FileSearch,
-    title: "Acompanhamento simples",
-    description:
-      "Consulte o andamento pelo e-mail ou telefone informado no pedido.",
-  },
+  { icon: HandHelping, title: "Atendimento humano" },
+  { icon: ShieldAlert, title: "Conteúdo seguro" },
+  { icon: BadgeCheck, title: "Serviço gratuito" },
+  { icon: FileSearch, title: "Acompanhamento simples" },
 ];
 
 const PROOF_STATS = [
@@ -59,34 +38,6 @@ const PROOF_STATS = [
   { value: "82%", label: "resolvidos no primeiro contato" },
   { value: "0,00", label: "custo para o microempreendedor" },
   { value: "UFF", label: "extensão universitária" },
-];
-
-const COMMITMENT_ROWS: Array<{
-  tone: "green" | "amber" | "red";
-  icon: typeof CheckCircle2;
-  label: string;
-  description: string;
-}> = [
-  {
-    tone: "green",
-    icon: CheckCircle2,
-    label: "Procedimento oficial",
-    description: "Caminhos formais, gratuitos e validados pela legislação.",
-  },
-  {
-    tone: "amber",
-    icon: ShieldCheck,
-    label: "Apoio privado opcional",
-    description:
-      "Serviços de terceiros que podem ajudar — mas você não é obrigado a contratar.",
-  },
-  {
-    tone: "red",
-    icon: XCircle,
-    label: "Cobrança indevida",
-    description:
-      "Mensagens, boletos e taxas falsas que tentam parecer documento oficial.",
-  },
 ];
 
 export default function HomePage() {
@@ -97,16 +48,24 @@ export default function HomePage() {
         <div className="mx-auto max-w-7xl px-4 pb-12 pt-10 md:px-6 md:pb-20 md:pt-20">
           <div className="grid items-center gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:gap-12">
             <div className="relative z-10 max-w-xl space-y-7">
-              <Pill tone="orange" size="lg" withDot>
-                Espaço do Empreendedor · UFF
-              </Pill>
+              <div className="flex flex-wrap items-center gap-2.5">
+                <Pill tone="orange" size="lg" withDot>
+                  Espaço do Empreendedor · UFF
+                </Pill>
+                <Pill tone="green" size="lg" withDot>
+                  100% gratuito
+                </Pill>
+              </div>
               <h1 className="font-display text-[clamp(2.4rem,7.6vw,5.4rem)] font-medium leading-[0.98] tracking-[-0.04em] text-[var(--brand-ink)]">
                 Ajuda real para quem quer{" "}
                 <em className="not-italic text-[var(--brand-orange)]">empreender.</em>
               </h1>
               <p className="max-w-[34rem] text-[15.5px] leading-relaxed text-[var(--brand-mute)] md:text-[17px] md:leading-8">
                 Aqui você entende o que fazer, evita cobrança errada e encontra
-                ajuda humana para abrir, organizar ou regularizar seu MEI.
+                ajuda humana para abrir, organizar ou regularizar seu MEI —{" "}
+                <strong className="font-semibold text-[var(--brand-ink)]">
+                  tudo gratuito, sem nenhuma cobrança.
+                </strong>
               </p>
 
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
@@ -129,14 +88,14 @@ export default function HomePage() {
               </div>
             </div>
 
-            <div className="relative min-h-[20rem] w-full sm:min-h-[26rem] lg:min-h-[36rem]">
+            <div className="relative min-h-[16rem] w-full sm:min-h-[26rem] lg:min-h-[36rem]">
               <div className="pointer-events-none absolute inset-0 rounded-[3rem] bg-[radial-gradient(circle_at_52%_62%,rgba(28,23,20,0.08),transparent_36%)] blur-3xl" />
               <Image
-                src="/hero/espaco-empreendedor-hero-v4.png"
-                alt="Pavilhão do Espaço do Empreendedor"
+                src="/hero/espaco-empreendedor-real.png"
+                alt="Fachada do Espaço do Empreendedor"
                 fill
                 priority
-                className="scale-[1.18] object-contain object-center drop-shadow-[0_28px_40px_rgba(28,23,20,0.16)] sm:scale-[1.24] lg:scale-[1.28]"
+                className="scale-105 object-contain object-center drop-shadow-[0_28px_40px_rgba(28,23,20,0.16)] sm:scale-[1.24] lg:scale-[1.28]"
                 sizes="(min-width: 1024px) 56rem, 100vw"
               />
             </div>
@@ -166,25 +125,20 @@ export default function HomePage() {
           {PILLARS.map((pillar) => (
             <div
               key={pillar.title}
-              className="group flex flex-col gap-4 rounded-3xl border border-[color:var(--brand-soft-line)] bg-white p-6 transition-all hover:-translate-y-0.5 hover:shadow-soft"
+              className="group flex items-center gap-4 rounded-3xl border border-[color:var(--brand-soft-line)] bg-white p-6 transition-all hover:-translate-y-0.5 hover:shadow-soft"
             >
-              <div className="flex size-12 items-center justify-center rounded-2xl bg-[var(--brand-orange-ghost)] text-[var(--brand-orange-deep)]">
+              <div className="flex size-12 shrink-0 items-center justify-center rounded-2xl bg-[var(--brand-orange-ghost)] text-[var(--brand-orange-deep)]">
                 <pillar.icon className="size-5" />
               </div>
-              <div className="space-y-1.5">
-                <h3 className="text-[15.5px] font-semibold tracking-tight text-[var(--brand-ink)]">
-                  {pillar.title}
-                </h3>
-                <p className="text-[13.5px] leading-relaxed text-[var(--brand-mute)]">
-                  {pillar.description}
-                </p>
-              </div>
+              <h3 className="text-[15.5px] font-semibold tracking-tight text-[var(--brand-ink)]">
+                {pillar.title}
+              </h3>
             </div>
           ))}
         </div>
       </section>
 
-      {/* Por onde começar */}
+      {/* Por onde começar + Dúvidas frequentes */}
       <section className="mx-auto max-w-7xl px-4 py-12 md:px-6 md:py-16">
         <SectionHeader
           eyebrow="Por onde começar"
@@ -249,67 +203,8 @@ export default function HomePage() {
             );
           })}
         </div>
-      </section>
-
-      {/* Compromisso — banda escura */}
-      <section className="mx-auto max-w-7xl px-4 py-12 md:px-6 md:py-16">
-        <div className="relative overflow-hidden rounded-[2.5rem] bg-[var(--brand-ink)] p-8 text-white shadow-lift md:p-12">
-          <div
-            aria-hidden
-            className="pointer-events-none absolute -right-32 -top-32 size-[440px] opacity-50 radial-orange-orb"
-          />
-          <div className="relative z-10 grid gap-10 lg:grid-cols-[0.85fr_1.15fr]">
-            <div className="space-y-5">
-              <Eyebrow tone="orange">Compromisso</Eyebrow>
-              <h2 className="font-display text-3xl leading-tight tracking-tight md:text-[40px]">
-                Sem juridiquês, sem pressão,{" "}
-                <em className="not-italic text-[var(--brand-orange)]">sem aparência de golpe.</em>
-              </h2>
-              <p className="max-w-md text-[14.5px] leading-relaxed text-white/70">
-                A plataforma diferencia procedimento oficial, apoio privado opcional e
-                cobrança indevida — para reduzir risco para quem está começando.
-              </p>
-              <Link
-                href="/sobre"
-                className="inline-flex items-center gap-2 text-[14px] font-semibold text-[var(--brand-orange)] hover:text-white"
-              >
-                Conhecer o projeto
-                <ArrowRight className="size-3.5" />
-              </Link>
-            </div>
-
-            <div className="grid gap-3">
-              {COMMITMENT_ROWS.map((row) => (
-                <div
-                  key={row.label}
-                  className="flex items-start gap-4 rounded-2xl border border-white/10 bg-white/5 px-5 py-4"
-                >
-                  <span
-                    className={cn(
-                      "flex size-10 shrink-0 items-center justify-center rounded-xl",
-                      row.tone === "green" && "bg-[color:rgba(47,125,91,0.18)] text-[var(--brand-green)]",
-                      row.tone === "amber" && "bg-[color:rgba(178,113,0,0.18)] text-[var(--brand-amber)]",
-                      row.tone === "red" && "bg-[color:rgba(168,42,31,0.18)] text-[var(--brand-red)]",
-                    )}
-                  >
-                    <row.icon className="size-4" />
-                  </span>
-                  <div className="space-y-1">
-                    <p className="text-[14.5px] font-semibold text-white">{row.label}</p>
-                    <p className="text-[13px] leading-relaxed text-white/65">
-                      {row.description}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* FAQ + Atendimento */}
-      <section className="mx-auto max-w-7xl px-4 py-12 md:px-6 md:py-16">
-        <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr]">
+        {/* Dúvidas frequentes — mesma seção */}
+        <div className="mt-16 grid gap-10 lg:grid-cols-[1.1fr_0.9fr]">
           <div className="space-y-6">
             <SectionHeader
               eyebrow="Dúvidas frequentes"

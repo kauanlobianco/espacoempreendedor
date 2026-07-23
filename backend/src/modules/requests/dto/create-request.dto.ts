@@ -8,7 +8,6 @@ import {
   IsOptional,
   IsString,
   Length,
-  Matches,
   MaxLength,
   MinLength,
 } from 'class-validator';
@@ -34,13 +33,11 @@ export class CreateRequestDto {
   @MaxLength(20)
   phone!: string;
 
-  @ApiPropertyOptional()
+  @ApiPropertyOptional({ description: 'Nome do empreendimento (nome fantasia)' })
   @IsOptional()
   @IsString()
-  @Matches(/^\d{11}$|^\d{3}\.\d{3}\.\d{3}-\d{2}$/, {
-    message: 'CPF deve conter 11 dígitos ou estar no formato 000.000.000-00',
-  })
-  cpf?: string;
+  @MaxLength(120)
+  businessName?: string;
 
   @ApiPropertyOptional()
   @IsOptional()

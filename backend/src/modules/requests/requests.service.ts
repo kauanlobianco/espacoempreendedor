@@ -23,9 +23,9 @@ export class RequestsService {
       const req = await tx.entrepreneurRequest.create({
         data: {
           fullName: dto.fullName,
+          businessName: dto.businessName ?? null,
           email: dto.email ?? null,
           phone: dto.phone,
-          cpf: dto.cpf ?? null,
           city: dto.city ?? null,
           state: dto.state?.toUpperCase() ?? null,
           category: dto.category,

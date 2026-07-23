@@ -1,12 +1,15 @@
 import Link from "next/link";
 import {
   ArrowRight,
+  CheckCircle2,
   GraduationCap,
   HeartHandshake,
   MapPin,
   Mail,
   Scale,
+  ShieldCheck,
   Users,
+  XCircle,
 } from "lucide-react";
 
 import { PageHeader } from "@/components/feedback/page-header";
@@ -75,6 +78,34 @@ const FAQ = [
     question: "Como meus dados são usados?",
     answer:
       "Apenas para tratamento da solicitação e acompanhamento interno. Não compartilhamos dados com terceiros fora do escopo do atendimento.",
+  },
+];
+
+const COMMITMENT_ROWS: Array<{
+  tone: "green" | "amber" | "red";
+  icon: typeof CheckCircle2;
+  label: string;
+  description: string;
+}> = [
+  {
+    tone: "green",
+    icon: CheckCircle2,
+    label: "Procedimento oficial",
+    description: "Caminhos formais, gratuitos e validados pela legislação.",
+  },
+  {
+    tone: "amber",
+    icon: ShieldCheck,
+    label: "Apoio privado opcional",
+    description:
+      "Serviços de terceiros que podem ajudar — mas você não é obrigado a contratar.",
+  },
+  {
+    tone: "red",
+    icon: XCircle,
+    label: "Cobrança indevida",
+    description:
+      "Mensagens, boletos e taxas falsas que tentam parecer documento oficial.",
   },
 ];
 
@@ -150,6 +181,53 @@ export default function SobrePage() {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+
+        {/* Compromisso — banda escura */}
+        <div className="relative overflow-hidden rounded-[2.5rem] bg-[var(--brand-ink)] p-8 text-white shadow-lift md:p-12">
+          <div
+            aria-hidden
+            className="pointer-events-none absolute -right-32 -top-32 size-[440px] opacity-50 radial-orange-orb"
+          />
+          <div className="relative z-10 grid gap-10 lg:grid-cols-[0.85fr_1.15fr]">
+            <div className="space-y-5">
+              <Eyebrow tone="orange">Compromisso</Eyebrow>
+              <h2 className="font-display text-3xl leading-tight tracking-tight md:text-[40px]">
+                Sem juridiquês, sem pressão,{" "}
+                <em className="not-italic text-[var(--brand-orange)]">sem aparência de golpe.</em>
+              </h2>
+              <p className="max-w-md text-[14.5px] leading-relaxed text-white/70">
+                A plataforma diferencia procedimento oficial, apoio privado opcional e
+                cobrança indevida — para reduzir risco para quem está começando.
+              </p>
+            </div>
+
+            <div className="grid gap-3">
+              {COMMITMENT_ROWS.map((row) => (
+                <div
+                  key={row.label}
+                  className="flex items-start gap-4 rounded-2xl border border-white/10 bg-white/5 px-5 py-4"
+                >
+                  <span
+                    className={cn(
+                      "flex size-10 shrink-0 items-center justify-center rounded-xl",
+                      row.tone === "green" && "bg-[color:rgba(47,125,91,0.18)] text-[var(--brand-green)]",
+                      row.tone === "amber" && "bg-[color:rgba(178,113,0,0.18)] text-[var(--brand-amber)]",
+                      row.tone === "red" && "bg-[color:rgba(168,42,31,0.18)] text-[var(--brand-red)]",
+                    )}
+                  >
+                    <row.icon className="size-4" />
+                  </span>
+                  <div className="space-y-1">
+                    <p className="text-[14.5px] font-semibold text-white">{row.label}</p>
+                    <p className="text-[13px] leading-relaxed text-white/65">
+                      {row.description}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 

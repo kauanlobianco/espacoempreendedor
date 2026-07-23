@@ -39,13 +39,9 @@ const channelValues = PREFERRED_CHANNEL_OPTIONS.map((option) => option.value) as
 
 const requestSchema = z.object({
   fullName: z.string().min(3, "Digite seu nome completo."),
+  businessName: z.string().max(120).optional(),
   phone: z.string().min(8, "Informe um telefone com DDD."),
   email: z.string().email("Digite um e-mail válido.").optional().or(z.literal("")),
-  cpf: z
-    .string()
-    .regex(/^\d{11}$|^\d{3}\.\d{3}\.\d{3}-\d{2}$/, "Use 11 dígitos ou 000.000.000-00.")
-    .optional()
-    .or(z.literal("")),
   city: z.string().optional(),
   state: z.string().max(2).optional(),
   preferredChannel: z.enum(channelValues),
@@ -94,9 +90,9 @@ export default function QueroAjudaPage() {
     resolver: zodResolver(requestSchema),
     defaultValues: {
       fullName: "",
+      businessName: "",
       phone: "",
       email: "",
-      cpf: "",
       city: "",
       state: "",
       preferredChannel: "WHATSAPP",
@@ -110,8 +106,8 @@ export default function QueroAjudaPage() {
     mutationFn: (values: RequestValues) =>
       requestsService.submit({
         ...values,
+        businessName: values.businessName || undefined,
         email: values.email || undefined,
-        cpf: values.cpf || undefined,
         city: values.city || undefined,
         state: values.state?.toUpperCase() || undefined,
       }),
@@ -209,11 +205,16 @@ export default function QueroAjudaPage() {
   return (
     <PublicShell>
       <section className="mx-auto max-w-6xl space-y-10 px-4 py-12 md:px-6 md:py-16">
-        <PageHeader
-          eyebrow="Atendimento público"
-          title="Conte o que você precisa"
-          description="Preencha o formulário. O pedido entra na fila e você acompanha pelo e-mail ou telefone informados."
-        />
+        <div className="space-y-4">
+          <Pill tone="green" size="lg" withDot>
+            Atendimento 100% gratuito — você não paga nada
+          </Pill>
+          <PageHeader
+            eyebrow="Atendimento público e gratuito"
+            title="Conte o que você precisa"
+            description="Preencha o formulário. O pedido entra na fila e você acompanha pelo e-mail ou telefone informados. Nenhuma etapa tem cobrança."
+          />
+        </div>
 
         {cachedRequest ? (
           <div className="rounded-3xl border border-[color:rgba(232,93,31,0.22)] bg-[var(--brand-orange-ghost)] p-5 md:p-7">
@@ -277,8 +278,12 @@ export default function QueroAjudaPage() {
                   </Field>
                 </div>
                 <div className="grid gap-4 md:grid-cols-2">
-                  <Field label="CPF" hint="Opcional" error={form.formState.errors.cpf?.message}>
-                    <Input placeholder="000.000.000-00" {...form.register("cpf")} />
+                  <Field
+                    label="Nome do empreendimento"
+                    hint="Opcional — nome fantasia do seu negócio"
+                    error={form.formState.errors.businessName?.message}
+                  >
+                    <Input placeholder="Nome fantasia" {...form.register("businessName")} />
                   </Field>
                   <div className="grid grid-cols-[1fr_84px] gap-4">
                     <Field label="Cidade">
@@ -329,7 +334,7 @@ export default function QueroAjudaPage() {
               <FormSection eyebrow="Sua dúvida" title="Sobre o que precisa de ajuda">
                 <Field label="Assunto">
                   <select
-                    className="h-11 w-full rounded-xl border border-[color:var(--brand-line)] bg-white px-3 text-sm text-[var(--brand-ink)] outline-none focus-visible:border-[var(--brand-orange)] focus-visible:ring-3 focus-visible:ring-[color:rgba(232,93,31,0.18)]"
+                    className="h-11 w-full rounded-xl border border-[color:var(--brand-line)] bg-white px-3 text-base text-[var(--brand-ink)] outline-none focus-visible:border-[var(--brand-orange)] focus-visible:ring-3 focus-visible:ring-[color:rgba(232,93,31,0.18)] md:text-sm"
                     {...form.register("category")}
                   >
                     {CATEGORY_OPTIONS.map((option) => (
